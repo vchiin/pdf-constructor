@@ -1,0 +1,192 @@
+import {
+  Block,
+  BreakBlock,
+  ColumnBlock,
+  ColumnGroupBlock,
+  ImageBlock,
+  LineBlock,
+  RootBlock,
+  TableBlock,
+  TableCellBlock,
+  TextBlock,
+} from "../contexts/constructor/constructor.types";
+import {
+  BlockType,
+  BlockTypeDefinitions,
+} from "../shared/constants/types-definition.constant";
+import { BlockId } from "../shared/types/utils.types";
+
+// export const generateId = () =>
+//   Math.random()
+//     .toString(36)
+//     .replace(/[^a-z]+/g, "")
+//     .slice(2, 10);
+
+let i = 0;
+export const generateBlockId = () => (i++).toString() as BlockId;
+
+const generateDefaultStyles = (parentId: BlockId | null) => ({
+  id: generateBlockId(),
+  marginLeft: 0,
+  marginRight: 0,
+  marginTop: 0,
+  marginBottom: 0,
+  width: 100,
+  parentId,
+});
+
+const generateChildren = (
+  type: BlockType,
+  amount: number,
+  parentId: BlockId
+) => {
+  const children: Block[] = [];
+  const directChildrenIds: BlockId[] = [];
+
+  for (let i = 0; i < amount; i++) {
+    const child = generateBlocks(type, parentId);
+    children.push(...child);
+    directChildrenIds.push(child[0].id);
+  }
+
+  return { children, directChildrenIds };
+};
+
+export const generateBlocks = <Type extends BlockType>(
+  type: Type,
+  parentId: BlockId | null,
+  childrenCount: number = 2
+): Block[] => {
+  switch (type) {
+    case BlockTypeDefinitions.Root:
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          children: [] as BlockId[],
+          parentId: null,
+          marginLeft: 54,
+          marginRight: 54,
+          marginTop: 54,
+          marginBottom: 54,
+        },
+      ] satisfies [RootBlock];
+    case BlockTypeDefinitions.Text:
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          content: "Placeholder text",
+          color: "#000000",
+          bold: false,
+          italic: false,
+          underline: false,
+          fontSize: 16,
+          fontFamily: "Roboto",
+        },
+      ] satisfies [TextBlock];
+    case BlockTypeDefinitions.Line:
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          height: 4,
+          color: "#000",
+        },
+      ] satisfies [LineBlock];
+    case BlockTypeDefinitions.Image:
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          content: "",
+          ratio: 1,
+        },
+      ] satisfies [ImageBlock];
+    case BlockTypeDefinitions.Column:
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          children: [] as BlockId[],
+        },
+      ] satisfies [ColumnBlock];
+    case BlockTypeDefinitions.ColumnGroup: {
+      const groupBaseStyles = generateDefaultStyles(parentId);
+
+      const { children, directChildrenIds } = generateChildren(
+        BlockTypeDefinitions.Column,
+        childrenCount,
+        groupBaseStyles.id
+      );
+
+      const group = {
+        ...groupBaseStyles,
+        type,
+        children: directChildrenIds,
+        gap: 10,
+      } satisfies ColumnGroupBlock;
+
+      return [group, ...children] satisfies Block[];
+    }
+    case BlockTypeDefinitions.Break: {
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          pageOrientation: "portrait",
+        },
+      ] satisfies [BreakBlock];
+    }
+    case BlockTypeDefinitions.Table: {
+      const groupBaseStyles = generateDefaultStyles(parentId);
+
+      const { children, directChildrenIds } = generateChildren(
+        BlockTypeDefinitions.TableRow,
+        childrenCount,
+        groupBaseStyles.id
+      );
+
+      const group = {
+        ...groupBaseStyles,
+        type,
+        children: directChildrenIds,
+        paddingLeft: 7,
+        paddingRight: 7,
+        paddingTop: 7,
+        paddingBottom: 7,
+      } satisfies TableBlock;
+
+      return [group, ...children] satisfies Block[];
+    }
+    case BlockTypeDefinitions.TableRow: {
+      const rowBaseStyles = generateDefaultStyles(parentId);
+
+      const { children, directChildrenIds } = generateChildren(
+        BlockTypeDefinitions.TableCell,
+        childrenCount,
+        rowBaseStyles.id
+      );
+
+      return [
+        {
+          ...rowBaseStyles,
+          type,
+          children: directChildrenIds,
+        },
+        ...children,
+      ] satisfies Block[];
+    }
+    case BlockTypeDefinitions.TableCell: {
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          children: [] as BlockId[],
+        },
+      ] satisfies [TableCellBlock];
+    }
+    default:
+      throw new Error(`Unsupported block type: ${type}`);
+  }
+};
