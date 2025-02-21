@@ -4,6 +4,7 @@ import { useDraggable } from "@/components/pdf-constructor/hooks/use-dnd.hook";
 import { getThumbnailId } from "@/components/pdf-constructor/services/interactions/interactions.service";
 
 import { GeneralBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { CSSProperties } from "react";
 
 type BlockThumbnailProps<T extends GeneralBlockType> =
   BaseBlockThumbnailProps<T> & {
@@ -16,7 +17,7 @@ export const BlockThumbnail = <T extends GeneralBlockType>({
   title,
   icon: Icon,
 }: BlockThumbnailProps<T>) => {
-  const { setNodeRef, listeners, transform, attributes } = useDraggable({
+  const { setNodeRef, listeners, isDragging, attributes } = useDraggable({
     id: getThumbnailId(type),
     data: {
       id: type,
@@ -25,12 +26,9 @@ export const BlockThumbnail = <T extends GeneralBlockType>({
     },
   });
 
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        zIndex: 10,
-      }
-    : undefined;
+  const style: CSSProperties = {
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   return (
     <div

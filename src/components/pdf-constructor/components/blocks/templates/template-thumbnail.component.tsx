@@ -4,6 +4,7 @@ import { getTemplateId } from "@/components/pdf-constructor/services/interaction
 
 import { BaseTemplateThumbnailProps } from "./shared/types/template-thumbnail.types";
 import { CustomBlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { CSSProperties } from "react";
 
 type TemplateThumbnailProps = BaseTemplateThumbnailProps & {
   title: string;
@@ -13,21 +14,19 @@ export const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
   id,
   title,
 }) => {
-  const { setNodeRef, listeners, transform, attributes } = useDraggable({
+  const { setNodeRef, listeners, isDragging, attributes } = useDraggable({
     id: getTemplateId(id),
     data: {
       id,
       type: CustomBlockTypeDefinitions.Template,
       dragTargetType: "template",
+      title,
     },
   });
 
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        zIndex: 10,
-      }
-    : undefined;
+  const style: CSSProperties = {
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   return (
     <div

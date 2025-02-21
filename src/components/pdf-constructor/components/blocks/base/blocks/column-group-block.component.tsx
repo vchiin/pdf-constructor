@@ -1,5 +1,3 @@
-import { withBlock } from "../../base/block.component";
-
 import { Grid, ItemsProps } from "../../../components/resizable/grid.component";
 
 import { useMemo } from "react";
@@ -9,12 +7,14 @@ import {
 } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
 import { ColumnBlock } from "./column-block.component";
 import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
-import { Block } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { Block as BlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
 import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
 import { useChildrenWidth } from "@/components/pdf-constructor/hooks/use-children-width.hook";
+import { BlockProps } from "../shared/types/block.type";
+import { Block } from "../block.component";
 
-const withResizable = (block: Block) => {
+const withResizable = (block: BlockType) => {
   return (props: ItemsProps) => {
     const { selectedBlockId } = useConstructor();
     const isActive = selectedBlockId === block.id;
@@ -27,7 +27,9 @@ const withResizable = (block: Block) => {
   };
 };
 
-export const ColumnGroupBlock = withBlock<ColumnGroupBlockType>(({ block }) => {
+export const ColumnGroupBlock: React.FC<BlockProps<ColumnGroupBlockType>> = ({
+  block,
+}) => {
   const [widths, setWidths] = useChildrenWidth(block.id, block.children.length);
   const children = useBlockChildren(block.id);
 
@@ -43,12 +45,14 @@ export const ColumnGroupBlock = withBlock<ColumnGroupBlockType>(({ block }) => {
   );
 
   return (
-    <Grid
-      widths={widths}
-      setWidths={setWidths}
-      minWidth={10}
-      items={items}
-      gap={block.gap}
-    />
+    <Block block={block}>
+      <Grid
+        widths={widths}
+        setWidths={setWidths}
+        minWidth={10}
+        items={items}
+        gap={block.gap}
+      />
+    </Block>
   );
-});
+};

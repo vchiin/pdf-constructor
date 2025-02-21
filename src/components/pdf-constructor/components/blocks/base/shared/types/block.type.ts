@@ -5,6 +5,7 @@ import {
 } from "@/components/pdf-constructor/services/interactions/interactions.types";
 import {
   BlockType,
+  CustomBlockTypeDefinitions,
   GeneralBlockType,
 } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 import { ElementType } from "react";
@@ -27,11 +28,18 @@ export type BlockMap = Partial<{
   >;
 }>;
 
-export type DragPayload = {
-  id: Block["id"] | GeneralBlockType | string;
-  type: GeneralBlockType;
-  dragTargetType: DragTargetType;
-};
+export type DragPayload =
+  | {
+      id: Block["id"] | GeneralBlockType | string;
+      type: GeneralBlockType;
+      dragTargetType: Exclude<DragTargetType, "template">;
+    }
+  | {
+      id: Block["id"] | GeneralBlockType | string;
+      type: typeof CustomBlockTypeDefinitions.Template;
+      title: string;
+      dragTargetType: Extract<DragTargetType, "template">;
+    };
 
 export type DropPayload = {
   id: Block["id"];

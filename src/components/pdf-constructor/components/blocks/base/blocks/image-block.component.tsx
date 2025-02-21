@@ -1,4 +1,3 @@
-import { withBlock } from "../block.component";
 import { ImageIcon } from "lucide-react";
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 import { useRef } from "react";
@@ -6,8 +5,10 @@ import { useRef } from "react";
 import { ImageBlock as ImageBlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
 import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
+import { BlockProps } from "../shared/types/block.type";
+import { Block } from "../block.component";
 
-export const ImageBlock = withBlock<ImageBlockType>(({ block }) => {
+export const ImageBlock: React.FC<BlockProps<ImageBlockType>> = ({ block }) => {
   const [value, setValue] = useBlockUpdate(block);
   const inputRef = useRef<HTMLInputElement>(null);
   const { selectedBlockId } = useConstructor();
@@ -15,26 +16,28 @@ export const ImageBlock = withBlock<ImageBlockType>(({ block }) => {
 
   if (value.content) {
     return (
-      <WidthResizable
-        id={0}
-        width={value.width}
-        onResize={(_, delta, calculate) => {
-          setValue("width", (prev) => calculate(prev, delta));
-        }}
-        hidden={!isActive}
-        minWidth={25}
-      >
-        <img
-          src={value.content}
-          alt={value.type}
-          className="h-full w-full object-cover select-none"
-        />
-      </WidthResizable>
+      <Block block={block}>
+        <WidthResizable
+          id={0}
+          width={value.width}
+          onResize={(_, delta, calculate) => {
+            setValue("width", (prev) => calculate(prev, delta));
+          }}
+          hidden={!isActive}
+          minWidth={25}
+        >
+          <img
+            src={value.content}
+            alt={value.type}
+            className="h-full w-full object-cover select-none"
+          />
+        </WidthResizable>
+      </Block>
     );
   }
 
   return (
-    <>
+    <Block block={block}>
       <input
         ref={inputRef}
         type="file"
@@ -63,6 +66,6 @@ export const ImageBlock = withBlock<ImageBlockType>(({ block }) => {
       >
         <ImageIcon />
       </button>
-    </>
+    </Block>
   );
-});
+};

@@ -29,6 +29,7 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { generateBlocks } from "../../services/block.service";
 import { Block } from "./constructor.types";
 import { BlockId } from "../../shared/types/utils.types";
+import { DragPreview } from "./components/drag-preview.component";
 
 const ConstructorContext = createContext<ConstructorContextType | null>(null);
 
@@ -51,6 +52,7 @@ export const ConstructorProvider = ({
     selectedBlockId: null,
     rootId: root.id,
     showPreview: false,
+    scale: 1,
   });
 
   const sensors = useSensors(
@@ -102,6 +104,16 @@ export const ConstructorProvider = ({
       dispatch({
         type: ActionTypes.UPDATE_CHILDREN_WIDTHS,
         payload: { blockId, widths },
+      });
+    },
+    [dispatch]
+  );
+
+  const setScale = useCallback(
+    (value: number) => {
+      dispatch({
+        type: ActionTypes.SET_SCALE,
+        payload: { scale: value },
       });
     },
     [dispatch]
@@ -173,6 +185,7 @@ export const ConstructorProvider = ({
         updateChildrenWidths,
         togglePreview,
         containerRef,
+        setScale,
       }}
     >
       <DndContext
@@ -181,6 +194,8 @@ export const ConstructorProvider = ({
         collisionDetection={pointerWithin}
       >
         {children}
+
+        <DragPreview />
       </DndContext>
     </ConstructorContext.Provider>
   );

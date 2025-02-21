@@ -18,18 +18,28 @@ import { BreakBlock } from "../blocks/base/blocks/break-block.component";
 
 import { BlockTypeDefinitions } from "../../shared/constants/types-definition.constant";
 import { TableBlock } from "../blocks/base/blocks/table/table-block.component";
+import { useEffect } from "react";
 
 export const Preview = () => {
-  const { rootId, containerRef } = useConstructor();
+  const { rootId, containerRef, scale, setScale } = useConstructor();
   const children = useBlockChildren(rootId);
   const block = useBlock(rootId);
+
+  useEffect(() => {
+    const parentWidth = containerRef.current?.parentElement?.clientWidth;
+
+    if (parentWidth) {
+      setScale(parentWidth / convertPtToPx(PAGE_WIDTH_PT));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
       ref={containerRef}
-      className="w-xl rounded border p-4 shadow"
+      className="rounded border p-4 shadow"
       style={{
-        width: `${convertPtToPx(PAGE_WIDTH_PT)}px`,
+        width: `${convertPtToPx(PAGE_WIDTH_PT) * scale}px`,
       }}
     >
       <BlockList

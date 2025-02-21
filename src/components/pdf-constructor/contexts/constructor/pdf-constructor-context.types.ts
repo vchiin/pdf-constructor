@@ -11,6 +11,7 @@ export type ConstructorState = {
   selectedBlockId: BlockId | null;
   rootId: BlockId;
   showPreview: boolean;
+  scale: number;
 };
 
 export type ConstructorContext = ConstructorState & {
@@ -21,6 +22,7 @@ export type ConstructorContext = ConstructorState & {
   updateChildrenWidths: (blockId: BlockId, widths: number[]) => void;
   togglePreview: () => void;
   containerRef: React.RefObject<HTMLDivElement>;
+  setScale: (value: number) => void;
 };
 
 export const InsertionPlace = {
@@ -39,6 +41,7 @@ export const ActionTypes = {
   UPDATE_CHILDREN_WIDTHS: "update-children-widths",
   TOGGLE_PREVIEW: "toggle-preview",
   FILL_TABLE_CELLS: "fill-table-cells",
+  SET_SCALE: "set-scale",
 } as const;
 
 export type Action<
@@ -110,6 +113,8 @@ type SwapBlockAction = Action<
   }
 >;
 
+type SetScaleAction = Action<typeof ActionTypes.SET_SCALE, { scale: number }>;
+
 export type ConstructorAction =
   | SelectBlockAction
   | DeselectBlockAction
@@ -120,7 +125,8 @@ export type ConstructorAction =
   | UpdateChildrenWidthsAction
   | TogglePreviewAction
   | FillTableCellsAction
-  | SwapBlockAction;
+  | SwapBlockAction
+  | SetScaleAction;
 
 export type DropAreaCallback = (
   active: DragPayload,

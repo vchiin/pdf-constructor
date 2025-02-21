@@ -54,7 +54,6 @@ export const parseBlock = (
     }
     case BlockTypeDefinitions.Line: {
       const width = parentWidth * (block.width / 100);
-      console.log(parentWidth, block.width, width);
 
       return {
         canvas: [
@@ -170,7 +169,6 @@ export const prepareDocument = (
 ): TDocumentDefinitions => {
   const document = parseConfigToPdf(rootId, map);
 
-  console.log("document", document);
   return {
     ...document,
     defaultStyle: {

@@ -6,13 +6,41 @@ import { prepareDocument } from "@/libs/conversion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/shared/utils/cn.util";
 import { BlocksView } from "./components/blocks-view.component";
+import { Slider } from "@/components/ui/slider";
 
-const Sidebar = () => {
-  const { map, rootId, selectedBlockId, togglePreview, showPreview } =
-    useConstructor();
+type SidebarProps = {
+  className?: string;
+};
+
+const Sidebar: React.FC<SidebarProps> = ({ className }) => {
+  const {
+    map,
+    rootId,
+    selectedBlockId,
+    togglePreview,
+    showPreview,
+    scale,
+    setScale,
+  } = useConstructor();
 
   return (
-    <div className="@container flex flex-col gap-2 rounded border p-4 shadow">
+    <div
+      className={cn(
+        "@container flex w-auto flex-col gap-2 rounded border p-4 shadow",
+        className
+      )}
+    >
+      <div className="flex flex-col items-center gap-2">
+        <label htmlFor="scale">{Math.floor(scale * 100) / 100}</label>
+        <Slider
+          value={[scale]}
+          max={3}
+          min={0.5}
+          step={0.01}
+          onValueChange={(value) => setScale(value[0])}
+        />
+      </div>
+
       {selectedBlockId === null && <BlocksView />}
 
       <ToolbarView
@@ -33,8 +61,6 @@ const Sidebar = () => {
 
       <button
         onClick={() => {
-          // const previewWidth = containerRef.current?.offsetWidth ?? 0;
-          console.log(map);
           createPDF(prepareDocument(rootId, map));
         }}
         className="bg-primary text-primary-foreground cursor-pointer rounded p-2 text-lg"

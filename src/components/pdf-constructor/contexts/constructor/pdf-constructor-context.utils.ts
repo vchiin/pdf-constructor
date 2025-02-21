@@ -64,7 +64,6 @@ export const createBlock = (
   direction: (typeof InsertionPlace)[keyof typeof InsertionPlace] | null,
   blocks: BlockMap
 ) => {
-  console.log(block);
   blocks[block.id] = block;
 
   const parentBlock = findParentBlock(block.id, blocks);
@@ -73,7 +72,6 @@ export const createBlock = (
     return;
   }
 
-  console.log("moving on");
   if (parentBlock.children.includes(block.id)) {
     return;
   }
