@@ -1,27 +1,24 @@
-import { BaseBlockThumbnailProps } from "./shared/types/block-thumbnail.types";
 import { cn } from "@/shared/utils/cn.util";
 import { useDraggable } from "@/components/pdf-constructor/hooks/use-dnd.hook";
-import { getThumbnailId } from "@/components/pdf-constructor/services/interactions/interactions.service";
+import { getTemplateId } from "@/components/pdf-constructor/services/interactions/interactions.service";
 
-import { GeneralBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { BaseTemplateThumbnailProps } from "./shared/types/template-thumbnail.types";
+import { CustomBlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 
-type BlockThumbnailProps<T extends GeneralBlockType> =
-  BaseBlockThumbnailProps<T> & {
-    title: string;
-    icon: React.FC<{ className: string }>;
-  };
+type TemplateThumbnailProps = BaseTemplateThumbnailProps & {
+  title: string;
+};
 
-export const BlockThumbnail = <T extends GeneralBlockType>({
-  type,
+export const TemplateThumbnail: React.FC<TemplateThumbnailProps> = ({
+  id,
   title,
-  icon: Icon,
-}: BlockThumbnailProps<T>) => {
+}) => {
   const { setNodeRef, listeners, transform, attributes } = useDraggable({
-    id: getThumbnailId(type),
+    id: getTemplateId(id),
     data: {
-      id: type,
-      type,
-      dragTargetType: "thumbnail",
+      id,
+      type: CustomBlockTypeDefinitions.Template,
+      dragTargetType: "template",
     },
   });
 
@@ -43,8 +40,6 @@ export const BlockThumbnail = <T extends GeneralBlockType>({
       {...attributes}
     >
       <div className="text-muted-foreground flex flex-col items-center justify-center gap-2">
-        <Icon className="h-8 w-8" />
-
         <span className="text-center text-sm font-bold uppercase italic">
           {title}
         </span>

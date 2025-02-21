@@ -3,7 +3,7 @@ import {
   BaseBlockThumbnailProps,
   BlockMap,
 } from "./shared/types/block-thumbnail.types";
-import { BlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { GeneralBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 
 type BlockThumbnailList = {
   blocks: BlockMap;
@@ -20,9 +20,11 @@ export const BlockThumbnailList = ({ blocks }: BlockThumbnailList) => {
   return (
     <div className="grid gap-1 @xs:grid-cols-2 @sm:grid-cols-2">
       {thumbnailList.map(({ key: type, value: Element }) => {
-        const Block = Element as React.FC<BaseBlockThumbnailProps<BlockType>>;
+        const Block = Element as React.FC<
+          BaseBlockThumbnailProps<GeneralBlockType>
+        >;
 
-        return <Block type={type as BlockType} key={type} />;
+        return <Block type={type as GeneralBlockType} key={type} />;
       })}
     </div>
   );

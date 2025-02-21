@@ -108,7 +108,7 @@ export const ConstructorProvider = ({
   );
 
   const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
+    async (event: DragEndEvent) => {
       const { active, over, collisions } = event;
 
       if (!over || active.id === over.id) {
@@ -139,11 +139,16 @@ export const ConstructorProvider = ({
           return;
         }
 
-        const action = dropAreaCallback(activePayload, overPayload, state.map, {
-          edge: overEdge,
-        });
+        const actions = await dropAreaCallback(
+          activePayload,
+          overPayload,
+          state.map,
+          {
+            edge: overEdge,
+          }
+        );
 
-        action.forEach((action) => dispatch(action));
+        await Promise.allSettled(actions.map((action) => dispatch(action)));
         return;
       }
     },

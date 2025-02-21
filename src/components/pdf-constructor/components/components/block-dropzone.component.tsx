@@ -8,11 +8,11 @@ import {
   getPlaceholderId,
 } from "../../services/interactions/interactions.service";
 import { useDroppable } from "../../hooks/use-dnd.hook";
-import { BlockType } from "../../shared/constants/types-definition.constant";
+import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
 
 type BlockDropzoneProps = {
-  type: BlockType;
+  type: GeneralBlockType;
   parentId: BlockId;
 
   className?: string;
@@ -20,10 +20,10 @@ type BlockDropzoneProps = {
   hidden?: boolean;
 };
 
-const isDroppable = (active: Active | null, parentType: BlockType) => {
+const isDroppable = (active: Active | null, parentType: GeneralBlockType) => {
   if (!active) return false;
 
-  const activeType = active.data.current?.type as BlockType;
+  const activeType = active.data.current?.type as GeneralBlockType;
 
   if (!activeType) return false;
 

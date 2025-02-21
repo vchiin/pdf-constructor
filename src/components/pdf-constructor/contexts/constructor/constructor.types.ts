@@ -1,6 +1,6 @@
 import {
-  BlockType,
   BlockTypeDefinitions,
+  BlockType,
 } from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
 

@@ -1,12 +1,20 @@
-import { generateBlocks } from "../../services/block.service";
-import { canBeChildOf } from "../../services/interactions/interactions.service";
+import { fetchTemplates } from "@/libs/templates";
+import { DragPayload } from "../../components/blocks/base/shared/types/block.type";
+import { generateBlocks, parseTemplates } from "../../services/block.service";
+import {
+  canBeChildOf,
+  isTemplate,
+} from "../../services/interactions/interactions.service";
 import {
   DragTargetType,
   DropAreaType,
 } from "../../services/interactions/interactions.types";
 import { Edge } from "../../services/interactions/interactions.types";
-import { BlockTypeDefinitions } from "../../shared/constants/types-definition.constant";
-import { BlockType } from "../../shared/constants/types-definition.constant";
+import {
+  BlockType,
+  BlockTypeDefinitions,
+} from "../../shared/constants/types-definition.constant";
+import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
 
 import { BlockId } from "../../shared/types/utils.types";
 import { Block, BlockMap } from "./constructor.types";
@@ -56,6 +64,7 @@ export const createBlock = (
   direction: (typeof InsertionPlace)[keyof typeof InsertionPlace] | null,
   blocks: BlockMap
 ) => {
+  console.log(block);
   blocks[block.id] = block;
 
   const parentBlock = findParentBlock(block.id, blocks);
@@ -64,6 +73,7 @@ export const createBlock = (
     return;
   }
 
+  console.log("moving on");
   if (parentBlock.children.includes(block.id)) {
     return;
   }
@@ -374,7 +384,7 @@ const getMoveBlockDirection = (edge: Edge) => {
 };
 
 const handleTableCellInsertion = (
-  activeType: BlockType,
+  activeType: GeneralBlockType,
   cellId: BlockId | null,
   rowId: BlockId,
   blocks: BlockMap
@@ -487,7 +497,7 @@ const prepareBlockCreation: DragTargetCallback = ({
         {
           type: ActionTypes.CREATE_BLOCK,
           payload: {
-            blocks: generateBlocks(active.type, parentId),
+            blocks: generateBlocks(active.type as BlockType, parentId),
             overId: over?.id ?? null,
             direction,
           },
@@ -527,7 +537,6 @@ const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
       },
     ];
   },
-
   thumbnail: ({ active, over, parentId, direction, blocks }) => {
     return prepareBlockCreation({
       active,
@@ -537,10 +546,39 @@ const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
       blocks,
     });
   },
+  template: async ({ active, parentId }) => {
+    const template = await fetchTemplates(active.id);
+    if (!template) {
+      return [];
+    }
+
+    return [
+      {
+        type: ActionTypes.CREATE_BLOCK,
+        payload: {
+          blocks: parseTemplates(template, parentId),
+          // adding to root component
+          overId: null,
+          direction: InsertionPlace.AFTER,
+        },
+      },
+    ];
+  },
+};
+
+const isNonTemplate = (
+  payload: DragPayload
+): payload is Extract<DragPayload, { type: GeneralBlockType }> => {
+  return !isTemplate(payload.dragTargetType);
 };
 
 const DropAreaCallbacks: Record<DropAreaType, DropAreaCallback> = {
   edge: (active, over, blocks, extra) => {
+    // templates can't be placed onto edges, only on the top level placeholder
+    if (!isNonTemplate(active)) {
+      return [];
+    }
+
     const targetParent = findParentBlock(over.id, blocks);
 
     if (!targetParent) {

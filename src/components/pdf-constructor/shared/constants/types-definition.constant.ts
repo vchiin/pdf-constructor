@@ -13,3 +13,11 @@ export const BlockTypeDefinitions = {
 
 export type BlockType =
   (typeof BlockTypeDefinitions)[keyof typeof BlockTypeDefinitions];
+
+export const CustomBlockTypeDefinitions = {
+  Template: "template",
+} as const;
+
+export type GeneralBlockType =
+  | BlockType
+  | (typeof CustomBlockTypeDefinitions)[keyof typeof CustomBlockTypeDefinitions];

@@ -1,13 +1,14 @@
-import { BlockType } from "../../shared/constants/types-definition.constant";
+import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
 import {
-  DragTargetId,
   DragTargetType,
   DragThumbnailId,
+  DragTemplateId,
   DropAreaId,
   DropAreaType,
   Edge,
   EdgeId,
+  GetId,
   GetIdConfig,
   Interactions,
   PlaceholderId,
@@ -18,23 +19,42 @@ export const interactions: Interactions = {
     forbids: ["column", "table-row", "table-cell"],
   },
   column: {
-    forbids: ["column", "column-group", "table", "table-row", "table-cell"],
+    forbids: [
+      "column",
+      "column-group",
+      "table",
+      "table-row",
+      "table-cell",
+      "template",
+      "break",
+    ],
   },
   "column-group": {
-    accepts: ["column"],
+    accepts: ["column", "template"],
   },
   table: {
-    accepts: ["table-row"],
+    accepts: ["table-row", "template"],
   },
   "table-row": {
-    accepts: ["table-cell"],
+    accepts: ["table-cell", "template"],
   },
   "table-cell": {
-    forbids: ["column", "column-group", "table", "table-row", "table-cell"],
+    forbids: [
+      "column",
+      "column-group",
+      "table",
+      "table-row",
+      "table-cell",
+      "template",
+      "break",
+    ],
   },
 };
 
-export const canBeChildOf = (childType: BlockType, parentType: BlockType) => {
+export const canBeChildOf = (
+  childType: GeneralBlockType,
+  parentType: GeneralBlockType
+) => {
   const accepts = interactions[parentType]?.accepts;
   const forbids = interactions[parentType]?.forbids;
 
@@ -76,33 +96,32 @@ export const getDropAreaType = (
   return ["placeholder", undefined];
 };
 
-// overloads function getId for better type inference
-export function getId(
+export const getId = <T extends DropAreaType | DragTargetType>(
   id: BlockId,
-  config: GetIdConfig<DropAreaType>
-): DropAreaId;
-export function getId(
-  id: BlockId,
-  config: GetIdConfig<Exclude<DragTargetType, "thumbnail">>
-): DragTargetId;
-export function getId(
-  id: BlockId,
-  config: GetIdConfig<DropAreaType | Exclude<DragTargetType, "thumbnail">>
-): DropAreaId | DragTargetId {
+  config: GetIdConfig<T>
+): GetId<T> => {
   const { type } = config;
 
   if (type === "edge") {
     const { position } = config;
-    return `${id}_edge_${position}`;
+    return `${id}_edge_${position}` as GetId<T>;
   }
 
-  return `${id}_${type}`;
-}
+  return `${id}_${type}` as GetId<T>;
+};
 
-export const getThumbnailId = <Id extends BlockType>(
+export const getThumbnailId = <Id extends GeneralBlockType>(
   id: Id
 ): DragThumbnailId<Id> => `${id}_thumbnail`;
 
+export const getTemplateId = (id: string): DragTemplateId => `${id}_template`;
+
 export const isThumbnail = (type: DragTargetType): type is "thumbnail" => {
   return type === "thumbnail";
+};
+
+export const isTemplate = (
+  type: DragTargetType
+): type is Extract<DragTargetType, "template"> => {
+  return type === "template";
 };

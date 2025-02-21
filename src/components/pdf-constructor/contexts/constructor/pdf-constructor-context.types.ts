@@ -4,6 +4,7 @@ import { BlockId } from "../../shared/types/utils.types";
 
 import { Block, BlockMap } from "./constructor.types";
 import { Edge } from "../../services/interactions/interactions.types";
+import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
 
 export type ConstructorState = {
   map: BlockMap;
@@ -128,12 +129,15 @@ export type DropAreaCallback = (
   extra: Partial<{
     edge: Edge;
   }>
-) => ConstructorAction[];
+) => ConstructorAction[] | Promise<ConstructorAction[]>;
 
 export type DragTargetCallback = (props: {
-  active: Pick<Block, "id" | "type">;
+  active: {
+    id: BlockId;
+    type: GeneralBlockType;
+  };
   over: Pick<Block, "id" | "type"> | null;
   parentId: BlockId;
   direction: (typeof InsertionPlace)[keyof typeof InsertionPlace];
   blocks: BlockMap;
-}) => ConstructorAction[];
+}) => ConstructorAction[] | Promise<ConstructorAction[]>;

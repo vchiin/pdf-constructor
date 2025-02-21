@@ -3,7 +3,10 @@ import {
   DragTargetType,
   Edge,
 } from "@/components/pdf-constructor/services/interactions/interactions.types";
-import { BlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import {
+  BlockType,
+  GeneralBlockType,
+} from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 import { ElementType } from "react";
 
 export type BlockProps<T extends Block> = {
@@ -19,12 +22,14 @@ export type BaseBlockProps<T extends Block> = BlockProps<T> & {
 };
 
 export type BlockMap = Partial<{
-  [K in BlockType]: React.FC<BaseBlockProps<Extract<Block, { type: K }>>>;
+  [K in GeneralBlockType]: React.FC<
+    BaseBlockProps<Extract<Block, { type: K }>>
+  >;
 }>;
 
 export type DragPayload = {
-  id: Block["id"] | BlockType;
-  type: BlockType;
+  id: Block["id"] | GeneralBlockType | string;
+  type: GeneralBlockType;
   dragTargetType: DragTargetType;
 };
 

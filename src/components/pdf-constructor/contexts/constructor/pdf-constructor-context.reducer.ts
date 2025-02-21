@@ -28,6 +28,7 @@ export const constructorReducer = (
       break;
     }
     case ActionTypes.CREATE_BLOCK: {
+      console.log(action.payload.blocks);
       action.payload.blocks.forEach((block) =>
         createBlock(
           block,

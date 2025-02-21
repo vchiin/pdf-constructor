@@ -11,8 +11,8 @@ import {
   TextBlock,
 } from "../contexts/constructor/constructor.types";
 import {
-  BlockType,
   BlockTypeDefinitions,
+  BlockType,
 } from "../shared/constants/types-definition.constant";
 import { BlockId } from "../shared/types/utils.types";
 
@@ -24,6 +24,41 @@ import { BlockId } from "../shared/types/utils.types";
 
 let i = 0;
 export const generateBlockId = () => (i++).toString() as BlockId;
+
+export const parseTemplates = (
+  templates: Record<BlockId, Block>,
+  parentId: BlockId
+): Block[] => {
+  const updatedBlocks: Record<BlockId, Block> = {};
+  const idsMap: Record<BlockId, BlockId> = {};
+
+  for (const [id, block] of Object.entries(templates)) {
+    const id_ = generateBlockId();
+    updatedBlocks[id_] = {
+      ...block,
+      id: id_,
+    } as Block;
+
+    idsMap[id as BlockId] = id_;
+  }
+
+  return Object.values(updatedBlocks).map((template) => {
+    if ("children" in template) {
+      return {
+        ...template,
+        id: template.id as BlockId,
+        parentId: idsMap[template.parentId as BlockId] ?? parentId,
+        children: template.children.map((child) => idsMap[child]),
+      } as Block;
+    }
+
+    return {
+      ...template,
+      id: template.id as BlockId,
+      parentId: idsMap[template.parentId as BlockId] ?? parentId,
+    } as Block;
+  });
+};
 
 const generateDefaultStyles = (parentId: BlockId | null) => ({
   id: generateBlockId(),
