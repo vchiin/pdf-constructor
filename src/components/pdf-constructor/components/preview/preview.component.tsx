@@ -18,10 +18,16 @@ import { BreakBlock } from "../blocks/base/blocks/break-block.component";
 
 import { BlockTypeDefinitions } from "../../shared/constants/types-definition.constant";
 import { TableBlock } from "../blocks/base/blocks/table/table-block.component";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { ScrollerProvider } from "../../contexts/scroller/scroller.context";
 
-export const Preview = () => {
+type PreviewProps = {
+  className?: string;
+};
+
+export const Preview: React.FC<PreviewProps> = ({ className }) => {
   const { rootId, containerRef, scale, setScale } = useConstructor();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const children = useBlockChildren(rootId);
   const block = useBlock(rootId);
 
@@ -35,37 +41,41 @@ export const Preview = () => {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="rounded border p-4 shadow"
-      style={{
-        width: `${convertPtToPx(PAGE_WIDTH_PT) * scale}px`,
-      }}
-    >
-      <BlockList
-        config={children}
-        blocks={{
-          [BlockTypeDefinitions.Text]: TextBlock as React.FC<
-            BaseBlockProps<Block>
-          >,
-          [BlockTypeDefinitions.Line]: LineBlock as React.FC<
-            BaseBlockProps<Block>
-          >,
-          [BlockTypeDefinitions.Image]: ImageBlock as React.FC<
-            BaseBlockProps<Block>
-          >,
-          [BlockTypeDefinitions.ColumnGroup]: ColumnGroupBlock as React.FC<
-            BaseBlockProps<Block>
-          >,
-          [BlockTypeDefinitions.Break]: BreakBlock as React.FC<
-            BaseBlockProps<Block>
-          >,
-          [BlockTypeDefinitions.Table]: TableBlock as React.FC<
-            BaseBlockProps<Block>
-          >,
+    <div ref={wrapperRef} className={className}>
+      <div
+        ref={containerRef}
+        className="rounded border p-4 shadow"
+        style={{
+          width: `${convertPtToPx(PAGE_WIDTH_PT) * scale}px`,
         }}
-        parent={block}
-      />
+      >
+        <ScrollerProvider containerRef={wrapperRef}>
+          <BlockList
+            config={children}
+            blocks={{
+              [BlockTypeDefinitions.Text]: TextBlock as React.FC<
+                BaseBlockProps<Block>
+              >,
+              [BlockTypeDefinitions.Line]: LineBlock as React.FC<
+                BaseBlockProps<Block>
+              >,
+              [BlockTypeDefinitions.Image]: ImageBlock as React.FC<
+                BaseBlockProps<Block>
+              >,
+              [BlockTypeDefinitions.ColumnGroup]: ColumnGroupBlock as React.FC<
+                BaseBlockProps<Block>
+              >,
+              [BlockTypeDefinitions.Break]: BreakBlock as React.FC<
+                BaseBlockProps<Block>
+              >,
+              [BlockTypeDefinitions.Table]: TableBlock as React.FC<
+                BaseBlockProps<Block>
+              >,
+            }}
+            parent={block}
+          />
+        </ScrollerProvider>
+      </div>
     </div>
   );
 };

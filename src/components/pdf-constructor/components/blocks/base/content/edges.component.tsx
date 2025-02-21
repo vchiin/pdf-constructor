@@ -1,7 +1,10 @@
 import { cn } from "@/shared/utils/cn.util";
 
 import { DropPayload } from "../shared/types/block.type";
-import { Edge as EdgeType } from "@/components/pdf-constructor/services/interactions/interactions.types";
+import {
+  Edge as EdgeType,
+  SortableTargetType,
+} from "@/components/pdf-constructor/services/interactions/interactions.types";
 import { getEdgeId } from "@/components/pdf-constructor/services/interactions/interactions.service";
 import { useDroppable } from "@/components/pdf-constructor/hooks/use-dnd.hook";
 import { ElementType } from "react";
@@ -16,13 +19,14 @@ export const EdgePosition: Record<Uppercase<EdgeType>, EdgeType> = {
 type EdgeProps = {
   data: DropPayload;
   position: EdgeType;
+  type: SortableTargetType;
   as?: ElementType;
 };
 
-const Edge = ({ data, position, as: Component = "div" }: EdgeProps) => {
+const Edge = ({ data, position, as: Component = "div", type }: EdgeProps) => {
   const { setNodeRef, isOver, active, over } = useDroppable({
-    id: getEdgeId(data.id, position),
-    data,
+    id: getEdgeId(data.id, position, type),
+    data: data,
   });
 
   const isSameElement =
@@ -58,14 +62,21 @@ const Edge = ({ data, position, as: Component = "div" }: EdgeProps) => {
 export type EdgesProps = {
   data: DropPayload;
   positions: EdgeType[];
+  type: SortableTargetType;
   as?: ElementType;
 };
 
-export const Edges: React.FC<EdgesProps> = ({ data, positions, as }) => {
+export const Edges: React.FC<EdgesProps> = ({ data, positions, as, type }) => {
   return (
     <>
       {positions.map((position) => (
-        <Edge key={position} data={data} position={position} as={as} />
+        <Edge
+          key={position}
+          data={data}
+          position={position}
+          type={type}
+          as={as}
+        />
       ))}
     </>
   );

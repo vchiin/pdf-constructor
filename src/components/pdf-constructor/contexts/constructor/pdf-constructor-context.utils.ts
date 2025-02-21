@@ -56,6 +56,26 @@ export const findChildrenBlocks = (id: BlockId, blocks: BlockMap) => {
   return block.children.map((childId) => findBlock(childId, blocks));
 };
 
+export const hasChild = (
+  blockId: BlockId,
+  childId: BlockId,
+  blocks: BlockMap
+): boolean => {
+  const block = findBlock(blockId, blocks);
+
+  if (!isContainerBlock(block)) {
+    return false;
+  }
+
+  if (block.children.includes(childId)) {
+    return true;
+  }
+
+  return block.children.some((blockChildId) =>
+    hasChild(blockChildId, childId, blocks)
+  );
+};
+
 // Actions
 
 export const createBlock = (
@@ -506,6 +526,35 @@ const prepareBlockCreation: DragTargetCallback = ({
 };
 
 const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
+  "tree-item": ({ active, over, parentId, direction }) => {
+    if (
+      over &&
+      over.type === BlockTypeDefinitions.TableCell &&
+      active.type === BlockTypeDefinitions.TableCell
+    ) {
+      return [
+        {
+          type: ActionTypes.SWAP_BLOCK,
+          payload: {
+            blockId: active.id as BlockId,
+            targetId: over.id,
+          },
+        },
+      ];
+    }
+
+    return [
+      {
+        type: ActionTypes.MOVE_BLOCK,
+        payload: {
+          blockId: active.id as BlockId,
+          targetId: over?.id ?? null,
+          targetParentId: parentId,
+          direction,
+        },
+      },
+    ];
+  },
   block: ({ active, over, parentId, direction }) => {
     if (
       over &&

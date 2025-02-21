@@ -12,6 +12,7 @@ import {
   GetIdConfig,
   Interactions,
   PlaceholderId,
+  SortableTargetType,
 } from "./interactions.types";
 
 export const interactions: Interactions = {
@@ -73,10 +74,15 @@ export const canBeChildOf = (
   return false;
 };
 
-export const getEdgeId = <Id extends BlockId, Position extends Edge>(
+export const getEdgeId = <
+  Id extends BlockId,
+  Position extends Edge,
+  Type extends SortableTargetType,
+>(
   id: Id,
-  position: Position
-): EdgeId<Id, Position> => `${id}_edge_${position}`;
+  position: Position,
+  type: Type
+): EdgeId<Id, Position, Type> => `${id}_edge_${position}_${type}`;
 
 export const getPlaceholderId = <Id extends BlockId>(
   id: Id

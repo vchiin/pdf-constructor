@@ -56,6 +56,7 @@ export const Block = <T extends BlockType>({
         }}
         positions={positions}
         as={toolsAs}
+        type="block"
       />
     </>
   );

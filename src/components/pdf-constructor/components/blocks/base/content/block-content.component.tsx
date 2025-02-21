@@ -1,10 +1,18 @@
 import { Block as BlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
 import { BaseBlockProps } from "../shared/types/block.type";
-import { CSSProperties, ElementType, forwardRef } from "react";
+import {
+  CSSProperties,
+  ElementType,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import { DraggableAttributes } from "@dnd-kit/core";
 
 import { cn } from "@/shared/utils/cn.util";
 import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
+import { useScroller } from "@/components/pdf-constructor/contexts/scroller/scroller.context";
 
 type BlockContentProps = Omit<
   BaseBlockProps<BlockType>,
@@ -34,12 +42,27 @@ export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
     ref
   ) => {
     const { selectBlock, selectedBlockId, showPreview } = useConstructor();
+
     const isActive = selectedBlockId === block.id;
+
+    const componentRef = useRef<HTMLElement>(null);
+
+    useImperativeHandle(ref, () => componentRef.current!);
+
+    const { scrollTo, calculateOffset } = useScroller();
+
+    useEffect(() => {
+      if (isActive && componentRef.current) {
+        const offset = calculateOffset(componentRef.current);
+        scrollTo(offset);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedBlockId, block]);
 
     return (
       <Component
         {...attributes}
-        ref={ref}
+        ref={componentRef}
         style={style}
         className={cn(
           "group [&:not(:has(.child:hover))]:hover:bg-accent child data-[selected=true]:outline-primary relative w-full rounded transition-[color,background-color,opacity] data-[selected=true]:z-10 data-[selected=true]:outline-2",
