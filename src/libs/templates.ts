@@ -404,7 +404,6 @@ export const fetchTemplates = async (
         width: 100,
         parentId: null,
         type: "break",
-        pageOrientation: "portrait",
       },
       ["14" as BlockId]: {
         id: "14" as BlockId,
