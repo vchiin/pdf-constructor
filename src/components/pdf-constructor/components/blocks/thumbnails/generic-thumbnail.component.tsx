@@ -2,8 +2,8 @@ import {
   BlockType,
   BlockTypeDefinitions,
 } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
-import { TextBlockThumbnail } from "./blocks/text-block-thumbnail.component";
 
+import { TextBlockThumbnail } from "./blocks/text-block-thumbnail.component";
 import { LineBlockThumbnail } from "./blocks/line-block-thumbnail.component";
 import { ImageBlockThumbnail } from "./blocks/image-block-thumbnail.component";
 import { BreakBlockThumbnail } from "./blocks/break-block-thumbnail.component";
