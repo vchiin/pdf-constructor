@@ -14,9 +14,7 @@ export const PDFConstructor = () => {
       <PreviewProvider>
         <div className="grid h-[calc(100vh-4rem)] grid-cols-6 gap-4">
           <Tree className="overflow-auto" />
-
           <Preview className="col-span-3 overflow-auto" />
-
           <Sidebar className="col-span-2 overflow-auto" />
         </div>
       </PreviewProvider>

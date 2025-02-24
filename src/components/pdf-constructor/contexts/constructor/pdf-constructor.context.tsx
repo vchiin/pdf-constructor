@@ -49,7 +49,6 @@ export const ConstructorProvider = ({
     map: {
       [root.id]: root,
     },
-    selectedBlockId: null,
     rootId: root.id,
     showPreview: false,
     scale: 1,
@@ -61,23 +60,6 @@ export const ConstructorProvider = ({
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
-  const selectBlock = useCallback(
-    (blockId: BlockId) => {
-      dispatch({
-        type: ActionTypes.SELECT_BLOCK,
-        payload: { blockId },
-      });
-    },
-    [dispatch]
-  );
-
-  const deselectBlock = useCallback(() => {
-    dispatch({
-      type: ActionTypes.DESELECT_BLOCK,
-      payload: undefined,
-    });
-  }, [dispatch]);
 
   const update = useCallback(
     (block: Block) => {
@@ -122,35 +104,26 @@ export const ConstructorProvider = ({
   const handleDragEnd = useCallback(
     async (event: DragEndEvent) => {
       const { active, over, collisions } = event;
-
       if (!over || active.id === over.id) {
         return;
       }
-
       if (!collisions) {
         return;
       }
-
       const activePayload = active.data?.current as DragPayload;
-
       for (const collision of collisions) {
         const collisionData = collision.data as {
           droppableContainer: DroppableContainer;
           value: number;
         };
-
         const over = collisionData.droppableContainer;
         const overPayload = over.data.current as DropPayload;
-
         const overId = over.id as DropAreaId;
         const [overAreaType, overEdge] = getDropAreaType(overId);
-
         const dropAreaCallback = getDropAreaCallback(overAreaType);
-
         if (!dropAreaCallback) {
           return;
         }
-
         const actions = await dropAreaCallback(
           activePayload,
           overPayload,
@@ -159,7 +132,6 @@ export const ConstructorProvider = ({
             edge: overEdge,
           }
         );
-
         await Promise.allSettled(actions.map((action) => dispatch(action)));
         return;
       }
@@ -179,8 +151,6 @@ export const ConstructorProvider = ({
       value={{
         ...state,
         update,
-        selectBlock,
-        deselectBlock,
         deleteBlock,
         updateChildrenWidths,
         togglePreview,

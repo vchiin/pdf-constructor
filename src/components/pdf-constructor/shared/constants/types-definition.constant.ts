@@ -6,6 +6,7 @@ export const BlockTypeDefinitions = {
   Column: "column",
   ColumnGroup: "column-group",
   Break: "break",
+  PageOrientation: "page-orientation",
   Table: "table",
   TableRow: "table-row",
   TableCell: "table-cell",

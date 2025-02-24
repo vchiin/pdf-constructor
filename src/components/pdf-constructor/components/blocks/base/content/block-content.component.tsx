@@ -13,6 +13,7 @@ import { DraggableAttributes } from "@dnd-kit/core";
 import { cn } from "@/shared/utils/cn.util";
 import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 import { useScroller } from "@/components/pdf-constructor/contexts/scroller/scroller.context";
+import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 
 type BlockContentProps = Omit<
   BaseBlockProps<BlockType>,
@@ -41,11 +42,36 @@ export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
     },
     ref
   ) => {
-    const { selectBlock, selectedBlockId, showPreview } = useConstructor();
+    const { showPreview } = useConstructor();
+    const {
+      selectBlock,
+      selectedBlockId,
+      appendProtectedElement,
+      removeProtectedElement,
+    } = usePreview();
 
     const isActive = selectedBlockId === block.id;
 
-    const componentRef = useRef<HTMLElement>(null);
+    useEffect(() => {
+      if (!componentRef.current) {
+        return;
+      }
+
+      const element = componentRef.current;
+
+      if (selectedBlockId !== block.id) {
+        removeProtectedElement(element);
+      } else {
+        appendProtectedElement(element);
+      }
+
+      return () => {
+        removeProtectedElement(element);
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedBlockId, block.id]);
+
+    const componentRef = useRef<HTMLElement | null>(null);
 
     useImperativeHandle(ref, () => componentRef.current!);
 

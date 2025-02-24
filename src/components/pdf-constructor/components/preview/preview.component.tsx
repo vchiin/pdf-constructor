@@ -20,6 +20,7 @@ import { BlockTypeDefinitions } from "../../shared/constants/types-definition.co
 import { TableBlock } from "../blocks/base/blocks/table/table-block.component";
 import { useEffect, useRef } from "react";
 import { ScrollerProvider } from "../../contexts/scroller/scroller.context";
+import { PageOrientationBlock } from "../blocks/base/blocks/page-orientation-block.component";
 
 type PreviewProps = {
   className?: string;
@@ -44,7 +45,7 @@ export const Preview: React.FC<PreviewProps> = ({ className }) => {
     <div ref={wrapperRef} className={className}>
       <div
         ref={containerRef}
-        className="rounded border p-4 shadow"
+        className="overflow-x-scroll rounded border p-4 shadow"
         style={{
           width: `${convertPtToPx(PAGE_WIDTH_PT) * scale}px`,
         }}
@@ -71,6 +72,8 @@ export const Preview: React.FC<PreviewProps> = ({ className }) => {
               [BlockTypeDefinitions.Table]: TableBlock as React.FC<
                 BaseBlockProps<Block>
               >,
+              [BlockTypeDefinitions.PageOrientation]:
+                PageOrientationBlock as React.FC<BaseBlockProps<Block>>,
             }}
             parent={block}
           />

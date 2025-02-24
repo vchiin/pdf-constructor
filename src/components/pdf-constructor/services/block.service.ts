@@ -5,6 +5,7 @@ import {
   ColumnGroupBlock,
   ImageBlock,
   LineBlock,
+  PageOrientationBlock,
   RootBlock,
   TableBlock,
   TableCellBlock,
@@ -169,9 +170,18 @@ export const generateBlocks = <Type extends BlockType>(
         {
           ...generateDefaultStyles(parentId),
           type,
-          pageOrientation: "portrait",
         },
       ] satisfies [BreakBlock];
+    }
+    case BlockTypeDefinitions.PageOrientation: {
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          orientation: "portrait",
+          children: [],
+        },
+      ] satisfies [PageOrientationBlock];
     }
     case BlockTypeDefinitions.Table: {
       const groupBaseStyles = generateDefaultStyles(parentId);

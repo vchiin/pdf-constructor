@@ -8,7 +8,6 @@ import { GeneralBlockType } from "../../shared/constants/types-definition.consta
 
 export type ConstructorState = {
   map: BlockMap;
-  selectedBlockId: BlockId | null;
   rootId: BlockId;
   showPreview: boolean;
   scale: number;
@@ -16,8 +15,6 @@ export type ConstructorState = {
 
 export type ConstructorContext = ConstructorState & {
   update: (block: Block) => void;
-  selectBlock: (blockId: BlockId) => void;
-  deselectBlock: () => void;
   deleteBlock: (blockId: BlockId) => void;
   updateChildrenWidths: (blockId: BlockId, widths: number[]) => void;
   togglePreview: () => void;
@@ -31,8 +28,6 @@ export const InsertionPlace = {
 } as const;
 
 export const ActionTypes = {
-  SELECT_BLOCK: "select-block",
-  DESELECT_BLOCK: "deselect-block",
   CREATE_BLOCK: "create-block",
   MOVE_BLOCK: "move-block",
   SWAP_BLOCK: "swap-block",
@@ -51,13 +46,6 @@ export type Action<
   type: Type;
   payload: Payload;
 };
-
-type SelectBlockAction = Action<
-  typeof ActionTypes.SELECT_BLOCK,
-  { blockId: BlockId }
->;
-
-type DeselectBlockAction = Action<typeof ActionTypes.DESELECT_BLOCK, undefined>;
 
 type CreateBlockAction = Action<
   typeof ActionTypes.CREATE_BLOCK,
@@ -116,8 +104,6 @@ type SwapBlockAction = Action<
 type SetScaleAction = Action<typeof ActionTypes.SET_SCALE, { scale: number }>;
 
 export type ConstructorAction =
-  | SelectBlockAction
-  | DeselectBlockAction
   | CreateBlockAction
   | UpdateBlockAction
   | DeleteBlockAction

@@ -21,12 +21,20 @@ type EdgeProps = {
   position: EdgeType;
   type: SortableTargetType;
   as?: ElementType;
+  isParentDragged: boolean;
 };
 
-const Edge = ({ data, position, as: Component = "div", type }: EdgeProps) => {
+const Edge = ({
+  data,
+  position,
+  as: Component = "div",
+  type,
+  isParentDragged,
+}: EdgeProps) => {
   const { setNodeRef, isOver, active, over } = useDroppable({
     id: getEdgeId(data.id, position, type),
     data: data,
+    disabled: isParentDragged,
   });
 
   const isSameElement =
@@ -64,9 +72,16 @@ export type EdgesProps = {
   positions: EdgeType[];
   type: SortableTargetType;
   as?: ElementType;
+  isParentDragged: boolean;
 };
 
-export const Edges: React.FC<EdgesProps> = ({ data, positions, as, type }) => {
+export const Edges: React.FC<EdgesProps> = ({
+  data,
+  positions,
+  as,
+  type,
+  isParentDragged,
+}) => {
   return (
     <>
       {positions.map((position) => (
@@ -76,6 +91,7 @@ export const Edges: React.FC<EdgesProps> = ({ data, positions, as, type }) => {
           position={position}
           type={type}
           as={as}
+          isParentDragged={isParentDragged}
         />
       ))}
     </>

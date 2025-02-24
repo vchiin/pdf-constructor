@@ -8,15 +8,15 @@ import {
 import { ColumnBlock } from "./column-block.component";
 import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { Block as BlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
 import { useChildrenWidth } from "@/components/pdf-constructor/hooks/use-children-width.hook";
 import { BlockProps } from "../shared/types/block.type";
 import { Block } from "../block.component";
+import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 
 const withResizable = (block: BlockType) => {
   return (props: ItemsProps) => {
-    const { selectedBlockId } = useConstructor();
+    const { selectedBlockId } = usePreview();
     const isActive = selectedBlockId === block.id;
 
     return (

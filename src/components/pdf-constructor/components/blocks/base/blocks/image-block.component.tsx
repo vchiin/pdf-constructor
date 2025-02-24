@@ -3,15 +3,16 @@ import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-upd
 import { useRef } from "react";
 
 import { ImageBlock as ImageBlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
+
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
 import { BlockProps } from "../shared/types/block.type";
 import { Block } from "../block.component";
+import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 
 export const ImageBlock: React.FC<BlockProps<ImageBlockType>> = ({ block }) => {
   const [value, setValue] = useBlockUpdate(block);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { selectedBlockId } = useConstructor();
+  const { selectedBlockId } = usePreview();
   const isActive = selectedBlockId === block.id;
 
   if (value.content) {

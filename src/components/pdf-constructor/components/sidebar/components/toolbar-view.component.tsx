@@ -1,4 +1,3 @@
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 import { cn } from "@/shared/utils/cn.util";
 import { XIcon } from "lucide-react";
@@ -8,7 +7,7 @@ type ToolbarViewProps = {
 };
 
 export const ToolbarView = ({ className }: ToolbarViewProps) => {
-  const { deselectBlock } = useConstructor();
+  const { deselectBlock } = usePreview();
   const { containerRef } = usePreview();
 
   return (

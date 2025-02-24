@@ -7,7 +7,8 @@ import {
 import { isContainerBlock } from "../../contexts/constructor/pdf-constructor-context.utils";
 import { TreeBlock } from "./tree-block.component";
 import { useEffect, useState } from "react";
-import { useConstructor } from "../../contexts/constructor/pdf-constructor.context";
+
+import { usePreview } from "../../contexts/preview/pdf-preview.context";
 
 type TreeListProps = {
   block: Block;
@@ -16,7 +17,7 @@ type TreeListProps = {
 
 export const TreeList = ({ block, className }: TreeListProps) => {
   const children = useBlockChildren(block.id);
-  const { selectedBlockId } = useConstructor();
+  const { selectedBlockId } = usePreview();
   const hasChild = useHasChild(block.id, selectedBlockId);
   const [isCollapsed, setIsCollapsed] = useState(!hasChild);
 

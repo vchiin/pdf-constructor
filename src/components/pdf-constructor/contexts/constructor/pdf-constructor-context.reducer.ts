@@ -19,14 +19,6 @@ export const constructorReducer = (
   action: ConstructorAction
 ) => {
   switch (action.type) {
-    case ActionTypes.SELECT_BLOCK: {
-      state.selectedBlockId = action.payload.blockId;
-      break;
-    }
-    case ActionTypes.DESELECT_BLOCK: {
-      state.selectedBlockId = null;
-      break;
-    }
     case ActionTypes.CREATE_BLOCK: {
       action.payload.blocks.forEach((block) =>
         createBlock(

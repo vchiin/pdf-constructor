@@ -12,9 +12,9 @@ import { BlockProps } from "../../shared/types/block.type";
 
 import { WidthResizable } from "@/components/pdf-constructor/components/components/resizable/width-resizable.component";
 
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 import { calculateWidths } from "@/components/pdf-constructor/components/components/resizable/resizable.utils";
 import { useChildrenWidth } from "@/components/pdf-constructor/hooks/use-children-width.hook";
+import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 
 export const TableRowBlock: React.FC<BlockProps<TableRowBlockType>> = ({
   block,
@@ -22,7 +22,7 @@ export const TableRowBlock: React.FC<BlockProps<TableRowBlockType>> = ({
   const children = useBlockChildren(block.id);
   const [widths, setWidths] = useChildrenWidth(block.id, children.length);
 
-  const { selectedBlockId } = useConstructor();
+  const { selectedBlockId } = usePreview();
 
   if (children.length === 0) {
     return (

@@ -92,7 +92,15 @@ export const parseBlock = (
       return {
         stack: [],
         pageBreak: "before",
-        pageOrientation: block.pageOrientation,
+      } as ContentStack;
+    }
+    case BlockTypeDefinitions.PageOrientation: {
+      const children = findChildrenBlocks(block.id, map);
+
+      return {
+        stack: children.map((child) => parseBlock(child, map, parentWidth)),
+        pageBreak: "before",
+        pageOrientation: block.orientation,
       } as ContentStack;
     }
     case BlockTypeDefinitions.TableCell: {

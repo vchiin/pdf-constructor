@@ -11,8 +11,9 @@ Clone the repository and run `pnpm install`. After successful dependencies insta
 
 ## TODO
 
-- [ ] Page Orientation
-- [ ] Block deselection on outside click
+- [x] Page Orientation
+- [x] Block deselection on outside click
+- [ ] Test Iberio Backend integration
 - [ ] Blocks Toolbar
 - [ ] UI Updates
 

@@ -51,8 +51,12 @@ export type ColumnGroupBlock = ContainerBlock<
   gap: number;
 };
 
-export type BreakBlock = GenericBlock<typeof BlockTypeDefinitions.Break> & {
-  pageOrientation: "portrait" | "landscape";
+export type BreakBlock = GenericBlock<typeof BlockTypeDefinitions.Break>;
+
+export type PageOrientationBlock = ContainerBlock<
+  typeof BlockTypeDefinitions.PageOrientation
+> & {
+  orientation: "portrait" | "landscape";
 };
 
 export type TableBlock = ContainerBlock<typeof BlockTypeDefinitions.Table> & {
@@ -82,6 +86,7 @@ export type Block =
   | ColumnGroupBlock
   | RootBlock
   | BreakBlock
+  | PageOrientationBlock
   | TableBlock
   | TableRowBlock
   | TableCellBlock;

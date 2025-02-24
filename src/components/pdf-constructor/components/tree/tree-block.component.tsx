@@ -1,6 +1,5 @@
 import { cn } from "@/shared/utils/cn.util";
 import { Block } from "../../contexts/constructor/constructor.types";
-import { useConstructor } from "../../contexts/constructor/pdf-constructor.context";
 import { TreeBlockInformation } from "./tree-block-information.component";
 import { CSSProperties, useEffect, useRef } from "react";
 import { ChevronDownIcon, ChevronUpIcon, GripIcon } from "lucide-react";
@@ -10,6 +9,7 @@ import { useDraggable } from "../../hooks/use-dnd.hook";
 import { getId } from "../../services/interactions/interactions.service";
 import { CSS } from "@dnd-kit/utilities";
 import { useScroller } from "../../contexts/scroller/scroller.context";
+import { usePreview } from "../../contexts/preview/pdf-preview.context";
 
 type TreeBlockProps = {
   block: Block;
@@ -22,7 +22,12 @@ export const TreeBlock = ({
   isCollapsed,
   onCollapseChange,
 }: TreeBlockProps) => {
-  const { selectBlock, selectedBlockId } = useConstructor();
+  const {
+    selectBlock,
+    selectedBlockId,
+    appendProtectedElement,
+    removeProtectedElement,
+  } = usePreview();
   const { scrollTo, calculateOffset } = useScroller();
   const isActive = selectedBlockId === block.id;
   const ref = useRef<HTMLDivElement>(null);
@@ -44,10 +49,23 @@ export const TreeBlock = ({
   });
 
   useEffect(() => {
-    if (isActive && ref.current) {
-      const offset = calculateOffset(ref.current);
-      scrollTo(offset);
+    const element = ref.current;
+    if (!element) {
+      return;
     }
+
+    if (isActive) {
+      const offset = calculateOffset(element);
+      scrollTo(offset);
+
+      appendProtectedElement(element);
+    } else {
+      removeProtectedElement(element);
+    }
+
+    return () => {
+      removeProtectedElement(element);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBlockId, block]);
 
@@ -105,6 +123,7 @@ export const TreeBlock = ({
         }}
         type="tree-item"
         positions={["bottom", "top"]}
+        isParentDragged={isDragging}
       />
     </div>
   );

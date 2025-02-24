@@ -19,6 +19,9 @@ export const interactions: Interactions = {
   root: {
     forbids: ["column", "table-row", "table-cell"],
   },
+  "page-orientation": {
+    forbids: ["column", "table-row", "table-cell"],
+  },
   column: {
     forbids: [
       "column",

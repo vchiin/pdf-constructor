@@ -25,7 +25,8 @@ export const BlockTools = ({
   toolbar,
   as: Component = "div",
 }: BlockToolsProps) => {
-  const { deselectBlock, deleteBlock, selectedBlockId } = useConstructor();
+  const { deleteBlock } = useConstructor();
+  const { deselectBlock, selectedBlockId } = usePreview();
   const { containerRef } = usePreview();
 
   const isActive = selectedBlockId === block.id;

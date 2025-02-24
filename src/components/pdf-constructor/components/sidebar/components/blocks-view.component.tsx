@@ -10,6 +10,7 @@ import { TableBlockThumbnail } from "../../blocks/thumbnails/blocks/table/table-
 import { TableRowBlockThumbnail } from "../../blocks/thumbnails/blocks/table/table-row-block-thumbnail.component";
 import { TableCellBlockThumbnail } from "../../blocks/thumbnails/blocks/table/table-cell-block-thumbnail.component";
 import { TemplateList } from "../../blocks/templates/template-lsit.component";
+import { PageOrientationBlockThumbnail } from "../../blocks/thumbnails/blocks/page-orientation-thumbnail.component";
 
 export const BlocksView: React.FC = () => {
   return (
@@ -27,6 +28,8 @@ export const BlocksView: React.FC = () => {
             [BlockTypeDefinitions.Table]: TableBlockThumbnail,
             [BlockTypeDefinitions.TableRow]: TableRowBlockThumbnail,
             [BlockTypeDefinitions.TableCell]: TableCellBlockThumbnail,
+            [BlockTypeDefinitions.PageOrientation]:
+              PageOrientationBlockThumbnail,
           }}
         />
       </div>

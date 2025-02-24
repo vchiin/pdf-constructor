@@ -7,21 +7,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/shared/utils/cn.util";
 import { BlocksView } from "./components/blocks-view.component";
 import { Slider } from "@/components/ui/slider";
+import { usePreview } from "../../contexts/preview/pdf-preview.context";
 
 type SidebarProps = {
   className?: string;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ className }) => {
-  const {
-    map,
-    rootId,
-    selectedBlockId,
-    togglePreview,
-    showPreview,
-    scale,
-    setScale,
-  } = useConstructor();
+  const { map, rootId, togglePreview, showPreview, scale, setScale } =
+    useConstructor();
+  const { selectedBlockId } = usePreview();
 
   return (
     <div
@@ -40,12 +35,6 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
           onValueChange={(value) => setScale(value[0])}
         />
       </div>
-
-      {selectedBlockId === null && <BlocksView />}
-
-      <ToolbarView
-        className={cn("mt-4", selectedBlockId === null && "hidden")}
-      />
 
       <div className="mt-4 flex items-center gap-2">
         <Checkbox
@@ -67,6 +56,12 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
       >
         Download PDF
       </button>
+
+      {selectedBlockId === null && <BlocksView />}
+
+      <ToolbarView
+        className={cn("mt-4", selectedBlockId === null && "hidden")}
+      />
     </div>
   );
 };

@@ -8,7 +8,7 @@ import {
   CustomBlockTypeDefinitions,
   GeneralBlockType,
 } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
-import { ElementType } from "react";
+import { CSSProperties, ElementType } from "react";
 
 export type BlockProps<T extends Block> = {
   block: T;
@@ -20,6 +20,7 @@ export type BaseBlockProps<T extends Block> = BlockProps<T> & {
   as?: ElementType;
   positions?: Edge[];
   className?: string;
+  style?: CSSProperties;
 };
 
 export type BlockMap = Partial<{

@@ -12,6 +12,7 @@ import { TableRowBlockThumbnail } from "./blocks/table/table-row-block-thumbnail
 import { TableCellBlockThumbnail } from "./blocks/table/table-cell-block-thumbnail.component";
 import { BlockColumnGroupThumbnail } from "./blocks/column-group-block.component";
 import { BlockColumnThumbnail } from "./blocks/column-block.component";
+import { PageOrientationBlockThumbnail } from "./blocks/page-orientation-thumbnail.component";
 
 const ThumbnailList: Record<Exclude<BlockType, "root">, React.FC> = {
   [BlockTypeDefinitions.Text]: TextBlockThumbnail,
@@ -23,6 +24,7 @@ const ThumbnailList: Record<Exclude<BlockType, "root">, React.FC> = {
   [BlockTypeDefinitions.Column]: BlockColumnThumbnail,
   [BlockTypeDefinitions.TableRow]: TableRowBlockThumbnail,
   [BlockTypeDefinitions.TableCell]: TableCellBlockThumbnail,
+  [BlockTypeDefinitions.PageOrientation]: PageOrientationBlockThumbnail,
 };
 
 type GenericThumbnailProps = {

@@ -15,6 +15,7 @@ export const Block = <T extends BlockType>({
   positions = ["top", "bottom"],
   as = "div",
   className,
+  style,
 }: BaseBlockProps<T>) => {
   const {
     setNodeRef,
@@ -23,6 +24,7 @@ export const Block = <T extends BlockType>({
     attributes,
     transform,
     isDragging,
+    over,
   } = useDraggable({
     id: getId(block.id, { type: "block" }),
     data: {
@@ -32,8 +34,12 @@ export const Block = <T extends BlockType>({
     },
   });
 
-  const style: CSSProperties = {
+  if (isDragging) {
+    console.log(over);
+  }
+  const styles: CSSProperties = {
     transform: isDragging ? CSS.Translate.toString(transform) : undefined,
+    ...style,
   };
 
   const toolsAs = as === "tr" ? "td" : "div";
@@ -57,6 +63,7 @@ export const Block = <T extends BlockType>({
         positions={positions}
         as={toolsAs}
         type="block"
+        isParentDragged={isDragging}
       />
     </>
   );
@@ -64,7 +71,7 @@ export const Block = <T extends BlockType>({
   return (
     <BlockContent
       block={block}
-      style={style}
+      style={styles}
       ref={setNodeRef}
       isDragging={isDragging}
       attributes={attributes}
