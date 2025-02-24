@@ -15,3 +15,7 @@ Clone the repository and run `pnpm install`. After successful dependencies insta
 - [ ] Block deselection on outside click
 - [ ] Blocks Toolbar
 - [ ] UI Updates
+
+_Not sure how can be implemented_
+
+- [ ] Automatic page split detection
