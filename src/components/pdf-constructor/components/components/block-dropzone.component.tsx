@@ -8,11 +8,14 @@ import {
   getPlaceholderId,
 } from "../../services/interactions/interactions.service";
 import { useDroppable } from "../../hooks/use-dnd.hook";
-import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
+import {
+  BlockType,
+  GeneralBlockType,
+} from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
 
 type BlockDropzoneProps = {
-  type: GeneralBlockType;
+  type: BlockType;
   parentId: BlockId;
 
   className?: string;
