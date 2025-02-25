@@ -1,5 +1,5 @@
 import { cn } from "@/shared/utils/cn.util";
-import { Block } from "../../contexts/constructor/constructor.types";
+import { Block } from "../../shared/types/block.types";
 import {
   useBlockChildren,
   useHasChild,

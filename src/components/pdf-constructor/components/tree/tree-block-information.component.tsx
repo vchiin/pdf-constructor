@@ -1,4 +1,4 @@
-import { Block } from "../../contexts/constructor/constructor.types";
+import { Block } from "../../shared/types/block.types";
 
 type TreeBlockInformationProps = {
   block: Block;

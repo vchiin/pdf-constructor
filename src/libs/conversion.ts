@@ -1,7 +1,7 @@
 import {
   Block,
   BlockMap,
-} from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+} from "@/components/pdf-constructor/shared/types/block.types";
 import {
   findBlock,
   findChildrenBlocks,

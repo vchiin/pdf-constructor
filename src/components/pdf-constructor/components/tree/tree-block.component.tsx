@@ -1,5 +1,5 @@
 import { cn } from "@/shared/utils/cn.util";
-import { Block } from "../../contexts/constructor/constructor.types";
+import { Block } from "../../shared/types/block.types";
 import { TreeBlockInformation } from "./tree-block-information.component";
 import { CSSProperties, useEffect, useRef } from "react";
 import { ChevronDownIcon, ChevronUpIcon, GripIcon } from "lucide-react";

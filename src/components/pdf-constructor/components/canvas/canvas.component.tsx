@@ -6,7 +6,7 @@ import { convertPtToPx } from "@/shared/utils/units.utils";
 
 import { useEffect, useRef } from "react";
 import { ScrollerProvider } from "../../contexts/scroller/scroller.context";
-import { RootElement } from "../blocks/base/blocks/root-element.component";
+import { RootElement } from "../blocks/base/block-elements/root-element.component";
 
 type CanvasProps = {
   className?: string;
