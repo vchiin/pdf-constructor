@@ -21,13 +21,13 @@ import {
 import {
   DragPayload,
   DropPayload,
-} from "../../components/blocks/base/shared/types/block.type";
+} from "../../components/blocks/base/shared/types/element.types";
 import { DropAreaId } from "../../services/interactions/interactions.types";
 import { getDropAreaType } from "../../services/interactions/interactions.service";
 import { getDropAreaCallback } from "./pdf-constructor-context.utils";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { generateBlocks } from "../../services/block.service";
-import { Block } from "./constructor.types";
+import { Block } from "../../shared/types/block.types";
 import { BlockId } from "../../shared/types/utils.types";
 import { DragPreview } from "./components/drag-preview.component";
 

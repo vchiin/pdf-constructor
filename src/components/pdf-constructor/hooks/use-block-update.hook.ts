@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useConstructor } from "../contexts/constructor/pdf-constructor.context";
-import { Block } from "../contexts/constructor/constructor.types";
+import { Block } from "../shared/types/block.types";
 
 const handleValueArgument = <V>(cb: ((prev: V) => V) | V, prevValue: V): V => {
   if (typeof cb === "function") {

@@ -1,5 +1,5 @@
-import { BaseBlockProps } from "./shared/types/block.type";
-import { Block as BlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { BaseBlockElementProps } from "./shared/types/element.types";
+import { Block as BlockType } from "@/components/pdf-constructor/shared/types/block.types";
 import { CSS } from "@dnd-kit/utilities";
 import { BlockContent } from "./content/block-content.component";
 import { BlockTools } from "./content/block-tools.component";
@@ -16,7 +16,7 @@ export const Block = <T extends BlockType>({
   as = "div",
   className,
   style,
-}: BaseBlockProps<T>) => {
+}: BaseBlockElementProps<T>) => {
   const {
     setNodeRef,
     listeners,

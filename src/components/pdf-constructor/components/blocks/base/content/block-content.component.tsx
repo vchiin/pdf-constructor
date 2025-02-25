@@ -1,5 +1,5 @@
-import { Block as BlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
-import { BaseBlockProps } from "../shared/types/block.type";
+import { Block as BlockType } from "@/components/pdf-constructor/shared/types/block.types";
+import { BaseBlockElementProps } from "../shared/types/element.types";
 import {
   CSSProperties,
   ElementType,
@@ -16,7 +16,7 @@ import { useScroller } from "@/components/pdf-constructor/contexts/scroller/scro
 import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 
 type BlockContentProps = Omit<
-  BaseBlockProps<BlockType>,
+  BaseBlockElementProps<BlockType>,
   "toolbar" | "positions"
 > & {
   children?: React.ReactNode;

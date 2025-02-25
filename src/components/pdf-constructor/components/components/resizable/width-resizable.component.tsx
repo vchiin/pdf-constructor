@@ -87,6 +87,7 @@ export const WidthResizable: React.FC<WidthResizableProps> = memo(
     const onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
       setIsResizing(true);
       lastPosX.current = event.clientX;
+      event.stopPropagation();
     };
 
     return (

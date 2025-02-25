@@ -1,14 +1,14 @@
 import {
-  TableRowBlock as TableRowBlockType,
-  TableCellBlock as TableCellBlockType,
-} from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+  TableRowBlock,
+  TableCellBlock,
+} from "@/components/pdf-constructor/shared/types/block.types";
 import { Block } from "../../block.component";
 import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockDropzone } from "@/components/pdf-constructor/components/components/block-dropzone.component";
 import { Columns2Icon } from "lucide-react";
 
-import { TableCellBlock } from "./table-cell.component";
-import { BlockProps } from "../../shared/types/block.type";
+import { TableCellElement } from "./table-cell-element.component";
+import { BlockElementProps } from "../../shared/types/element.types";
 
 import { WidthResizable } from "@/components/pdf-constructor/components/components/resizable/width-resizable.component";
 
@@ -16,7 +16,7 @@ import { calculateWidths } from "@/components/pdf-constructor/components/compone
 import { useChildrenWidth } from "@/components/pdf-constructor/hooks/use-children-width.hook";
 import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 
-export const TableRowBlock: React.FC<BlockProps<TableRowBlockType>> = ({
+export const TableRowElement: React.FC<BlockElementProps<TableRowBlock>> = ({
   block,
 }) => {
   const children = useBlockChildren(block.id);
@@ -62,7 +62,7 @@ export const TableRowBlock: React.FC<BlockProps<TableRowBlockType>> = ({
           as="td"
           className="border border-gray-500"
         >
-          <TableCellBlock block={child as TableCellBlockType} />
+          <TableCellElement block={child as TableCellBlock} />
         </WidthResizable>
       ))}
     </Block>

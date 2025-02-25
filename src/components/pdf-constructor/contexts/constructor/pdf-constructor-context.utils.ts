@@ -1,5 +1,5 @@
 import { fetchTemplates } from "@/libs/templates";
-import { DragPayload } from "../../components/blocks/base/shared/types/block.type";
+import { DragPayload } from "../../components/blocks/base/shared/types/element.types";
 import { generateBlocks, parseTemplates } from "../../services/block.service";
 import {
   canBeChildOf,
@@ -14,10 +14,10 @@ import {
   BlockType,
   BlockTypeDefinitions,
 } from "../../shared/constants/types-definition.constant";
-import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
+import { GenericBlockType } from "../../shared/constants/types-definition.constant";
 
 import { BlockId } from "../../shared/types/utils.types";
-import { Block, BlockMap } from "./constructor.types";
+import { Block, BlockMap } from "../../shared/types/block.types";
 import {
   InsertionPlace,
   ActionTypes,
@@ -402,7 +402,7 @@ const getMoveBlockDirection = (edge: Edge) => {
 };
 
 const handleTableCellInsertion = (
-  activeType: GeneralBlockType,
+  activeType: GenericBlockType,
   cellId: BlockId | null,
   rowId: BlockId,
   blocks: BlockMap
@@ -615,7 +615,7 @@ const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
 
 const isNonTemplate = (
   payload: DragPayload
-): payload is Extract<DragPayload, { type: GeneralBlockType }> => {
+): payload is Extract<DragPayload, { type: GenericBlockType }> => {
   return !isTemplate(payload.dragTargetType);
 };
 

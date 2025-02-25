@@ -8,6 +8,8 @@ export const PAGE_WIDTH_PT = 595.35;
 export const PAGE_HEIGHT_PT = 841.995;
 export const HORIZONTAL_MARGIN_PT = 40;
 export const ACTUAL_PAGE_WIDTH_PT = PAGE_WIDTH_PT - HORIZONTAL_MARGIN_PT * 2;
+export const ACTUAL_PAGE_WIDTH_PT_ROTATED =
+  PAGE_HEIGHT_PT - HORIZONTAL_MARGIN_PT * 2;
 
 export const createPDF = (document: TDocumentDefinitions) => {
   pdfMake.createPdf(document).open();

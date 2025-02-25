@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import {
   BaseBlockThumbnailProps,
-  BlockMap,
+  BlockThumbnailMap,
 } from "./shared/types/block-thumbnail.types";
-import { GeneralBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { GenericBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 
 type BlockThumbnailList = {
-  blocks: BlockMap;
+  blocks: BlockThumbnailMap;
 };
 
 export const BlockThumbnailList = ({ blocks }: BlockThumbnailList) => {
@@ -21,10 +21,10 @@ export const BlockThumbnailList = ({ blocks }: BlockThumbnailList) => {
     <div className="grid gap-1 @xs:grid-cols-2 @sm:grid-cols-2">
       {thumbnailList.map(({ key: type, value: Element }) => {
         const Block = Element as React.FC<
-          BaseBlockThumbnailProps<GeneralBlockType>
+          BaseBlockThumbnailProps<GenericBlockType>
         >;
 
-        return <Block type={type as GeneralBlockType} key={type} />;
+        return <Block type={type as GenericBlockType} key={type} />;
       })}
     </div>
   );

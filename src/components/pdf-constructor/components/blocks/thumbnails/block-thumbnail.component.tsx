@@ -3,16 +3,16 @@ import { cn } from "@/shared/utils/cn.util";
 import { useDraggable } from "@/components/pdf-constructor/hooks/use-dnd.hook";
 import { getThumbnailId } from "@/components/pdf-constructor/services/interactions/interactions.service";
 
-import { GeneralBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { GenericBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 import { CSSProperties } from "react";
 
-type BlockThumbnailProps<T extends GeneralBlockType> =
+type BlockThumbnailProps<T extends GenericBlockType> =
   BaseBlockThumbnailProps<T> & {
     title: string;
     icon: React.FC<{ className: string }>;
   };
 
-export const BlockThumbnail = <T extends GeneralBlockType>({
+export const BlockThumbnail = <T extends GenericBlockType>({
   type,
   title,
   icon: Icon,

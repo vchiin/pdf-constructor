@@ -1,19 +1,17 @@
 import { BlockList } from "../block-list.component";
-import { TextBlock } from "./text-block.component";
-import { ImageBlock } from "./image-block.component";
-import { LineBlock } from "./line-block.component";
 
 import { BlockDropzone } from "../../../components/block-dropzone.component";
 import { Columns2Icon } from "lucide-react";
-import {
-  Block as BlockType,
-  ColumnBlock as ColumnBlockType,
-} from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { ColumnBlock } from "@/components/pdf-constructor/shared/types/block.types";
 import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
-import { BaseBlockProps, BlockProps } from "../shared/types/block.type";
+import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
+import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { ImageElement } from "./image-element.component";
+import { TextElement } from "./text-element.component";
+import { LineElement } from "./line-element.component";
 
-export const ColumnBlock: React.FC<BlockProps<ColumnBlockType>> = ({
+export const ColumnElement: React.FC<BlockElementProps<ColumnBlock>> = ({
   block,
 }) => {
   const children = useBlockChildren(block.id);
@@ -27,12 +25,12 @@ export const ColumnBlock: React.FC<BlockProps<ColumnBlockType>> = ({
           icon={<Columns2Icon className="h-4 w-4" />}
         />
       ) : (
-        <BlockList
+        <BlockList<typeof BlockTypeDefinitions.Column>
           config={children}
           blocks={{
-            text: TextBlock as React.FC<BaseBlockProps<BlockType>>,
-            image: ImageBlock as React.FC<BaseBlockProps<BlockType>>,
-            line: LineBlock as React.FC<BaseBlockProps<BlockType>>,
+            [BlockTypeDefinitions.Image]: ImageElement,
+            [BlockTypeDefinitions.Text]: TextElement,
+            [BlockTypeDefinitions.Line]: LineElement,
           }}
           className="h-full w-full flex-1 flex-col"
           parent={block}

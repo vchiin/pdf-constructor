@@ -1,11 +1,11 @@
 import { Toolbar } from "./toolbar.component";
-import { TextBlock } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { TextBlock } from "@/components/pdf-constructor/shared/types/block.types";
 
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 import { Checkbox } from "@/components/ui/checkbox";
-import { BlockProps } from "../shared/types/block.type";
+import { BlockElementProps } from "../shared/types/element.types";
 
-type TextBlockToolbarProps = BlockProps<TextBlock>;
+type TextBlockToolbarProps = BlockElementProps<TextBlock>;
 
 export const TextBlockToolbar: React.FC<TextBlockToolbarProps> = ({
   block,

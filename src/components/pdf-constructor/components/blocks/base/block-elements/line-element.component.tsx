@@ -1,8 +1,10 @@
-import { LineBlock as LineBlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
-import { BlockProps } from "../shared/types/block.type";
+import { LineBlock } from "@/components/pdf-constructor/shared/types/block.types";
+import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
 
-export const LineBlock: React.FC<BlockProps<LineBlockType>> = ({ block }) => {
+export const LineElement: React.FC<BlockElementProps<LineBlock>> = ({
+  block,
+}) => {
   return (
     <Block block={block}>
       <div

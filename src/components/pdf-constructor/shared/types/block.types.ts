@@ -1,8 +1,8 @@
 import {
   BlockTypeDefinitions,
   BlockType,
-} from "../../shared/constants/types-definition.constant";
-import { BlockId } from "../../shared/types/utils.types";
+} from "../constants/types-definition.constant";
+import { BlockId } from "./utils.types";
 
 type BlockBaseStyles = {
   marginLeft: number;

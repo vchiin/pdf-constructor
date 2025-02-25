@@ -1,20 +1,18 @@
-import {
-  Block as BlockType,
-  TableCellBlock as TableCellBlockType,
-} from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { TableCellBlock } from "@/components/pdf-constructor/shared/types/block.types";
 import { Block } from "../../block.component";
 import { BlockList } from "../../block-list.component";
 import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
-import { TextBlock } from "../text-block.component";
-import { BaseBlockProps, BlockProps } from "../../shared/types/block.type";
-import { ImageBlock } from "../image-block.component";
-import { LineBlock } from "../line-block.component";
+import { BlockElementProps } from "../../shared/types/element.types";
 import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 import { useMemo } from "react";
 import { findParentBlock } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.utils";
 
-export const TableCellBlock: React.FC<BlockProps<TableCellBlockType>> = ({
+import { ImageElement } from "../image-element.component";
+import { LineElement } from "../line-element.component";
+import { TextElement } from "../text-element.component";
+
+export const TableCellElement: React.FC<BlockElementProps<TableCellBlock>> = ({
   block,
 }) => {
   const { map } = useConstructor();
@@ -49,18 +47,12 @@ export const TableCellBlock: React.FC<BlockProps<TableCellBlockType>> = ({
           paddingBottom: tableParent.paddingBottom,
         }}
       >
-        <BlockList
+        <BlockList<typeof BlockTypeDefinitions.TableCell>
           config={children}
           blocks={{
-            [BlockTypeDefinitions.Text]: TextBlock as React.FC<
-              BaseBlockProps<BlockType>
-            >,
-            [BlockTypeDefinitions.Image]: ImageBlock as React.FC<
-              BaseBlockProps<BlockType>
-            >,
-            [BlockTypeDefinitions.Line]: LineBlock as React.FC<
-              BaseBlockProps<BlockType>
-            >,
+            image: ImageElement,
+            line: LineElement,
+            text: TextElement,
           }}
           parent={block}
           hideDropzone={showPreview}

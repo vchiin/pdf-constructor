@@ -1,7 +1,7 @@
 import { TrashIcon } from "lucide-react";
 
 import { GripIcon } from "lucide-react";
-import { Block } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { Block } from "@/components/pdf-constructor/shared/types/block.types";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { ElementType, RefCallback } from "react";
 import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";

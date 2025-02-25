@@ -1,11 +1,13 @@
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 import { useEffect, useRef } from "react";
-import { TextBlock as TextBlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
-import { BlockProps } from "../shared/types/block.type";
+import { TextBlock } from "@/components/pdf-constructor/shared/types/block.types";
+import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
 import { TextBlockToolbar } from "../toolbars/text-block-toolbar.component";
 
-export const TextBlock: React.FC<BlockProps<TextBlockType>> = ({ block }) => {
+export const TextElement: React.FC<BlockElementProps<TextBlock>> = ({
+  block,
+}) => {
   const [value, setValue] = useBlockUpdate(block);
   const divRef = useRef<HTMLDivElement>(null);
 

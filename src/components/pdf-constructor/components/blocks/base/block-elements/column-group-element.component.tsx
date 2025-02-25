@@ -2,15 +2,15 @@ import { Grid, ItemsProps } from "../../../components/resizable/grid.component";
 
 import { useMemo } from "react";
 import {
-  ColumnBlock as ColumnBlockType,
-  ColumnGroupBlock as ColumnGroupBlockType,
-} from "@/components/pdf-constructor/contexts/constructor/constructor.types";
-import { ColumnBlock } from "./column-block.component";
+  ColumnBlock,
+  ColumnGroupBlock,
+} from "@/components/pdf-constructor/shared/types/block.types";
+import { ColumnElement } from "./column-element.component";
 import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
-import { Block as BlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { Block as BlockType } from "@/components/pdf-constructor/shared/types/block.types";
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
 import { useChildrenWidth } from "@/components/pdf-constructor/hooks/use-children-width.hook";
-import { BlockProps } from "../shared/types/block.type";
+import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
 import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 
@@ -21,15 +21,15 @@ const withResizable = (block: BlockType) => {
 
     return (
       <WidthResizable {...props} hidden={props.hidden || !isActive}>
-        <ColumnBlock key={block.id} block={block as ColumnBlockType} />
+        <ColumnElement key={block.id} block={block as ColumnBlock} />
       </WidthResizable>
     );
   };
 };
 
-export const ColumnGroupBlock: React.FC<BlockProps<ColumnGroupBlockType>> = ({
-  block,
-}) => {
+export const ColumnGroupElement: React.FC<
+  BlockElementProps<ColumnGroupBlock>
+> = ({ block }) => {
   const [widths, setWidths] = useChildrenWidth(block.id, block.children.length);
   const children = useBlockChildren(block.id);
 

@@ -13,10 +13,18 @@ Clone the repository and run `pnpm install`. After successful dependencies insta
 
 - [x] Page Orientation
 - [x] Block deselection on outside click
-- [ ] Test Iberio Backend integration
+- [x] Test Iberio Backend integration (Tested on Object Loan Table)
+- [ ] Add header/footer
+- [ ] Fix table column resizing (it works only when the first column gets resized)
 - [ ] Blocks Toolbar
 - [ ] UI Updates
 
 _Not sure how can be implemented_
 
 - [ ] Automatic page split detection
+
+## Definitions
+
+_Block_ - entity of a PDF document (e. g. text, image, table)
+_Element_ - visual representation of a _Block_ in a canvas
+_Edge_ - drop area of an _Element_

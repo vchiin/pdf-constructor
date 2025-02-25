@@ -2,14 +2,16 @@ import { ImageIcon } from "lucide-react";
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 import { useRef } from "react";
 
-import { ImageBlock as ImageBlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { ImageBlock } from "@/components/pdf-constructor/shared/types/block.types";
 
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
-import { BlockProps } from "../shared/types/block.type";
+import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
 import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
 
-export const ImageBlock: React.FC<BlockProps<ImageBlockType>> = ({ block }) => {
+export const ImageElement: React.FC<BlockElementProps<ImageBlock>> = ({
+  block,
+}) => {
   const [value, setValue] = useBlockUpdate(block);
   const inputRef = useRef<HTMLInputElement>(null);
   const { selectedBlockId } = usePreview();

@@ -20,7 +20,7 @@ import {
   TableCell,
   TDocumentDefinitions,
 } from "pdfmake/interfaces";
-import { ACTUAL_PAGE_WIDTH_PT } from "./pdfmake";
+import { ACTUAL_PAGE_WIDTH_PT, ACTUAL_PAGE_WIDTH_PT_ROTATED } from "./pdfmake";
 import { convertPxToPt } from "@/shared/utils/units.utils";
 
 export const parseBlock = (
@@ -98,9 +98,32 @@ export const parseBlock = (
       const children = findChildrenBlocks(block.id, map);
 
       return {
-        stack: children.map((child) => parseBlock(child, map, parentWidth)),
-        pageBreak: "before",
-        pageOrientation: block.orientation,
+        stack: [
+          {
+            stack: children.map((child) =>
+              parseBlock(
+                child,
+                map,
+                block.orientation === "portrait"
+                  ? ACTUAL_PAGE_WIDTH_PT
+                  : ACTUAL_PAGE_WIDTH_PT_ROTATED
+              )
+            ),
+            pageBreak: "before",
+            pageOrientation: block.orientation,
+          },
+          {
+            stack: [],
+            pageBreak: "before",
+            pageOrientation: "portrait",
+          },
+        ],
+        margin: [
+          convertPxToPt(block.marginLeft),
+          convertPxToPt(block.marginRight),
+          convertPxToPt(block.marginTop),
+          convertPxToPt(block.marginBottom),
+        ],
       } as ContentStack;
     }
     case BlockTypeDefinitions.TableCell: {
@@ -124,6 +147,7 @@ export const parseBlock = (
         (cell) => parentWidth * (cell.width / 100) - paddingLeft - paddingRight
       );
 
+      console.log(widths, parentWidth);
       return {
         table: {
           widths,

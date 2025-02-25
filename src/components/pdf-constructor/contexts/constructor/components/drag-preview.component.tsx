@@ -1,9 +1,9 @@
 import { DragOverlay, useDndContext } from "@dnd-kit/core";
 import { createPortal } from "react-dom";
-// import { GenericBlock } from "@/components/pdf-constructor/components/blocks/base/generic-block.component";
+
 import { GenericThumbnail } from "@/components/pdf-constructor/components/blocks/thumbnails/generic-thumbnail.component";
 import { BlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
-import { DragPayload } from "@/components/pdf-constructor/components/blocks/base/shared/types/block.type";
+import { DragPayload } from "@/components/pdf-constructor/components/blocks/base/shared/types/element.types";
 import { TemplateThumbnail } from "@/components/pdf-constructor/components/blocks/templates/template-thumbnail.component";
 
 export const DragPreview = () => {

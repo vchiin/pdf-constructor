@@ -19,6 +19,6 @@ export const CustomBlockTypeDefinitions = {
   Template: "template",
 } as const;
 
-export type GeneralBlockType =
+export type GenericBlockType =
   | BlockType
   | (typeof CustomBlockTypeDefinitions)[keyof typeof CustomBlockTypeDefinitions];

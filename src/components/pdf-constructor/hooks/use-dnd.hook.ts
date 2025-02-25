@@ -10,7 +10,7 @@ import {
 import {
   DragPayload,
   DropPayload,
-} from "../components/blocks/base/shared/types/block.type";
+} from "../components/blocks/base/shared/types/element.types";
 import {
   DragTargetId,
   DropAreaId,

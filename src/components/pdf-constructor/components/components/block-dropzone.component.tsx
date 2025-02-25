@@ -10,7 +10,7 @@ import {
 import { useDroppable } from "../../hooks/use-dnd.hook";
 import {
   BlockType,
-  GeneralBlockType,
+  GenericBlockType,
 } from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
 
@@ -23,10 +23,10 @@ type BlockDropzoneProps = {
   hidden?: boolean;
 };
 
-const isDroppable = (active: Active | null, parentType: GeneralBlockType) => {
+const isDroppable = (active: Active | null, parentType: GenericBlockType) => {
   if (!active) return false;
 
-  const activeType = active.data.current?.type as GeneralBlockType;
+  const activeType = active.data.current?.type as GenericBlockType;
 
   if (!activeType) return false;
 

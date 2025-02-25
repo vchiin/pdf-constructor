@@ -1,10 +1,10 @@
-import { DropPayload } from "../../components/blocks/base/shared/types/block.type";
-import { DragPayload } from "../../components/blocks/base/shared/types/block.type";
+import { DropPayload } from "../../components/blocks/base/shared/types/element.types";
+import { DragPayload } from "../../components/blocks/base/shared/types/element.types";
 import { BlockId } from "../../shared/types/utils.types";
 
-import { Block, BlockMap } from "./constructor.types";
+import { Block, BlockMap } from "../../shared/types/block.types";
 import { Edge } from "../../services/interactions/interactions.types";
-import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
+import { GenericBlockType } from "../../shared/constants/types-definition.constant";
 
 export type ConstructorState = {
   map: BlockMap;
@@ -126,7 +126,7 @@ export type DropAreaCallback = (
 export type DragTargetCallback = (props: {
   active: {
     id: BlockId;
-    type: GeneralBlockType;
+    type: GenericBlockType;
   };
   over: Pick<Block, "id" | "type"> | null;
   parentId: BlockId;

@@ -10,7 +10,7 @@ import {
   TableBlock,
   TableCellBlock,
   TextBlock,
-} from "../contexts/constructor/constructor.types";
+} from "../shared/types/block.types";
 import {
   BlockTypeDefinitions,
   BlockType,

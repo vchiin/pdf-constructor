@@ -1,4 +1,4 @@
-import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
+import { GenericBlockType } from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
 import {
   DragTargetType,
@@ -13,54 +13,45 @@ import {
   Interactions,
   PlaceholderId,
   SortableTargetType,
+  Interaction,
 } from "./interactions.types";
 
-export const interactions: Interactions = {
+export const interactions = {
   root: {
-    forbids: ["column", "table-row", "table-cell"],
+    forbids: ["column", "table-row", "table-cell", "root"],
   },
   "page-orientation": {
-    forbids: ["column", "table-row", "table-cell"],
+    forbids: ["column", "table-row", "table-cell", "root", "page-orientation"],
   },
   column: {
-    forbids: [
-      "column",
-      "column-group",
-      "table",
-      "table-row",
-      "table-cell",
-      "template",
-      "break",
-    ],
+    accepts: ["text", "image", "line"],
   },
   "column-group": {
-    accepts: ["column", "template"],
+    accepts: ["column"],
   },
   table: {
-    accepts: ["table-row", "template"],
+    accepts: ["table-row"],
   },
   "table-row": {
-    accepts: ["table-cell", "template"],
+    accepts: ["table-cell"],
   },
   "table-cell": {
-    forbids: [
-      "column",
-      "column-group",
-      "table",
-      "table-row",
-      "table-cell",
-      "template",
-      "break",
-    ],
+    accepts: ["text", "image", "line"],
   },
-};
+} as const satisfies Interactions;
 
 export const canBeChildOf = (
-  childType: GeneralBlockType,
-  parentType: GeneralBlockType
+  childType: GenericBlockType,
+  parentType: GenericBlockType
 ) => {
-  const accepts = interactions[parentType]?.accepts;
-  const forbids = interactions[parentType]?.forbids;
+  const parentType_ = parentType as keyof typeof interactions;
+  const parentInteractions = interactions[parentType_] as Interaction;
+
+  if (!parentInteractions) {
+    return;
+  }
+  const accepts = parentInteractions?.accepts;
+  const forbids = parentInteractions?.forbids;
 
   if (accepts && forbids) {
     return accepts.includes(childType) && !forbids.includes(childType);
@@ -119,18 +110,8 @@ export const getId = <T extends DropAreaType | DragTargetType>(
   return `${id}_${type}` as GetId<T>;
 };
 
-export const getThumbnailId = <Id extends GeneralBlockType>(
+export const getThumbnailId = <Id extends GenericBlockType>(
   id: Id
 ): DragThumbnailId<Id> => `${id}_thumbnail`;
 
 export const getTemplateId = (id: string): DragTemplateId => `${id}_template`;
-
-export const isThumbnail = (type: DragTargetType): type is "thumbnail" => {
-  return type === "thumbnail";
-};
-
-export const isTemplate = (
-  type: DragTargetType
-): type is Extract<DragTargetType, "template"> => {
-  return type === "template";
-};

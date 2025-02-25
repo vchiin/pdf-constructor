@@ -1,6 +1,6 @@
 import { cn } from "@/shared/utils/cn.util";
 
-import { DropPayload } from "../shared/types/block.type";
+import { DropPayload } from "../shared/types/element.types";
 import {
   Edge as EdgeType,
   SortableTargetType,

@@ -1,12 +1,12 @@
-import { GeneralBlockType } from "../../shared/constants/types-definition.constant";
+import { GenericBlockType } from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
 
 export type Interaction = {
-  accepts?: GeneralBlockType[];
-  forbids?: GeneralBlockType[];
+  accepts?: GenericBlockType[];
+  forbids?: GenericBlockType[];
 };
 
-export type Interactions = Partial<Record<GeneralBlockType, Interaction>>;
+export type Interactions = Partial<Record<GenericBlockType, Interaction>>;
 
 export type DragTargetType = "block" | "thumbnail" | "template" | "tree-item";
 export type DropAreaType = "edge" | "placeholder";
@@ -14,12 +14,12 @@ export type DropAreaType = "edge" | "placeholder";
 export type SortableTargetType = Extract<DragTargetType, "block" | "tree-item">;
 
 export type AreaId<
-  Id extends BlockId | GeneralBlockType | string,
+  Id extends BlockId | GenericBlockType | string,
   T extends DropAreaType | DragTargetType,
 > = `${Id}_${T}`;
 
 export type DragBlockId<Id extends BlockId> = AreaId<Id, "block">;
-export type DragThumbnailId<Id extends GeneralBlockType> = AreaId<
+export type DragThumbnailId<Id extends GenericBlockType> = AreaId<
   Id,
   "thumbnail"
 >;
@@ -28,7 +28,7 @@ export type DragTreeItemId<Id extends BlockId> = AreaId<Id, "tree-item">;
 export type DragTargetId =
   | DragBlockId<BlockId>
   | DragTreeItemId<BlockId>
-  | DragThumbnailId<GeneralBlockType>
+  | DragThumbnailId<GenericBlockType>
   | DragTemplateId;
 
 export type Edge = "top" | "bottom" | "left" | "right";

@@ -16,7 +16,6 @@ type PreviewProviderProps = {
 };
 
 const mousedownHandler = (event: MouseEvent) => {
-  console.log("preventing propagation");
   event.stopPropagation();
 };
 
@@ -44,6 +43,7 @@ export const PreviewProvider: React.FC<PreviewProviderProps> = ({
   >([]);
 
   useEffect(() => {
+    console.log(selectionProtectedElements);
     return () => {
       unsetMousedownHandlers(selectionProtectedElements);
     };

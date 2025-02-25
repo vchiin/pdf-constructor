@@ -1,9 +1,9 @@
-import { BlockProps } from "../shared/types/block.type";
-import { TableBlock as TableBlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { BlockElementProps } from "../shared/types/element.types";
+import { TableBlock as TableBlockType } from "@/components/pdf-constructor/shared/types/block.types";
 import { Toolbar } from "./toolbar.component";
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 
-export const TableBlockToolbar: React.FC<BlockProps<TableBlockType>> = ({
+export const TableBlockToolbar: React.FC<BlockElementProps<TableBlockType>> = ({
   block,
 }) => {
   const [value, setValue] = useBlockUpdate(block);

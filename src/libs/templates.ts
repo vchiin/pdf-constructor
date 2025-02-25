@@ -1,4 +1,4 @@
-import { Block } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { Block } from "@/components/pdf-constructor/shared/types/block.types";
 import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import { imageMock } from "@/shared/mock/image.mock";
 
@@ -547,23 +547,10 @@ export const fetchTemplates = async (
     };
   }
 
-  return {
-    ["1" as BlockId]: {
-      id: "1" as BlockId,
-      marginLeft: 0,
-      marginRight: 0,
-      marginTop: 0,
-      marginBottom: 0,
-      width: 100,
-      parentId: null,
-      type: "text",
-      content: "No such template found",
-      color: "#000000",
-      bold: false,
-      italic: false,
-      underline: false,
-      fontSize: 16,
-      fontFamily: "Roboto",
-    },
-  };
+  const request = await fetch("http://localhost:3000/api/pdfConstructor/test", {
+    method: "POST",
+  });
+
+  const response = await request.json();
+  return response;
 };

@@ -1,14 +1,16 @@
 import { Block } from "../../block.component";
-import { TableBlock as TableBlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { TableBlock } from "@/components/pdf-constructor/shared/types/block.types";
 
 import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
 
 import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
-import { TableRowBlock } from "./table-row-block.component";
-import { BlockProps } from "../../shared/types/block.type";
+import { TableRowElement } from "./table-row-element.component";
+import { BlockElementProps } from "../../shared/types/element.types";
 import { TableBlockToolbar } from "../../toolbars/table-block-toolbar.component";
 
-export const TableBlock: React.FC<BlockProps<TableBlockType>> = ({ block }) => {
+export const TableElement: React.FC<BlockElementProps<TableBlock>> = ({
+  block,
+}) => {
   const children = useBlockChildren(block.id);
 
   return (
@@ -20,7 +22,7 @@ export const TableBlock: React.FC<BlockProps<TableBlockType>> = ({ block }) => {
               return null;
             }
 
-            return <TableRowBlock key={child.id} block={child} />;
+            return <TableRowElement key={child.id} block={child} />;
           })}
         </tbody>
       </table>

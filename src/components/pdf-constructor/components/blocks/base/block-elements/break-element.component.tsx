@@ -1,8 +1,10 @@
-import { BreakBlock as BreakBlockType } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
+import { BreakBlock } from "@/components/pdf-constructor/shared/types/block.types";
 import { Block } from "../block.component";
-import { BlockProps } from "../shared/types/block.type";
+import { BlockElementProps } from "../shared/types/element.types";
 
-export const BreakBlock: React.FC<BlockProps<BreakBlockType>> = ({ block }) => {
+export const BreakElement: React.FC<BlockElementProps<BreakBlock>> = ({
+  block,
+}) => {
   return (
     <Block block={block}>
       <div className="text-muted-foreground flex w-full items-center gap-1 text-center">

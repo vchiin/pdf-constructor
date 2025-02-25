@@ -1,14 +1,17 @@
-import { BlockProps, BaseBlockProps } from "./shared/types/block.type";
+import {
+  BlockElementProps,
+  GenericBlockElementMap,
+} from "./shared/types/element.types";
 import { BlockDropzone } from "../../components/block-dropzone.component";
 import { cn } from "@/shared/utils/cn.util";
 import { CSSProperties } from "react";
-import { Block } from "@/components/pdf-constructor/contexts/constructor/constructor.types";
-import { GeneralBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { Block } from "@/components/pdf-constructor/shared/types/block.types";
+import { BlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 
-type BlockListProps = {
+type BlockListProps<T extends BlockType> = {
   parent: Block;
   config: Block[];
-  blocks: Partial<Record<GeneralBlockType, React.FC<BaseBlockProps<Block>>>>;
+  blocks: GenericBlockElementMap<T>;
   direction?: "row" | "column";
   hideDropzone?: boolean;
   className?: string;
@@ -16,7 +19,7 @@ type BlockListProps = {
   as?: keyof JSX.IntrinsicElements;
 };
 
-export const BlockList: React.FC<BlockListProps> = ({
+export const BlockList = <T extends BlockType>({
   config,
   blocks,
   direction = "column",
@@ -24,7 +27,7 @@ export const BlockList: React.FC<BlockListProps> = ({
   className,
   style,
   parent,
-}) => (
+}: BlockListProps<T>) => (
   <div
     className={cn(
       "flex h-full items-stretch",
@@ -34,7 +37,9 @@ export const BlockList: React.FC<BlockListProps> = ({
     style={style}
   >
     {config.map((block) => {
-      const Block = blocks[block.type] as React.FC<BlockProps<typeof block>>;
+      const Block = blocks[
+        block.type as Extract<keyof typeof blocks, BlockType>
+      ] as React.FC<BlockElementProps<typeof block>> | undefined;
 
       if (!Block) {
         return null;
