@@ -2,7 +2,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useRef,
   useState,
 } from "react";
@@ -15,64 +14,15 @@ type PreviewProviderProps = {
   children: React.ReactNode;
 };
 
-const mousedownHandler = (event: MouseEvent) => {
-  event.stopPropagation();
-};
-
-const setMousedownHandlers = (elements: HTMLElement[]) => {
-  for (const element of elements) {
-    element.addEventListener("mousedown", mousedownHandler);
-  }
-};
-
-const unsetMousedownHandlers = (elements: HTMLElement[]) => {
-  for (const element of elements) {
-    element.removeEventListener("mousedown", mousedownHandler);
-  }
-};
-
 export const PreviewProvider: React.FC<PreviewProviderProps> = ({
   children,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedId, setSelectedId] = useState<BlockId | null>(null);
 
-  // elements interaction with which wouldn't unselect the selected element
-  const [selectionProtectedElements, setSelectionProtectedElements] = useState<
-    HTMLElement[]
-  >([]);
-
-  useEffect(() => {
-    console.log(selectionProtectedElements);
-    return () => {
-      unsetMousedownHandlers(selectionProtectedElements);
-    };
-  }, [selectionProtectedElements]);
-
   const selectBlock = useCallback((id: BlockId) => setSelectedId(id), []);
 
   const deselectBlock = useCallback(() => setSelectedId(null), []);
-
-  useEffect(() => {
-    if (selectedId) {
-      document.body.addEventListener("mousedown", deselectBlock);
-      setMousedownHandlers(selectionProtectedElements);
-      return;
-    }
-
-    document.body.removeEventListener("mousedown", deselectBlock);
-    unsetMousedownHandlers(selectionProtectedElements);
-  }, [selectedId, selectionProtectedElements, deselectBlock]);
-
-  const appendProtectedElement = useCallback((element: HTMLElement) => {
-    setSelectionProtectedElements((state) => [...state, element]);
-  }, []);
-
-  const removeProtectedElement = useCallback((element: HTMLElement) => {
-    setSelectionProtectedElements((state) =>
-      state.filter((e) => !e.isSameNode(element))
-    );
-  }, []);
 
   return (
     <PreviewContext.Provider
@@ -81,8 +31,6 @@ export const PreviewProvider: React.FC<PreviewProviderProps> = ({
         selectedBlockId: selectedId,
         selectBlock,
         deselectBlock,
-        appendProtectedElement,
-        removeProtectedElement,
       }}
     >
       {children}

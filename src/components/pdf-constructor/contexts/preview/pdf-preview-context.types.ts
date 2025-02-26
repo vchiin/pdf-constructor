@@ -6,6 +6,4 @@ export type PreviewContextType = {
   selectedBlockId: BlockId | null;
   selectBlock: (id: BlockId) => void;
   deselectBlock: () => void;
-  appendProtectedElement: (element: HTMLElement) => void;
-  removeProtectedElement: (element: HTMLElement) => void;
 };

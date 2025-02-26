@@ -27,13 +27,18 @@ import { getDropAreaType } from "../../services/interactions/interactions.servic
 import { getDropAreaCallback } from "./pdf-constructor-context.utils";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { generateBlocks } from "../../services/block.service";
-import { Block } from "../../shared/types/block.types";
+import { Block, RootBlock } from "../../shared/types/block.types";
 import { BlockId } from "../../shared/types/utils.types";
 import { DragPreview } from "./components/drag-preview.component";
 
 const ConstructorContext = createContext<ConstructorContextType | null>(null);
 
-const root = generateBlocks("root", null)[0];
+const root = generateBlocks("root", null)[0] as RootBlock;
+const header = generateBlocks("header", root.id)[0];
+const footer = generateBlocks("footer", root.id)[0];
+
+root.children.push(header.id);
+root.children.push(footer.id);
 
 export const ConstructorProvider = ({
   children,
@@ -48,6 +53,8 @@ export const ConstructorProvider = ({
   >(constructorReducer, {
     map: {
       [root.id]: root,
+      [header.id]: header,
+      [footer.id]: footer,
     },
     rootId: root.id,
     showPreview: false,

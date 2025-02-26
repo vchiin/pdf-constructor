@@ -1,13 +1,18 @@
 import {
   Block,
   BlockMap,
+  HeaderBlock,
+  RootBlock,
 } from "@/components/pdf-constructor/shared/types/block.types";
 import {
   findBlock,
   findChildrenBlocks,
   isContainerBlock,
 } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.utils";
-import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import {
+  BlockType,
+  BlockTypeDefinitions,
+} from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 
 import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import {
@@ -166,13 +171,46 @@ export const parseBlock = (
         },
       } as ContentTable;
     }
+    case BlockTypeDefinitions.Header:
+    case BlockTypeDefinitions.Footer: {
+      return { text: "" };
+    }
     default:
       return { text: "Unknown component" };
   }
 };
 
+export const processLayout = (
+  type: BlockType,
+  root: RootBlock,
+  map: BlockMap
+) => {
+  const headerId = root.children.find((childId) => {
+    const child = findBlock(childId, map);
+
+    return child && child.type === type;
+  });
+
+  if (!headerId) {
+    return null;
+  }
+
+  const header = findBlock(headerId, map) as HeaderBlock;
+
+  if (!header) {
+    return null;
+  }
+
+  const result = header.children.map((childId) => {
+    const child = findBlock(childId, map);
+    return parseBlock(child, map, ACTUAL_PAGE_WIDTH_PT_ROTATED);
+  });
+
+  return result.filter((element) => element !== null);
+};
+
 export const parseConfigToPdf = (rootId: BlockId, map: BlockMap) => {
-  const root = findBlock(rootId, map);
+  const root = findBlock(rootId, map) as RootBlock;
 
   if (!root || !isContainerBlock(root)) {
     throw new Error("Root block not found");
@@ -190,6 +228,8 @@ export const parseConfigToPdf = (rootId: BlockId, map: BlockMap) => {
       const child = findBlock(childId, map);
       return parseBlock(child, map, ACTUAL_PAGE_WIDTH_PT);
     }),
+    header: () => processLayout(BlockTypeDefinitions.Header, root, map),
+    footer: () => processLayout(BlockTypeDefinitions.Footer, root, map),
     pageMargins,
   } as const satisfies TDocumentDefinitions;
 };

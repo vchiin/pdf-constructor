@@ -5,6 +5,7 @@ import { ConstructorProvider } from "./contexts/constructor/pdf-constructor.cont
 import { PreviewProvider } from "./contexts/preview/pdf-preview.context";
 
 import { Tree } from "./components/tree/tree.component";
+import { HelperBar } from "./components/helper-bar/helper-bar.component";
 
 export const PDFConstructor = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -17,6 +18,7 @@ export const PDFConstructor = () => {
           <Canvas className="col-span-3 overflow-auto" />
           <Sidebar className="col-span-2 overflow-auto" />
         </div>
+        <HelperBar />
       </PreviewProvider>
     </ConstructorProvider>
   );

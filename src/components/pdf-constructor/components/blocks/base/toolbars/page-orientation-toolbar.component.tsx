@@ -11,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
-import { useEffect, useRef, useState } from "react";
+
+import { useRef, useState } from "react";
 
 const OrientationValues = {
   LANDSCAPE: "landscape",
@@ -26,21 +26,7 @@ export const PageOrientationBlockToolbar: React.FC<
 > = ({ block }) => {
   const [value, setValue] = useBlockUpdate(block);
   const [show, setShow] = useState(false);
-  const { appendProtectedElement, removeProtectedElement, selectedBlockId } =
-    usePreview();
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const element = ref.current;
-
-    if (!element) {
-      return;
-    }
-
-    appendProtectedElement(element);
-
-    return () => removeProtectedElement(element);
-  }, [selectedBlockId, show]);
 
   return (
     <Toolbar title="Page Orientation">

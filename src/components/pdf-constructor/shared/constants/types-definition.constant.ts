@@ -10,6 +10,8 @@ export const BlockTypeDefinitions = {
   Table: "table",
   TableRow: "table-row",
   TableCell: "table-cell",
+  Header: "header",
+  Footer: "footer",
 } as const;
 
 export type BlockType =

@@ -231,6 +231,16 @@ export const generateBlocks = <Type extends BlockType>(
         },
       ] satisfies [TableCellBlock];
     }
+    case BlockTypeDefinitions.Header:
+    case BlockTypeDefinitions.Footer: {
+      return [
+        {
+          ...generateDefaultStyles(parentId),
+          type,
+          children: [] as BlockId[],
+        },
+      ];
+    }
     default:
       throw new Error(`Unsupported block type: ${type}`);
   }

@@ -1,5 +1,4 @@
-import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 type ToolbarProps = {
   title: string;
@@ -7,22 +6,7 @@ type ToolbarProps = {
 };
 
 export const Toolbar = ({ title, children }: ToolbarProps) => {
-  const { appendProtectedElement, removeProtectedElement } = usePreview();
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const element = ref.current;
-
-    if (!element) {
-      return;
-    }
-
-    appendProtectedElement(element);
-
-    return () => {
-      removeProtectedElement(element);
-    };
-  }, []);
 
   return (
     <div className="flex flex-col gap-2" ref={ref}>

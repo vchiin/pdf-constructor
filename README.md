@@ -14,7 +14,7 @@ Clone the repository and run `pnpm install`. After successful dependencies insta
 - [x] Page Orientation
 - [x] Block deselection on outside click
 - [x] Test Iberio Backend integration (Tested on Object Loan Table)
-- [ ] Add header/footer
+- [x] Add header/footer
 - [ ] Fix table column resizing (it works only when the first column gets resized)
 - [ ] Blocks Toolbar
 - [ ] UI Updates

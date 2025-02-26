@@ -10,15 +10,17 @@ import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/consta
 import { ImageElement } from "./image-element.component";
 import { TextElement } from "./text-element.component";
 import { LineElement } from "./line-element.component";
+import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 
 export const ColumnElement: React.FC<BlockElementProps<ColumnBlock>> = ({
   block,
 }) => {
+  const { showPreview } = useConstructor();
   const children = useBlockChildren(block.id);
 
   return (
     <Block block={block} positions={["left", "right"]}>
-      {children.length === 0 ? (
+      {children.length === 0 && !showPreview ? (
         <BlockDropzone
           parentId={block.id}
           type={block.type}

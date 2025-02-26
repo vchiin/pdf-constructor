@@ -19,7 +19,7 @@ export const TreeList = ({ block, className }: TreeListProps) => {
   const children = useBlockChildren(block.id);
   const { selectedBlockId } = usePreview();
   const hasChild = useHasChild(block.id, selectedBlockId);
-  const [isCollapsed, setIsCollapsed] = useState(!hasChild);
+  const [isCollapsed, setIsCollapsed] = useState(hasChild);
 
   useEffect(() => {
     if (hasChild) {

@@ -106,9 +106,6 @@ export const WidthResizable: React.FC<WidthResizableProps> = memo(
             hidden && "hidden"
           )}
           onMouseDown={onMouseDown}
-          onClick={(event) => {
-            event.stopPropagation();
-          }}
         >
           <ScalingIcon />
         </div>

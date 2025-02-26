@@ -16,6 +16,7 @@ export const Block = <T extends BlockType>({
   as = "div",
   className,
   style,
+  hideSelectionIndicators,
 }: BaseBlockElementProps<T>) => {
   const {
     setNodeRef,
@@ -53,6 +54,7 @@ export const Block = <T extends BlockType>({
         listeners={listeners}
         toolbar={toolbar}
         as={toolsAs}
+        hideSelectionIndicators={hideSelectionIndicators}
       />
 
       <Edges
@@ -78,6 +80,7 @@ export const Block = <T extends BlockType>({
       isOver={false}
       as={as}
       className={className}
+      hideSelectionIndicators={hideSelectionIndicators}
     >
       {children}
       {tools}

@@ -74,6 +74,10 @@ export type TableCellBlock = ContainerBlock<
   typeof BlockTypeDefinitions.TableCell
 >;
 
+export type HeaderBlock = ContainerBlock<typeof BlockTypeDefinitions.Header>;
+
+export type FooterBlock = ContainerBlock<typeof BlockTypeDefinitions.Footer>;
+
 export type RootBlock = ContainerBlock<typeof BlockTypeDefinitions.Root> & {
   parentId: null;
 };
@@ -89,6 +93,8 @@ export type Block =
   | PageOrientationBlock
   | TableBlock
   | TableRowBlock
-  | TableCellBlock;
+  | TableCellBlock
+  | HeaderBlock
+  | FooterBlock;
 
 export type BlockMap = Record<BlockId, Block>;

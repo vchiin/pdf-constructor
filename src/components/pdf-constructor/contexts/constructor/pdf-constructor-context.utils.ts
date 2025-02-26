@@ -1,10 +1,7 @@
 import { fetchTemplates } from "@/libs/templates";
-import { DragPayload } from "../../components/blocks/base/shared/types/element.types";
+
 import { generateBlocks, parseTemplates } from "../../services/block.service";
-import {
-  canBeChildOf,
-  isTemplate,
-} from "../../services/interactions/interactions.service";
+import { canBeChildOf } from "../../services/interactions/interactions.service";
 import {
   DragTargetType,
   DropAreaType,
@@ -613,16 +610,10 @@ const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
   },
 };
 
-const isNonTemplate = (
-  payload: DragPayload
-): payload is Extract<DragPayload, { type: GenericBlockType }> => {
-  return !isTemplate(payload.dragTargetType);
-};
-
 const DropAreaCallbacks: Record<DropAreaType, DropAreaCallback> = {
   edge: (active, over, blocks, extra) => {
     // templates can't be placed onto edges, only on the top level placeholder
-    if (!isNonTemplate(active)) {
+    if (active.dragTargetType === "template") {
       return [];
     }
 

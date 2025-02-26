@@ -22,12 +22,7 @@ export const TreeBlock = ({
   isCollapsed,
   onCollapseChange,
 }: TreeBlockProps) => {
-  const {
-    selectBlock,
-    selectedBlockId,
-    appendProtectedElement,
-    removeProtectedElement,
-  } = usePreview();
+  const { selectBlock, selectedBlockId } = usePreview();
   const { scrollTo, calculateOffset } = useScroller();
   const isActive = selectedBlockId === block.id;
   const ref = useRef<HTMLDivElement>(null);
@@ -50,22 +45,13 @@ export const TreeBlock = ({
 
   useEffect(() => {
     const element = ref.current;
-    if (!element) {
+    if (!element || !isActive) {
       return;
     }
 
-    if (isActive) {
-      const offset = calculateOffset(element);
-      scrollTo(offset);
+    const offset = calculateOffset(element);
+    scrollTo(offset);
 
-      appendProtectedElement(element);
-    } else {
-      removeProtectedElement(element);
-    }
-
-    return () => {
-      removeProtectedElement(element);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBlockId, block]);
 

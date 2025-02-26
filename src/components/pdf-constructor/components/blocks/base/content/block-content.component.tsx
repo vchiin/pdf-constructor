@@ -26,6 +26,7 @@ type BlockContentProps = Omit<
   isOver: boolean;
   as: ElementType;
   className?: string;
+  hideSelectionIndicators?: boolean;
 };
 
 export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
@@ -39,37 +40,14 @@ export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
       isOver,
       as: Component,
       className,
+      hideSelectionIndicators,
     },
     ref
   ) => {
     const { showPreview } = useConstructor();
-    const {
-      selectBlock,
-      selectedBlockId,
-      appendProtectedElement,
-      removeProtectedElement,
-    } = usePreview();
+    const { selectBlock, selectedBlockId } = usePreview();
 
     const isActive = selectedBlockId === block.id;
-
-    useEffect(() => {
-      if (!componentRef.current) {
-        return;
-      }
-
-      const element = componentRef.current;
-
-      if (selectedBlockId !== block.id) {
-        removeProtectedElement(element);
-      } else {
-        appendProtectedElement(element);
-      }
-
-      return () => {
-        removeProtectedElement(element);
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedBlockId, block.id]);
 
     const componentRef = useRef<HTMLElement | null>(null);
 
@@ -100,7 +78,7 @@ export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
           selectBlock(block.id);
           event.stopPropagation();
         }}
-        data-selected={isActive}
+        data-selected={isActive && !hideSelectionIndicators}
         role="button"
       >
         {children}

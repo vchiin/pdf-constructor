@@ -30,7 +30,7 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
     <div ref={wrapperRef} className={className}>
       <div
         ref={containerRef}
-        className="overflow-x-scroll rounded border p-4 shadow"
+        className="relative overflow-x-scroll rounded border shadow"
         style={{
           width: `${convertPtToPx(PAGE_WIDTH_PT) * scale}px`,
         }}

@@ -8,18 +8,19 @@ import { CSSProperties } from "react";
 import { Block } from "@/components/pdf-constructor/shared/types/block.types";
 import { BlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 
-type BlockListProps<T extends BlockType> = {
+type BlockListProps<T extends BlockType, O extends BlockType = never> = {
   parent: Block;
   config: Block[];
-  blocks: GenericBlockElementMap<T>;
+  blocks: Omit<GenericBlockElementMap<T>, O>;
   direction?: "row" | "column";
   hideDropzone?: boolean;
   className?: string;
   style?: CSSProperties;
   as?: keyof JSX.IntrinsicElements;
+  smallDropzone?: boolean;
 };
 
-export const BlockList = <T extends BlockType>({
+export const BlockList = <T extends BlockType, O extends BlockType = never>({
   config,
   blocks,
   direction = "column",
@@ -27,7 +28,8 @@ export const BlockList = <T extends BlockType>({
   className,
   style,
   parent,
-}: BlockListProps<T>) => (
+  smallDropzone,
+}: BlockListProps<T, O>) => (
   <div
     className={cn(
       "flex h-full items-stretch",
@@ -50,10 +52,13 @@ export const BlockList = <T extends BlockType>({
 
     {!hideDropzone && (
       <BlockDropzone
-        className={cn({
-          "ml-1": direction === "row" && config.length > 0,
-          "mt-1": direction === "column" && config.length > 0,
-        })}
+        className={cn(
+          {
+            "ml-1": direction === "row" && config.length > 0,
+            "mt-1": direction === "column" && config.length > 0,
+          },
+          smallDropzone && "py-2"
+        )}
         parentId={parent.id}
         type={parent.type}
       />

@@ -23,6 +23,7 @@ export type BaseBlockElementProps<T extends Block> = BlockElementProps<T> & {
   positions?: Edge[];
   className?: string;
   style?: CSSProperties;
+  hideSelectionIndicators?: boolean;
 };
 
 export type BlockElement<B extends Block> = React.FC<BaseBlockElementProps<B>>;

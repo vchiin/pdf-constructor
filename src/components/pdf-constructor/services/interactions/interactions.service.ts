@@ -21,7 +21,21 @@ export const interactions = {
     forbids: ["column", "table-row", "table-cell", "root"],
   },
   "page-orientation": {
-    forbids: ["column", "table-row", "table-cell", "root", "page-orientation"],
+    forbids: [
+      "column",
+      "table-row",
+      "table-cell",
+      "root",
+      "page-orientation",
+      "header",
+      "footer",
+    ],
+  },
+  header: {
+    accepts: ["text", "image", "line", "column-group"],
+  },
+  footer: {
+    accepts: ["text", "image", "line", "column-group"],
   },
   column: {
     accepts: ["text", "image", "line"],

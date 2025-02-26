@@ -15,6 +15,7 @@ type BlockToolsProps = {
   listeners?: SyntheticListenerMap;
   toolbar?: React.ReactNode;
   as?: ElementType;
+  hideSelectionIndicators?: boolean;
 };
 
 export const BlockTools = ({
@@ -24,6 +25,7 @@ export const BlockTools = ({
   listeners,
   toolbar,
   as: Component = "div",
+  hideSelectionIndicators,
 }: BlockToolsProps) => {
   const { deleteBlock } = useConstructor();
   const { deselectBlock, selectedBlockId } = usePreview();
@@ -37,18 +39,20 @@ export const BlockTools = ({
 
   return (
     <Component>
-      <button
-        ref={setActivatorNodeRef}
-        {...listeners}
-        className="bg-primary text-primary-foreground absolute top-0 left-0 cursor-pointer rounded p-2"
-        onClick={(event) => {
-          event.stopPropagation();
-        }}
-      >
-        <GripIcon />
-      </button>
+      {!hideSelectionIndicators && (
+        <button
+          ref={setActivatorNodeRef}
+          {...listeners}
+          className="bg-primary text-primary-foreground absolute top-0 left-0 cursor-pointer rounded p-2"
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+        >
+          <GripIcon />
+        </button>
+      )}
 
-      {!isDragging && (
+      {!isDragging && !hideSelectionIndicators && (
         <button
           className="bg-primary text-primary-foreground absolute top-0 right-0 cursor-pointer rounded p-2"
           onClick={(event) => {
