@@ -7,14 +7,13 @@ import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/consta
 import { TableRowElement } from "./table-row-element.component";
 import { BlockElementProps } from "../../shared/types/element.types";
 import { TableBlockToolbar } from "../../toolbars/table-block-toolbar.component";
+import { memo } from "react";
 
-export const TableElement: React.FC<BlockElementProps<TableBlock>> = ({
-  block,
-}) => {
-  const children = useBlockChildren(block.id);
+const TableContent: React.FC<BlockElementProps<TableBlock>> = memo(
+  ({ block }) => {
+    const children = useBlockChildren(block.id);
 
-  return (
-    <Block block={block} toolbar={<TableBlockToolbar block={block} />}>
+    return (
       <table className="w-full table-fixed border-collapse">
         <tbody>
           {children.map((child) => {
@@ -26,6 +25,14 @@ export const TableElement: React.FC<BlockElementProps<TableBlock>> = ({
           })}
         </tbody>
       </table>
-    </Block>
-  );
-};
+    );
+  }
+);
+
+export const TableElement: React.FC<BlockElementProps<TableBlock>> = ({
+  block,
+}) => (
+  <Block block={block} toolbar={<TableBlockToolbar block={block} />}>
+    <TableContent block={block} />
+  </Block>
+);

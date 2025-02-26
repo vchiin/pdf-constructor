@@ -1,25 +1,23 @@
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { TextBlock } from "@/components/pdf-constructor/shared/types/block.types";
 import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
 import { TextBlockToolbar } from "../toolbars/text-block-toolbar.component";
 
-export const TextElement: React.FC<BlockElementProps<TextBlock>> = ({
-  block,
-}) => {
-  const [value, setValue] = useBlockUpdate(block);
-  const divRef = useRef<HTMLDivElement>(null);
+const TextContent: React.FC<BlockElementProps<TextBlock>> = memo(
+  ({ block }) => {
+    const [value, setValue] = useBlockUpdate(block);
+    const divRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (divRef.current) {
-      divRef.current.textContent = value.content;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    useEffect(() => {
+      if (divRef.current) {
+        divRef.current.textContent = value.content;
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  return (
-    <Block block={block} toolbar={<TextBlockToolbar block={block} />}>
+    return (
       <div
         ref={divRef}
         contentEditable="plaintext-only"
@@ -36,6 +34,16 @@ export const TextElement: React.FC<BlockElementProps<TextBlock>> = ({
           fontFamily: value.fontFamily,
         }}
       ></div>
+    );
+  }
+);
+
+export const TextElement: React.FC<BlockElementProps<TextBlock>> = ({
+  block,
+}) => {
+  return (
+    <Block block={block} toolbar={<TextBlockToolbar block={block} />}>
+      <TextContent block={block} />
     </Block>
   );
 };

@@ -9,7 +9,7 @@ import { convertPtToPx } from "@/shared/utils/units.utils";
 import { PAGE_HEIGHT_PT } from "@/libs/pdfmake";
 import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
 
-import { CSSProperties } from "react";
+import { CSSProperties, memo } from "react";
 import { PageOrientationBlockToolbar } from "../toolbars/page-orientation-toolbar.component";
 
 import { BreakElement } from "./break-element.component";
@@ -21,26 +21,14 @@ import { TableElement } from "./table/table-element.component";
 
 import { TextElement } from "./text-element.component";
 
-export const PageOrientationElement: React.FC<
+const PageOrientationContent: React.FC<
   BlockElementProps<PageOrientationBlock>
-> = ({ block }) => {
-  const { showPreview, scale } = useConstructor();
+> = memo(({ block }) => {
+  const { showPreview } = useConstructor();
   const children = useBlockChildren(block.id);
 
-  const styles: CSSProperties =
-    block.orientation === "landscape"
-      ? {
-          width: `${convertPtToPx(PAGE_HEIGHT_PT) * scale}px`,
-        }
-      : {};
-
   return (
-    <Block
-      block={block}
-      className="overflow-x-auto"
-      style={styles}
-      toolbar={<PageOrientationBlockToolbar block={block} />}
-    >
+    <>
       <BlockList<typeof BlockTypeDefinitions.PageOrientation>
         config={children}
         blocks={{
@@ -56,6 +44,29 @@ export const PageOrientationElement: React.FC<
         hideDropzone
       />
       {!showPreview && <BlockDropzone parentId={block.id} type={block.type} />}
+    </>
+  );
+});
+
+export const PageOrientationElement: React.FC<
+  BlockElementProps<PageOrientationBlock>
+> = ({ block }) => {
+  const { scale } = useConstructor();
+  const styles: CSSProperties =
+    block.orientation === "landscape"
+      ? {
+          width: `${convertPtToPx(PAGE_HEIGHT_PT) * scale}px`,
+        }
+      : {};
+
+  return (
+    <Block
+      block={block}
+      className="overflow-x-auto"
+      style={styles}
+      toolbar={<PageOrientationBlockToolbar block={block} />}
+    >
+      <PageOrientationContent block={block} />
     </Block>
   );
 };

@@ -7,7 +7,7 @@ import {
 } from "@/components/pdf-constructor/services/interactions/interactions.types";
 import { getEdgeId } from "@/components/pdf-constructor/services/interactions/interactions.service";
 import { useDroppable } from "@/components/pdf-constructor/hooks/use-dnd.hook";
-import { ElementType } from "react";
+import { ElementType, memo } from "react";
 
 export const EdgePosition: Record<Uppercase<EdgeType>, EdgeType> = {
   TOP: "top",
@@ -75,25 +75,21 @@ export type EdgesProps = {
   isParentDragged: boolean;
 };
 
-export const Edges: React.FC<EdgesProps> = ({
-  data,
-  positions,
-  as,
-  type,
-  isParentDragged,
-}) => {
-  return (
-    <>
-      {positions.map((position) => (
-        <Edge
-          key={position}
-          data={data}
-          position={position}
-          type={type}
-          as={as}
-          isParentDragged={isParentDragged}
-        />
-      ))}
-    </>
-  );
-};
+export const Edges: React.FC<EdgesProps> = memo(
+  ({ data, positions, as, type, isParentDragged }) => {
+    return (
+      <>
+        {positions.map((position) => (
+          <Edge
+            key={position}
+            data={data}
+            position={position}
+            type={type}
+            as={as}
+            isParentDragged={isParentDragged}
+          />
+        ))}
+      </>
+    );
+  }
+);

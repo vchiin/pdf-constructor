@@ -550,7 +550,7 @@ export const fetchTemplates = async (
   }
 
   if (id === "template-4") {
-    return loanTableMock;
+    return loanTableMock as Record<BlockId, Block>;
     // const request = await fetch(
     //   "http://localhost:3000/api/pdfConstructor/test",
     //   {
@@ -563,7 +563,7 @@ export const fetchTemplates = async (
   }
 
   if (id === "template-5") {
-    return tenantListMock;
+    return tenantListMock as Record<BlockId, Block>;
     // const request = await fetch(
     //   "http://localhost:3000/api/pdfConstructor/test-2",
     //   {
@@ -575,4 +575,6 @@ export const fetchTemplates = async (
     // console.log(response);
     // return response;
   }
+
+  return {} as Record<BlockId, Block>;
 };
