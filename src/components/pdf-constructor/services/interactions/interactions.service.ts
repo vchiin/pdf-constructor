@@ -1,4 +1,7 @@
-import { GenericBlockType } from "../../shared/constants/types-definition.constant";
+import {
+  BlockType,
+  GenericBlockType,
+} from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
 import {
   DragTargetType,
@@ -53,6 +56,12 @@ export const interactions = {
     accepts: ["text", "image", "line"],
   },
 } as const satisfies Interactions;
+
+export const staticElements = [
+  "root",
+  "header",
+  "footer",
+] as const satisfies BlockType[];
 
 export const canBeChildOf = (
   childType: GenericBlockType,

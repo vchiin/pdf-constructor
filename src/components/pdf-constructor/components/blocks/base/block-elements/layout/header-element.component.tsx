@@ -34,6 +34,8 @@ export const HeaderElement: React.FC<BlockElementProps<HeaderBlock>> = ({
         maxHeight: showPreview ? `${root.marginTop * scale}px` : undefined,
       }}
       className="overflow-hidden"
+      draggable={false}
+      deletable={false}
     >
       <BlockList<typeof BlockTypeDefinitions.Header>
         parent={block}

@@ -6,5 +6,6 @@ export const TemplateList = () => (
     <TemplateThumbnail id="template-2" title="Columns" />
     <TemplateThumbnail id="template-3" title="Tables" />
     <TemplateThumbnail id="template-4" title="Object Loan Table" />
+    <TemplateThumbnail id="template-5" title="Tenant List" />
   </div>
 );

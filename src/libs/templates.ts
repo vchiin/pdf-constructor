@@ -1,6 +1,8 @@
 import { Block } from "@/components/pdf-constructor/shared/types/block.types";
 import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import { imageMock } from "@/shared/mock/image.mock";
+import { loanTableMock } from "@/shared/mock/loan-table.mock";
+import { tenantListMock } from "@/shared/mock/tenant-list.mock";
 
 export const fetchTemplates = async (
   id: string
@@ -547,10 +549,30 @@ export const fetchTemplates = async (
     };
   }
 
-  const request = await fetch("http://localhost:3000/api/pdfConstructor/test", {
-    method: "POST",
-  });
+  if (id === "template-4") {
+    return loanTableMock;
+    // const request = await fetch(
+    //   "http://localhost:3000/api/pdfConstructor/test",
+    //   {
+    //     method: "POST",
+    //   }
+    // );
 
-  const response = await request.json();
-  return response;
+    // const response = await request.json();
+    // return response;
+  }
+
+  if (id === "template-5") {
+    return tenantListMock;
+    // const request = await fetch(
+    //   "http://localhost:3000/api/pdfConstructor/test-2",
+    //   {
+    //     method: "POST",
+    //   }
+    // );
+
+    // const response = await request.json();
+    // console.log(response);
+    // return response;
+  }
 };

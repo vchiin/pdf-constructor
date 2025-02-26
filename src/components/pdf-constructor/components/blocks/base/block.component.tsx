@@ -17,6 +17,8 @@ export const Block = <T extends BlockType>({
   className,
   style,
   hideSelectionIndicators,
+  draggable = true,
+  deletable,
 }: BaseBlockElementProps<T>) => {
   const {
     setNodeRef,
@@ -25,7 +27,6 @@ export const Block = <T extends BlockType>({
     attributes,
     transform,
     isDragging,
-    over,
   } = useDraggable({
     id: getId(block.id, { type: "block" }),
     data: {
@@ -33,11 +34,9 @@ export const Block = <T extends BlockType>({
       type: block.type,
       dragTargetType: "block",
     },
+    disabled: !draggable,
   });
 
-  if (isDragging) {
-    console.log(over);
-  }
   const styles: CSSProperties = {
     transform: isDragging ? CSS.Translate.toString(transform) : undefined,
     ...style,
@@ -55,6 +54,8 @@ export const Block = <T extends BlockType>({
         toolbar={toolbar}
         as={toolsAs}
         hideSelectionIndicators={hideSelectionIndicators}
+        draggable={draggable}
+        deletable={deletable}
       />
 
       <Edges

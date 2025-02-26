@@ -16,6 +16,8 @@ type BlockToolsProps = {
   toolbar?: React.ReactNode;
   as?: ElementType;
   hideSelectionIndicators?: boolean;
+  draggable?: boolean;
+  deletable?: boolean;
 };
 
 export const BlockTools = ({
@@ -26,6 +28,8 @@ export const BlockTools = ({
   toolbar,
   as: Component = "div",
   hideSelectionIndicators,
+  draggable = true,
+  deletable = true,
 }: BlockToolsProps) => {
   const { deleteBlock } = useConstructor();
   const { deselectBlock, selectedBlockId } = usePreview();
@@ -39,7 +43,7 @@ export const BlockTools = ({
 
   return (
     <Component>
-      {!hideSelectionIndicators && (
+      {!hideSelectionIndicators && draggable && (
         <button
           ref={setActivatorNodeRef}
           {...listeners}
@@ -52,7 +56,7 @@ export const BlockTools = ({
         </button>
       )}
 
-      {!isDragging && !hideSelectionIndicators && (
+      {!isDragging && !hideSelectionIndicators && deletable && (
         <button
           className="bg-primary text-primary-foreground absolute top-0 right-0 cursor-pointer rounded p-2"
           onClick={(event) => {

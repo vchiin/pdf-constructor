@@ -35,10 +35,10 @@ const ConstructorContext = createContext<ConstructorContextType | null>(null);
 
 const root = generateBlocks("root", null)[0] as RootBlock;
 const header = generateBlocks("header", root.id)[0];
-const footer = generateBlocks("footer", root.id)[0];
+// const footer = generateBlocks("footer", root.id)[0];
 
 root.children.push(header.id);
-root.children.push(footer.id);
+// root.children.push(footer.id);
 
 export const ConstructorProvider = ({
   children,
@@ -54,7 +54,7 @@ export const ConstructorProvider = ({
     map: {
       [root.id]: root,
       [header.id]: header,
-      [footer.id]: footer,
+      // [footer.id]: footer,
     },
     rootId: root.id,
     showPreview: false,

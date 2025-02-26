@@ -13,8 +13,11 @@ import { TableCellBlockThumbnail } from "./blocks/table/table-cell-block-thumbna
 import { BlockColumnGroupThumbnail } from "./blocks/column-group-block.component";
 import { BlockColumnThumbnail } from "./blocks/column-block.component";
 import { PageOrientationBlockThumbnail } from "./blocks/page-orientation-thumbnail.component";
+import { staticElements } from "@/components/pdf-constructor/services/interactions/interactions.service";
 
-const ThumbnailList: Record<Exclude<BlockType, "root">, React.FC> = {
+type AllowedBlockTypes = Exclude<BlockType, (typeof staticElements)[number]>;
+
+const ThumbnailList: Record<AllowedBlockTypes, React.FC> = {
   [BlockTypeDefinitions.Text]: TextBlockThumbnail,
   [BlockTypeDefinitions.Line]: LineBlockThumbnail,
   [BlockTypeDefinitions.Image]: ImageBlockThumbnail,
@@ -32,11 +35,11 @@ type GenericThumbnailProps = {
 };
 
 export const GenericThumbnail: React.FC<GenericThumbnailProps> = ({ type }) => {
-  if (type === "root") {
+  if (staticElements.includes(type as (typeof staticElements)[number])) {
     return null;
   }
 
-  const Thumbnail = ThumbnailList[type];
+  const Thumbnail = ThumbnailList[type as AllowedBlockTypes];
 
   if (!Thumbnail) {
     return null;
