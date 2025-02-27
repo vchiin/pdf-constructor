@@ -2,12 +2,12 @@ import { BlockList } from "../block-list.component";
 
 import { BlockDropzone } from "../../../components/block-dropzone.component";
 import { PageOrientationBlock } from "@/components/pdf-constructor/shared/types/block.types";
-import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
+import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
 import { convertPtToPx } from "@/shared/utils/units.utils";
 import { PAGE_HEIGHT_PT } from "@/libs/pdfmake";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 
 import { CSSProperties, memo } from "react";
 import { PageOrientationBlockToolbar } from "../toolbars/page-orientation-toolbar.component";
@@ -52,6 +52,7 @@ export const PageOrientationElement: React.FC<
   BlockElementProps<PageOrientationBlock>
 > = ({ block }) => {
   const { scale } = useConstructor();
+  console.log(block.orientation);
   const styles: CSSProperties =
     block.orientation === "landscape"
       ? {

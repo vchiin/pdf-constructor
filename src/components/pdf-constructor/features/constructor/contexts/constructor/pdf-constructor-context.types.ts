@@ -1,10 +1,11 @@
-import { DropPayload } from "../../components/blocks/base/shared/types/element.types";
-import { DragPayload } from "../../components/blocks/base/shared/types/element.types";
-import { BlockId } from "../../shared/types/utils.types";
+import { BlockId } from "../../../../shared/types/utils.types";
 
-import { Block, BlockMap } from "../../shared/types/block.types";
-import { Edge } from "../../services/interactions/interactions.types";
-import { GenericBlockType } from "../../shared/constants/types-definition.constant";
+import { Block, BlockMap } from "../../../../shared/types/block.types";
+import {
+  DragTargetType,
+  DropAreaType,
+} from "../../../../features/constructor/services/interactions/interactions.types";
+import { DragPayload, DropPayload } from "../../../dnd/types/payload.types";
 
 export type ConstructorState = {
   map: BlockMap;
@@ -114,22 +115,24 @@ export type ConstructorAction =
   | SwapBlockAction
   | SetScaleAction;
 
-export type DropAreaCallback = (
+export type DropAreaCallback<Type extends DropAreaType> = (
   active: DragPayload,
-  over: DropPayload,
-  blocks: BlockMap,
-  extra: Partial<{
-    edge: Edge;
-  }>
+  over: Extract<DropPayload, { areaType: Type }>,
+  blocks: BlockMap
 ) => ConstructorAction[] | Promise<ConstructorAction[]>;
 
-export type DragTargetCallback = (props: {
-  active: {
-    id: BlockId;
-    type: GenericBlockType;
-  };
+export type DropAreaHandlers = {
+  [Type in DropAreaType]: DropAreaCallback<Type>;
+};
+
+export type DragTargetCallback<Type extends DragTargetType> = (props: {
+  active: Extract<DragPayload, { targetType: Type }>;
   over: Pick<Block, "id" | "type"> | null;
   parentId: BlockId;
   direction: (typeof InsertionPlace)[keyof typeof InsertionPlace];
   blocks: BlockMap;
 }) => ConstructorAction[] | Promise<ConstructorAction[]>;
+
+export type DragTargetHandlers = {
+  [Type in DragTargetType]: DragTargetCallback<Type>;
+};

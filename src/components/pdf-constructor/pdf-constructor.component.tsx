@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { Canvas } from "./components/canvas/canvas.component";
 import Sidebar from "./components/sidebar/sidebar.component";
-import { ConstructorProvider } from "./contexts/constructor/pdf-constructor.context";
-import { PreviewProvider } from "./contexts/preview/pdf-preview.context";
+import { ConstructorProvider } from "./features/constructor/contexts/constructor/pdf-constructor.context";
+import { PreviewProvider } from "./features/constructor/contexts/preview/pdf-preview.context";
 
 import { Tree } from "./components/tree/tree.component";
 import { HelperBar } from "./components/helper-bar/helper-bar.component";

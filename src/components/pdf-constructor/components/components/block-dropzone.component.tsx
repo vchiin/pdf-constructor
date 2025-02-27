@@ -1,18 +1,12 @@
 import { cn } from "@/shared/utils/cn.util";
-import { Active } from "@dnd-kit/core";
 
 import { LandPlotIcon } from "lucide-react";
 
-import {
-  canBeChildOf,
-  getPlaceholderId,
-} from "../../services/interactions/interactions.service";
-import { useDroppable } from "../../hooks/use-dnd.hook";
-import {
-  BlockType,
-  GenericBlockType,
-} from "../../shared/constants/types-definition.constant";
+import { canBeChildOf } from "../../features/constructor/services/interactions/interactions.service";
+import { BlockType } from "../../shared/constants/types-definition.constant";
 import { BlockId } from "../../shared/types/utils.types";
+import { useDrop } from "../../features/dnd/hooks/use-drop.hook";
+import { useState } from "react";
 
 type BlockDropzoneProps = {
   type: BlockType;
@@ -23,15 +17,7 @@ type BlockDropzoneProps = {
   hidden?: boolean;
 };
 
-const isDroppable = (active: Active | null, parentType: GenericBlockType) => {
-  if (!active) return false;
-
-  const activeType = active.data.current?.type as GenericBlockType;
-
-  if (!activeType) return false;
-
-  return canBeChildOf(activeType, parentType);
-};
+type DropState = "idle" | "valid" | "invalid";
 
 export const BlockDropzone: React.FC<BlockDropzoneProps> = ({
   parentId,
@@ -39,23 +25,38 @@ export const BlockDropzone: React.FC<BlockDropzoneProps> = ({
   className,
   icon,
 }) => {
-  const { setNodeRef, isOver, active } = useDroppable({
-    id: getPlaceholderId(parentId),
-    data: {
-      id: parentId,
-      type,
-    },
-  });
+  const [canBeDropped, setCanBeDropped] = useState<DropState>("idle");
 
-  const canBeDropped = isDroppable(active, type);
+  const [ref] = useDrop<HTMLDivElement>(
+    {
+      areaType: "placeholder",
+      elementId: parentId,
+      elementType: type,
+    },
+    {
+      onDragEnter: (data) => {
+        if (canBeChildOf(data.elementType, type)) {
+          setCanBeDropped("valid");
+        } else {
+          setCanBeDropped("invalid");
+        }
+      },
+      onDragLeave: () => {
+        setCanBeDropped("idle");
+      },
+      onDrop: () => {
+        setCanBeDropped("idle");
+      },
+    }
+  );
 
   return (
     <div
-      ref={setNodeRef}
+      ref={ref}
       className={cn(
         "flex flex-1 items-center justify-center border border-gray-100 bg-gray-50 p-4 transition-colors",
-        isOver && canBeDropped && "bg-green-100",
-        isOver && !canBeDropped && "bg-red-100",
+        canBeDropped === "valid" && "bg-green-100",
+        canBeDropped === "invalid" && "bg-red-100",
         className
       )}
     >

@@ -1,13 +1,12 @@
 import {
   BlockType,
   GenericBlockType,
-} from "../../shared/constants/types-definition.constant";
-import { BlockId } from "../../shared/types/utils.types";
+} from "../../../../shared/constants/types-definition.constant";
+import { BlockId } from "../../../../shared/types/utils.types";
 import {
   DragTargetType,
   DragThumbnailId,
   DragTemplateId,
-  DropAreaId,
   DropAreaType,
   Edge,
   EdgeId,
@@ -104,20 +103,6 @@ export const getEdgeId = <
 export const getPlaceholderId = <Id extends BlockId>(
   id: Id
 ): PlaceholderId<Id> => `${id}_placeholder`;
-
-export const getDropAreaType = (
-  id: DropAreaId
-):
-  | [Exclude<DropAreaType, "edge">, undefined]
-  | [Extract<DropAreaType, "edge">, Edge] => {
-  const [_, type, position] = id.split("_");
-
-  if (type === "edge") {
-    return ["edge", position as Edge];
-  }
-
-  return ["placeholder", undefined];
-};
 
 export const getId = <T extends DropAreaType | DragTargetType>(
   id: BlockId,

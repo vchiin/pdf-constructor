@@ -2,17 +2,16 @@ import { TrashIcon } from "lucide-react";
 
 import { GripIcon } from "lucide-react";
 import { Block } from "@/components/pdf-constructor/shared/types/block.types";
-import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
-import { ElementType, RefCallback } from "react";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
-import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
+
+import { ElementType, RefCallback, RefObject } from "react";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 import { createPortal } from "react-dom";
 
 type BlockToolsProps = {
   block: Block;
+  dragRef?: RefCallback<HTMLButtonElement> | RefObject<HTMLButtonElement>;
   isDragging: boolean;
-  setActivatorNodeRef: RefCallback<HTMLElement | null>;
-  listeners?: SyntheticListenerMap;
   toolbar?: React.ReactNode;
   as?: ElementType;
   hideSelectionIndicators?: boolean;
@@ -22,9 +21,8 @@ type BlockToolsProps = {
 
 export const BlockTools = ({
   block,
+  dragRef,
   isDragging,
-  setActivatorNodeRef,
-  listeners,
   toolbar,
   as: Component = "div",
   hideSelectionIndicators,
@@ -32,8 +30,7 @@ export const BlockTools = ({
   deletable = true,
 }: BlockToolsProps) => {
   const { deleteBlock } = useConstructor();
-  const { deselectBlock, selectedBlockId } = usePreview();
-  const { containerRef } = usePreview();
+  const { deselectBlock, selectedBlockId, containerRef } = usePreview();
 
   const isActive = selectedBlockId === block.id;
 
@@ -45,12 +42,12 @@ export const BlockTools = ({
     <Component>
       {!hideSelectionIndicators && draggable && (
         <button
-          ref={setActivatorNodeRef}
-          {...listeners}
           className="bg-primary text-primary-foreground absolute top-0 left-0 cursor-pointer rounded p-2"
-          onClick={(event) => {
-            event.stopPropagation();
-          }}
+          ref={dragRef}
+
+          // onClick={(event) => {
+          //   event.stopPropagation();
+          // }}
         >
           <GripIcon />
         </button>

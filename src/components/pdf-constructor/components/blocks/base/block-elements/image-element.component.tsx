@@ -7,7 +7,7 @@ import { ImageBlock } from "@/components/pdf-constructor/shared/types/block.type
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
 import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
-import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 
 export const ImageElement: React.FC<BlockElementProps<ImageBlock>> = ({
   block,

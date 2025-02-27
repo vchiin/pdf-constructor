@@ -8,7 +8,7 @@ import {
   findBlock,
   findChildrenBlocks,
   isContainerBlock,
-} from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.utils";
+} from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
 import {
   BlockType,
   BlockTypeDefinitions,

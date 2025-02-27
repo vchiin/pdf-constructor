@@ -3,7 +3,7 @@ import {
   TableCellBlock,
 } from "@/components/pdf-constructor/shared/types/block.types";
 import { Block } from "../../block.component";
-import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
+import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockDropzone } from "@/components/pdf-constructor/components/components/block-dropzone.component";
 import { Columns2Icon } from "lucide-react";
 
@@ -14,7 +14,7 @@ import { WidthResizable } from "@/components/pdf-constructor/components/componen
 
 import { calculateWidths } from "@/components/pdf-constructor/components/components/resizable/resizable.utils";
 import { useChildrenWidth } from "@/components/pdf-constructor/hooks/use-children-width.hook";
-import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 import { memo } from "react";
 
 const TableRowContent: React.FC<BlockElementProps<TableRowBlock>> = memo(

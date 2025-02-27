@@ -1,16 +1,14 @@
 import { Block } from "@/components/pdf-constructor/shared/types/block.types";
 import {
-  DragTargetType,
   Edge,
   Interaction,
-} from "@/components/pdf-constructor/services/interactions/interactions.types";
+} from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.types";
 import {
   BlockType,
-  CustomBlockTypeDefinitions,
   GenericBlockType,
 } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 import { CSSProperties, ElementType } from "react";
-import { interactions } from "@/components/pdf-constructor/services/interactions/interactions.service";
+import { interactions } from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.service";
 
 export type BlockElementProps<T extends Block> = {
   block: T;
@@ -53,21 +51,3 @@ export type GenericBlockElementMap<T extends BlockType> =
           : never
       : never
     : never;
-
-export type DragPayload =
-  | {
-      id: Block["id"] | GenericBlockType | string;
-      type: GenericBlockType;
-      dragTargetType: Exclude<DragTargetType, "template">;
-    }
-  | {
-      id: Block["id"] | GenericBlockType | string;
-      type: typeof CustomBlockTypeDefinitions.Template;
-      title: string;
-      dragTargetType: Extract<DragTargetType, "template">;
-    };
-
-export type DropPayload = {
-  id: Block["id"];
-  type: BlockType;
-};

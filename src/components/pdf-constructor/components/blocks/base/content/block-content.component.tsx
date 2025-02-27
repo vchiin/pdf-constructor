@@ -8,25 +8,23 @@ import {
   useImperativeHandle,
   useRef,
 } from "react";
-import { DraggableAttributes } from "@dnd-kit/core";
 
 import { cn } from "@/shared/utils/cn.util";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
-import { useScroller } from "@/components/pdf-constructor/contexts/scroller/scroller.context";
-import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
+import { useScroller } from "@/components/pdf-constructor/features/constructor/contexts/scroller/scroller.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 
 type BlockContentProps = Omit<
   BaseBlockElementProps<BlockType>,
   "toolbar" | "positions"
 > & {
   children?: React.ReactNode;
-  attributes?: DraggableAttributes;
   style?: CSSProperties;
-  isDragging: boolean;
   isOver: boolean;
   as: ElementType;
   className?: string;
   hideSelectionIndicators?: boolean;
+  isDragging?: boolean;
 };
 
 export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
@@ -34,7 +32,6 @@ export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
     {
       children,
       block,
-      attributes,
       isDragging,
       style,
       isOver,
@@ -65,7 +62,6 @@ export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
 
     return (
       <Component
-        {...attributes}
         ref={componentRef}
         style={style}
         className={cn(

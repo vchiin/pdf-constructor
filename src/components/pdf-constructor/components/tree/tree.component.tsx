@@ -1,9 +1,9 @@
 import { cn } from "@/shared/utils/cn.util";
-import { useBlock } from "../../contexts/constructor/pdf-constructor-context.hooks";
-import { useConstructor } from "../../contexts/constructor/pdf-constructor.context";
+import { useBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 import { TreeList } from "./tree-list.component";
 import { useRef } from "react";
-import { ScrollerProvider } from "../../contexts/scroller/scroller.context";
+import { ScrollerProvider } from "@/components/pdf-constructor/features/constructor/contexts/scroller/scroller.context";
 import { RootBlock } from "../../shared/types/block.types";
 
 type TreeProps = {

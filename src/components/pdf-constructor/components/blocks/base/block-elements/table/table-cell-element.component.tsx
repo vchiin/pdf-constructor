@@ -1,17 +1,17 @@
 import { TableCellBlock } from "@/components/pdf-constructor/shared/types/block.types";
 import { Block } from "../../block.component";
 import { BlockList } from "../../block-list.component";
-import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
+import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockElementProps } from "../../shared/types/element.types";
 import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 import { memo, useMemo } from "react";
-import { findParentBlock } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.utils";
+import { findParentBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
 
 import { ImageElement } from "../image-element.component";
 import { LineElement } from "../line-element.component";
 import { TextElement } from "../text-element.component";
-import { Edge } from "@/components/pdf-constructor/services/interactions/interactions.types";
+import { Edge } from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.types";
 
 const TableCellContent: React.FC<BlockElementProps<TableCellBlock>> = memo(
   ({ block }) => {

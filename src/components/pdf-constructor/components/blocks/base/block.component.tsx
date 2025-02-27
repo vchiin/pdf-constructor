@@ -1,12 +1,10 @@
+import { createPortal } from "react-dom";
 import { BaseBlockElementProps } from "./shared/types/element.types";
 import { Block as BlockType } from "@/components/pdf-constructor/shared/types/block.types";
-import { CSS } from "@dnd-kit/utilities";
 import { BlockContent } from "./content/block-content.component";
 import { BlockTools } from "./content/block-tools.component";
-import { CSSProperties } from "react";
 import { Edges } from "./content/edges.component";
-import { useDraggable } from "@/components/pdf-constructor/hooks/use-dnd.hook";
-import { getId } from "@/components/pdf-constructor/services/interactions/interactions.service";
+import { useDragElement } from "@/components/pdf-constructor/features/dnd/hooks/use-drag-element.hook";
 
 export const Block = <T extends BlockType>({
   children,
@@ -15,32 +13,19 @@ export const Block = <T extends BlockType>({
   positions = ["top", "bottom"],
   as = "div",
   className,
-  style,
   hideSelectionIndicators,
   draggable = true,
   deletable,
+  style,
 }: BaseBlockElementProps<T>) => {
-  const {
-    setNodeRef,
-    listeners,
-    setActivatorNodeRef,
-    attributes,
-    transform,
-    isDragging,
-  } = useDraggable({
-    id: getId(block.id, { type: "block" }),
-    data: {
-      id: block.id,
-      type: block.type,
-      dragTargetType: "block",
-    },
-    disabled: !draggable,
+  const [ref, { dragging, dragHandleRef }] = useDragElement<
+    HTMLDivElement,
+    HTMLButtonElement
+  >({
+    targetType: "block",
+    elementId: block.id,
+    elementType: block.type,
   });
-
-  const styles: CSSProperties = {
-    transform: isDragging ? CSS.Translate.toString(transform) : undefined,
-    ...style,
-  };
 
   const toolsAs = as === "tr" ? "td" : "div";
 
@@ -48,9 +33,8 @@ export const Block = <T extends BlockType>({
     <>
       <BlockTools
         block={block}
-        isDragging={isDragging}
-        setActivatorNodeRef={setActivatorNodeRef}
-        listeners={listeners}
+        dragRef={dragHandleRef}
+        isDragging={false}
         toolbar={toolbar}
         as={toolsAs}
         hideSelectionIndicators={hideSelectionIndicators}
@@ -58,33 +42,39 @@ export const Block = <T extends BlockType>({
         deletable={deletable}
       />
 
-      <Edges
-        data={{
-          id: block.id,
-          type: block.type,
-        }}
-        positions={positions}
-        as={toolsAs}
-        type="block"
-        isParentDragged={isDragging}
-      />
+      {dragging.type === "over" && (
+        <Edges
+          data={{
+            elementId: block.id,
+            elementType: block.type,
+            areaSubtype: "block",
+          }}
+          positions={positions}
+          as={toolsAs}
+        />
+      )}
     </>
   );
 
   return (
     <BlockContent
       block={block}
-      style={styles}
-      ref={setNodeRef}
-      isDragging={isDragging}
-      attributes={attributes}
+      ref={ref}
       isOver={false}
       as={as}
       className={className}
       hideSelectionIndicators={hideSelectionIndicators}
+      style={style}
     >
       {children}
       {tools}
+
+      {dragging.type === "preview" &&
+        dragging.container !== null &&
+        createPortal(
+          <div className="rounded bg-white shadow">{children}</div>,
+          dragging.container
+        )}
     </BlockContent>
   );
 };

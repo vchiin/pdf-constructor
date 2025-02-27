@@ -4,7 +4,7 @@ import {
   useBlock,
   useBlockChildren,
   useBlockTypedChild,
-} from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
+} from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockList } from "../block-list.component";
 
 import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
@@ -16,7 +16,7 @@ import { TableElement } from "./table/table-element.component";
 import { TextElement } from "./text-element.component";
 import { PageOrientationElement } from "./page-orientation-element.component";
 import { HeaderElement } from "./layout/header-element.component";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 import { cn } from "@/shared/utils/cn.util";
 import { FooterElement } from "./layout/footer-element.component copy";
 import { Block } from "../block.component";

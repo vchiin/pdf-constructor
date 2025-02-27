@@ -3,14 +3,14 @@ import { BlockList } from "../block-list.component";
 import { BlockDropzone } from "../../../components/block-dropzone.component";
 import { Columns2Icon } from "lucide-react";
 import { ColumnBlock } from "@/components/pdf-constructor/shared/types/block.types";
-import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
+import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
 import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 import { ImageElement } from "./image-element.component";
 import { TextElement } from "./text-element.component";
 import { LineElement } from "./line-element.component";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 
 export const ColumnElement: React.FC<BlockElementProps<ColumnBlock>> = ({
   block,

@@ -1,4 +1,4 @@
-import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 import { cn } from "@/shared/utils/cn.util";
 import { XIcon } from "lucide-react";
 

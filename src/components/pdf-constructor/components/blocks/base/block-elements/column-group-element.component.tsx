@@ -6,13 +6,13 @@ import {
   ColumnGroupBlock,
 } from "@/components/pdf-constructor/shared/types/block.types";
 import { ColumnElement } from "./column-element.component";
-import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
+import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { Block as BlockType } from "@/components/pdf-constructor/shared/types/block.types";
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
 import { useChildrenWidth } from "@/components/pdf-constructor/hooks/use-children-width.hook";
 import { BlockElementProps } from "../shared/types/element.types";
 import { Block } from "../block.component";
-import { usePreview } from "@/components/pdf-constructor/contexts/preview/pdf-preview.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 
 const withResizable = (block: BlockType) => {
   return (props: ItemsProps) => {

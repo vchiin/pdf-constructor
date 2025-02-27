@@ -3,12 +3,12 @@ import { Block } from "../../shared/types/block.types";
 import {
   useBlockChildren,
   useHasChild,
-} from "../../contexts/constructor/pdf-constructor-context.hooks";
-import { isContainerBlock } from "../../contexts/constructor/pdf-constructor-context.utils";
+} from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
+import { isContainerBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
 import { TreeBlock } from "./tree-block.component";
 import { useEffect, useState } from "react";
 
-import { usePreview } from "../../contexts/preview/pdf-preview.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 
 type TreeListProps = {
   block: Block;

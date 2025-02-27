@@ -13,7 +13,7 @@ import { TableCellBlockThumbnail } from "./blocks/table/table-cell-block-thumbna
 import { BlockColumnGroupThumbnail } from "./blocks/column-group-block.component";
 import { BlockColumnThumbnail } from "./blocks/column-block.component";
 import { PageOrientationBlockThumbnail } from "./blocks/page-orientation-thumbnail.component";
-import { staticElements } from "@/components/pdf-constructor/services/interactions/interactions.service";
+import { staticElements } from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.service";
 
 type AllowedBlockTypes = Exclude<BlockType, (typeof staticElements)[number]>;
 

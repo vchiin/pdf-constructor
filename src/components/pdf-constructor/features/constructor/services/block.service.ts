@@ -10,12 +10,12 @@ import {
   TableBlock,
   TableCellBlock,
   TextBlock,
-} from "../shared/types/block.types";
+} from "../../../shared/types/block.types";
 import {
   BlockTypeDefinitions,
   BlockType,
-} from "../shared/constants/types-definition.constant";
-import { BlockId } from "../shared/types/utils.types";
+} from "../../../shared/constants/types-definition.constant";
+import { BlockId } from "../../../shared/types/utils.types";
 
 // export const generateId = () =>
 //   Math.random()

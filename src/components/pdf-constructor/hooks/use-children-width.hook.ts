@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BlockId } from "../shared/types/utils.types";
-import { useConstructor } from "../contexts/constructor/pdf-constructor.context";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 
 export const useChildrenWidth = (parentId: BlockId, childrenAmount: number) => {
   const [widths, setWidths] = useState<number[]>(

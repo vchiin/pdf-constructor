@@ -18,6 +18,7 @@ Clone the repository and run `pnpm install`. After successful dependencies insta
 - [ ] Fix table column resizing (it works only when the first column gets resized)
 - [ ] Blocks Toolbar
 - [ ] UI Updates
+- [ ] Add virtualization
 
 _Not sure how can be implemented_
 

@@ -1,5 +1,5 @@
 import { createPDF } from "@/libs/pdfmake";
-import { useConstructor } from "../../contexts/constructor/pdf-constructor.context";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 
 import { ToolbarView } from "./components/toolbar-view.component";
 import { prepareDocument } from "@/libs/conversion";
@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/shared/utils/cn.util";
 import { BlocksView } from "./components/blocks-view.component";
 import { Slider } from "@/components/ui/slider";
-import { usePreview } from "../../contexts/preview/pdf-preview.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 
 type SidebarProps = {
   className?: string;

@@ -1,7 +1,7 @@
 import { Block } from "../../block.component";
 import { TableBlock } from "@/components/pdf-constructor/shared/types/block.types";
 
-import { useBlockChildren } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
+import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 
 import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 import { TableRowElement } from "./table-row-element.component";

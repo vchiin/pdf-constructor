@@ -9,12 +9,12 @@ import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/consta
 import {
   useBlock,
   useBlockChildren,
-} from "@/components/pdf-constructor/contexts/constructor/pdf-constructor-context.hooks";
+} from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 
 import { TextElement } from "../text-element.component";
 import { ImageElement } from "../image-element.component";
 import { LineElement } from "../line-element.component";
-import { useConstructor } from "@/components/pdf-constructor/contexts/constructor/pdf-constructor.context";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 import { ColumnGroupElement } from "../column-group-element.component";
 
 export const FooterElement: React.FC<BlockElementProps<FooterBlock>> = ({

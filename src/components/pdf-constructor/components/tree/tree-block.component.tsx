@@ -1,15 +1,14 @@
 import { cn } from "@/shared/utils/cn.util";
 import { Block } from "../../shared/types/block.types";
 import { TreeBlockInformation } from "./tree-block-information.component";
-import { CSSProperties, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { ChevronDownIcon, ChevronUpIcon, GripIcon } from "lucide-react";
-import { isContainerBlock } from "../../contexts/constructor/pdf-constructor-context.utils";
+import { isContainerBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
 import { Edges } from "../blocks/base/content/edges.component";
-import { useDraggable } from "../../hooks/use-dnd.hook";
-import { getId } from "../../services/interactions/interactions.service";
-import { CSS } from "@dnd-kit/utilities";
-import { useScroller } from "../../contexts/scroller/scroller.context";
-import { usePreview } from "../../contexts/preview/pdf-preview.context";
+import { useScroller } from "@/components/pdf-constructor/features/constructor/contexts/scroller/scroller.context";
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
+import { useDragElement } from "../../features/dnd/hooks/use-drag-element.hook";
+import { createPortal } from "react-dom";
 
 type TreeBlockProps = {
   block: Block;
@@ -25,22 +24,14 @@ export const TreeBlock = ({
   const { selectBlock, selectedBlockId } = usePreview();
   const { scrollTo, calculateOffset } = useScroller();
   const isActive = selectedBlockId === block.id;
-  const ref = useRef<HTMLDivElement>(null);
 
-  const {
-    setNodeRef,
-    setActivatorNodeRef,
-    listeners,
-    attributes,
-    transform,
-    isDragging,
-  } = useDraggable({
-    id: getId(block.id, { type: "tree-item" }),
-    data: {
-      id: block.id,
-      type: block.type,
-      dragTargetType: "tree-item",
-    },
+  const [ref, { dragHandleRef, dragging }] = useDragElement<
+    HTMLDivElement,
+    HTMLSpanElement
+  >({
+    targetType: "leaf",
+    elementId: block.id,
+    elementType: block.type,
   });
 
   useEffect(() => {
@@ -55,19 +46,9 @@ export const TreeBlock = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBlockId, block]);
 
-  setNodeRef(ref.current);
-
-  const style: CSSProperties = {
-    transform: isDragging ? CSS.Translate.toString(transform) : undefined,
-    zIndex: isDragging ? 50 : undefined,
-    backgroundColor: isDragging ? "#fff" : undefined,
-  };
-
   return (
     <div
       ref={ref}
-      {...attributes}
-      style={style}
       role="button"
       className={cn(
         "relative flex cursor-pointer gap-x-1 rounded border px-3 py-1",
@@ -75,11 +56,7 @@ export const TreeBlock = ({
       )}
       onClick={() => selectBlock(block.id)}
     >
-      <span
-        ref={setActivatorNodeRef}
-        {...listeners}
-        className="text-xs font-bold"
-      >
+      <span ref={dragHandleRef} className="text-xs font-bold">
         <GripIcon className="h-4 w-4" />
       </span>
       <span className="text-xs font-bold">{block.id}</span>
@@ -102,15 +79,26 @@ export const TreeBlock = ({
         </button>
       )}
 
-      <Edges
-        data={{
-          id: block.id,
-          type: block.type,
-        }}
-        type="tree-item"
-        positions={["bottom", "top"]}
-        isParentDragged={isDragging}
-      />
+      {dragging.type === "over" && (
+        <Edges
+          data={{
+            elementId: block.id,
+            elementType: block.type,
+            areaSubtype: "leaf",
+          }}
+          positions={["bottom", "top"]}
+        />
+      )}
+
+      {dragging.type === "preview" &&
+        dragging.container !== null &&
+        createPortal(
+          <div className="flex gap-x-1 rounded border px-3 py-1">
+            <span className="text-xs font-bold">{block.id}</span>
+            <span className="text-xs font-bold uppercase">{block.type}</span>
+          </div>,
+          dragging.container
+        )}
     </div>
   );
 };

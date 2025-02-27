@@ -1,26 +1,34 @@
 import { fetchTemplates } from "@/libs/templates";
 
-import { generateBlocks, parseTemplates } from "../../services/block.service";
-import { canBeChildOf } from "../../services/interactions/interactions.service";
+import {
+  generateBlocks,
+  parseTemplates,
+} from "@/components/pdf-constructor/features/constructor/services/block.service";
+import { canBeChildOf } from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.service";
 import {
   DragTargetType,
   DropAreaType,
-} from "../../services/interactions/interactions.types";
-import { Edge } from "../../services/interactions/interactions.types";
+} from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.types";
+import { Edge } from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.types";
 import {
   BlockType,
   BlockTypeDefinitions,
-} from "../../shared/constants/types-definition.constant";
-import { GenericBlockType } from "../../shared/constants/types-definition.constant";
+} from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { GenericBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
 
-import { BlockId } from "../../shared/types/utils.types";
-import { Block, BlockMap } from "../../shared/types/block.types";
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
+import {
+  Block,
+  BlockMap,
+} from "@/components/pdf-constructor/shared/types/block.types";
 import {
   InsertionPlace,
   ActionTypes,
-  DropAreaCallback,
   ConstructorAction,
   DragTargetCallback,
+  DropAreaHandlers,
+  DropAreaCallback,
+  DragTargetHandlers,
 } from "./pdf-constructor-context.types";
 
 export const findBlock = (id: BlockId, blocks: BlockMap) => {
@@ -70,6 +78,27 @@ export const hasChild = (
 
   return block.children.some((blockChildId) =>
     hasChild(blockChildId, childId, blocks)
+  );
+};
+
+export const hasDescendant = (
+  descendantId: BlockId,
+  parentId: BlockId,
+  blocks: BlockMap
+): boolean => {
+  const parent = findBlock(parentId, blocks);
+
+  if (!parent || !isContainerBlock(parent)) {
+    return false;
+  }
+
+  const containsDescendant = parent.children.includes(descendantId);
+  if (containsDescendant) {
+    return true;
+  }
+
+  return parent.children.some((child) =>
+    hasDescendant(descendantId, child, blocks)
   );
 };
 
@@ -438,17 +467,17 @@ const handleTableCellInsertion = (
   };
 };
 
-const prepareBlockCreation: DragTargetCallback = ({
+const prepareBlockCreation: DragTargetCallback<DragTargetType> = ({
   active,
   over,
   parentId,
   direction,
   blocks,
 }) => {
-  switch (active.type) {
+  switch (active.elementType) {
     case BlockTypeDefinitions.TableCell: {
       const cells = handleTableCellInsertion(
-        active.type,
+        active.elementType,
         over?.id ?? null,
         parentId,
         blocks
@@ -470,7 +499,7 @@ const prepareBlockCreation: DragTargetCallback = ({
       actions.push({
         type: ActionTypes.CREATE_BLOCK,
         payload: {
-          blocks: generateBlocks(active.type, parentId),
+          blocks: generateBlocks(active.elementType, parentId),
           overId: over?.id ?? null,
           direction,
         },
@@ -500,7 +529,7 @@ const prepareBlockCreation: DragTargetCallback = ({
         {
           type: ActionTypes.CREATE_BLOCK,
           payload: {
-            blocks: generateBlocks(active.type, parentId, columns),
+            blocks: generateBlocks(active.elementType, parentId, columns),
             overId: over?.id ?? null,
             direction,
           },
@@ -512,7 +541,7 @@ const prepareBlockCreation: DragTargetCallback = ({
         {
           type: ActionTypes.CREATE_BLOCK,
           payload: {
-            blocks: generateBlocks(active.type as BlockType, parentId),
+            blocks: generateBlocks(active.elementType as BlockType, parentId),
             overId: over?.id ?? null,
             direction,
           },
@@ -522,18 +551,18 @@ const prepareBlockCreation: DragTargetCallback = ({
   }
 };
 
-const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
-  "tree-item": ({ active, over, parentId, direction }) => {
+const DragTargetActions: DragTargetHandlers = {
+  leaf: ({ active, over, parentId, direction }) => {
     if (
       over &&
       over.type === BlockTypeDefinitions.TableCell &&
-      active.type === BlockTypeDefinitions.TableCell
+      active.elementType === BlockTypeDefinitions.TableCell
     ) {
       return [
         {
           type: ActionTypes.SWAP_BLOCK,
           payload: {
-            blockId: active.id as BlockId,
+            blockId: active.elementId,
             targetId: over.id,
           },
         },
@@ -544,7 +573,7 @@ const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
       {
         type: ActionTypes.MOVE_BLOCK,
         payload: {
-          blockId: active.id as BlockId,
+          blockId: active.elementId,
           targetId: over?.id ?? null,
           targetParentId: parentId,
           direction,
@@ -556,13 +585,13 @@ const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
     if (
       over &&
       over.type === BlockTypeDefinitions.TableCell &&
-      active.type === BlockTypeDefinitions.TableCell
+      active.elementType === BlockTypeDefinitions.TableCell
     ) {
       return [
         {
           type: ActionTypes.SWAP_BLOCK,
           payload: {
-            blockId: active.id as BlockId,
+            blockId: active.elementId,
             targetId: over.id,
           },
         },
@@ -573,7 +602,7 @@ const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
       {
         type: ActionTypes.MOVE_BLOCK,
         payload: {
-          blockId: active.id as BlockId,
+          blockId: active.elementId,
           targetId: over?.id ?? null,
           targetParentId: parentId,
           direction,
@@ -610,71 +639,70 @@ const DragTargetActions: Record<DragTargetType, DragTargetCallback> = {
   },
 };
 
-const DropAreaCallbacks: Record<DropAreaType, DropAreaCallback> = {
-  edge: (active, over, blocks, extra) => {
+const getDragTargetAction = <Type extends DragTargetType>(
+  type: Type
+): DragTargetCallback<Type> => {
+  return DragTargetActions[type];
+};
+
+const DropAreaCallbacks: DropAreaHandlers = {
+  edge: (active, over, blocks) => {
     // templates can't be placed onto edges, only on the top level placeholder
-    if (active.dragTargetType === "template") {
+    if (active.targetType === "template") {
       return [];
     }
 
-    const targetParent = findParentBlock(over.id, blocks);
+    const targetParent = findParentBlock(over.elementId, blocks);
 
     if (!targetParent) {
       return [];
     }
 
-    if (!canBeChildOf(active.type, targetParent.type)) {
+    if (!canBeChildOf(active.elementType, targetParent.type)) {
       return [];
     }
 
-    if (!extra.edge) {
-      return [];
-    }
-
-    const dragAction = DragTargetActions[active.dragTargetType];
+    const dragAction = getDragTargetAction(active.targetType);
 
     if (!dragAction) {
       return [];
     }
 
     return dragAction({
-      active: {
-        id: active.id as BlockId,
-        type: active.type,
-      },
+      active,
       over: {
-        id: over.id,
-        type: over.type,
+        id: over.elementId,
+        type: over.elementType,
       },
       parentId: targetParent.id,
-      direction: getMoveBlockDirection(extra.edge),
+      direction: getMoveBlockDirection(over.position),
       blocks,
     });
   },
   placeholder: (active, over, blocks) => {
-    if (!canBeChildOf(active.type, over.type)) {
+    if (!canBeChildOf(active.elementType, over.elementType)) {
       return [];
     }
 
-    const dragAction = DragTargetActions[active.dragTargetType];
+    const dragAction = getDragTargetAction(active.targetType);
 
+    console.log(active, over);
     if (!dragAction) {
       return [];
     }
 
     return dragAction({
-      active: {
-        id: active.id as BlockId,
-        type: active.type,
-      },
+      active,
       over: null,
-      parentId: over.id,
+      parentId: over.elementId,
       direction: InsertionPlace.BEFORE,
       blocks,
     });
   },
 };
 
-export const getDropAreaCallback = (areaType: DropAreaType) => {
+export const getDropAreaCallback = <T extends DropAreaType>(
+  areaType: T
+): DropAreaCallback<T> => {
   return DropAreaCallbacks[areaType];
 };

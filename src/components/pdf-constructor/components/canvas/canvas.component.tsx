@@ -1,12 +1,13 @@
-import { useConstructor } from "../../contexts/constructor/pdf-constructor.context";
-import { useBlock } from "../../contexts/constructor/pdf-constructor-context.hooks";
+import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
+import { useBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { RootBlock } from "../../shared/types/block.types";
 import { PAGE_WIDTH_PT } from "@/libs/pdfmake";
 import { convertPtToPx } from "@/shared/utils/units.utils";
 
 import { useEffect, useRef } from "react";
-import { ScrollerProvider } from "../../contexts/scroller/scroller.context";
+import { ScrollerProvider } from "@/components/pdf-constructor/features/constructor/contexts/scroller/scroller.context";
 import { RootElement } from "../blocks/base/block-elements/root-element.component";
+import { autoScrollForElements } from "@atlaskit/pragmatic-drag-and-drop-auto-scroll/element";
 
 type CanvasProps = {
   className?: string;
@@ -24,6 +25,18 @@ export const Canvas: React.FC<CanvasProps> = ({ className }) => {
       setScale(parentWidth / convertPtToPx(PAGE_WIDTH_PT));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const element = wrapperRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    return autoScrollForElements({
+      element,
+    });
   }, []);
 
   return (
