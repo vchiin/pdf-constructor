@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { PreviewContextType } from "./pdf-preview-context.types";
-import { BlockId } from "../../shared/types/utils.types";
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 
 const PreviewContext = createContext<PreviewContextType | null>(null);
 

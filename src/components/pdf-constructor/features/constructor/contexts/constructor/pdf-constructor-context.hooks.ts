@@ -1,13 +1,17 @@
 import { useMemo } from "react";
-import { BlockId } from "../../shared/types/utils.types";
+
 import {
   findBlock,
   findChildrenBlocks,
   hasChild,
 } from "./pdf-constructor-context.utils";
 import { useConstructor } from "./pdf-constructor.context";
-import { BlockType } from "../../shared/constants/types-definition.constant";
-import { Block, ContainerBlock } from "../../shared/types/block.types";
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
+import { BlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import {
+  Block,
+  ContainerBlock,
+} from "@/components/pdf-constructor/shared/types/block.types";
 
 export const useBlockChildren = (id: BlockId) => {
   const { map } = useConstructor();

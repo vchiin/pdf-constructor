@@ -18,6 +18,7 @@ import {
 import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
+
 import { DragPayload, DropPayload } from "../../../dnd/types/payload.types";
 
 const ConstructorContext = createContext<ConstructorContextType | null>(null);
@@ -114,44 +115,6 @@ export const ConstructorProvider = ({
     );
   }, [state.map, dispatch]);
 
-  // const handleDragEnd = useCallback(
-  //   async (event: DragEndEvent) => {
-  //     const { active, over, collisions } = event;
-  //     if (!over || active.id === over.id) {
-  //       return;
-  //     }
-  //     if (!collisions) {
-  //       return;
-  //     }
-  //     const activePayload = active.data?.current as DragPayload;
-  //     for (const collision of collisions) {
-  //       const collisionData = collision.data as {
-  //         droppableContainer: DroppableContainer;
-  //         value: number;
-  //       };
-  //       const over = collisionData.droppableContainer;
-  //       const overPayload = over.data.current as DropPayload;
-  //       const overId = over.id as DropAreaId;
-  //       const [overAreaType, overEdge] = getDropAreaType(overId);
-  //       const dropAreaCallback = getDropAreaCallback(overAreaType);
-  //       if (!dropAreaCallback) {
-  //         return;
-  //       }
-  //       const actions = await dropAreaCallback(
-  //         activePayload,
-  //         overPayload,
-  //         state.map,
-  //         {
-  //           edge: overEdge,
-  //         }
-  //       );
-  //       await Promise.allSettled(actions.map((action) => dispatch(action)));
-  //       return;
-  //     }
-  //   },
-  //   [dispatch, state.map]
-  // );
-
   const togglePreview = useCallback(() => {
     dispatch({
       type: ActionTypes.TOGGLE_PREVIEW,
@@ -171,15 +134,7 @@ export const ConstructorProvider = ({
         setScale,
       }}
     >
-      {/* <DndContext
-        onDragEnd={handleDragEnd}
-        sensors={sensors}
-        collisionDetection={pointerWithin}
-      > */}
       {children}
-
-      {/* <DragPreview />
-      </DndContext> */}
     </ConstructorContext.Provider>
   );
 };
