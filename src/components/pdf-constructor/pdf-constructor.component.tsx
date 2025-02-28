@@ -17,6 +17,9 @@ export const PDFConstructor = () => {
       <PreviewProvider>
         <div className="h-screen w-screen px-4 py-8">
           <TransformWrapper
+            doubleClick={{
+              disabled: true,
+            }}
             panning={{
               excluded: ["panningDisabled"],
               wheelPanning: true,
