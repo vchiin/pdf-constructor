@@ -1,6 +1,5 @@
 import {
   Block,
-  BreakBlock,
   ColumnBlock,
   ColumnGroupBlock,
   ImageBlock,
@@ -105,6 +104,7 @@ export const generateBlocks = <Type extends BlockType>(
           marginRight: 54,
           marginTop: 54,
           marginBottom: 54,
+          orientation: "portrait",
         },
       ] satisfies [RootBlock];
     case BlockTypeDefinitions.Text:
@@ -165,14 +165,7 @@ export const generateBlocks = <Type extends BlockType>(
 
       return [group, ...children] satisfies Block[];
     }
-    case BlockTypeDefinitions.Break: {
-      return [
-        {
-          ...generateDefaultStyles(parentId),
-          type,
-        },
-      ] satisfies [BreakBlock];
-    }
+
     case BlockTypeDefinitions.PageOrientation: {
       return [
         {
@@ -233,8 +226,7 @@ export const generateBlocks = <Type extends BlockType>(
       ] satisfies [TableCellBlock];
     }
     case BlockTypeDefinitions.Header:
-    case BlockTypeDefinitions.Footer:
-    case BlockTypeDefinitions.Content: {
+    case BlockTypeDefinitions.Footer: {
       return [
         {
           ...generateDefaultStyles(parentId),

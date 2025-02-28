@@ -1,5 +1,5 @@
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import { GenericBlockType } from "../../../core/constants/types-definition.constant";
-import { BlockId } from "../../../core/types/utils.types";
 
 export type Interaction = {
   accepts?: GenericBlockType[];

@@ -1,6 +1,6 @@
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import { BlockType } from "../constants/types-definition.constant";
 import { Block, BlockMap, ContainerBlock } from "../types/block.types";
-import { BlockId } from "../types/utils.types";
 
 export const findBlock = (id: BlockId, blocks: BlockMap) => {
   return blocks[id];

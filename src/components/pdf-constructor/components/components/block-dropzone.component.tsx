@@ -4,9 +4,9 @@ import { LandPlotIcon } from "lucide-react";
 
 import { canBeChildOf } from "../../features/constructor/services/interactions/interactions.service";
 import { BlockType } from "../../features/core/constants/types-definition.constant";
-import { BlockId } from "../../features/core/types/utils.types";
 import { useDrop } from "../../features/dnd/hooks/use-drop.hook";
 import { useState } from "react";
+import { BlockId } from "../../shared/types/utils.types";
 
 type BlockDropzoneProps = {
   type: BlockType;

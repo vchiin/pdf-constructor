@@ -22,7 +22,6 @@ const ThumbnailList: Record<AllowedBlockTypes, React.FC> = {
   [BlockTypeDefinitions.Line]: LineBlockThumbnail,
   [BlockTypeDefinitions.Image]: ImageBlockThumbnail,
   [BlockTypeDefinitions.ColumnGroup]: BlockColumnGroupThumbnail,
-
   [BlockTypeDefinitions.Table]: TableBlockThumbnail,
   [BlockTypeDefinitions.Column]: BlockColumnThumbnail,
   [BlockTypeDefinitions.TableRow]: TableRowBlockThumbnail,
