@@ -10,12 +10,12 @@ import {
   TableBlock,
   TableCellBlock,
   TextBlock,
-} from "../../../shared/types/block.types";
+} from "../../core/types/block.types";
 import {
   BlockTypeDefinitions,
   BlockType,
-} from "../../../shared/constants/types-definition.constant";
-import { BlockId } from "../../../shared/types/utils.types";
+} from "../../core/constants/types-definition.constant";
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 
 // export const generateId = () =>
 //   Math.random()
@@ -180,6 +180,7 @@ export const generateBlocks = <Type extends BlockType>(
           type,
           orientation: "portrait",
           children: [],
+          pageBreak: true,
         },
       ] satisfies [PageOrientationBlock];
     }
@@ -232,7 +233,8 @@ export const generateBlocks = <Type extends BlockType>(
       ] satisfies [TableCellBlock];
     }
     case BlockTypeDefinitions.Header:
-    case BlockTypeDefinitions.Footer: {
+    case BlockTypeDefinitions.Footer:
+    case BlockTypeDefinitions.Content: {
       return [
         {
           ...generateDefaultStyles(parentId),

@@ -14,21 +14,24 @@ import { generateBlocks } from "@/components/pdf-constructor/features/constructo
 import {
   Block,
   RootBlock,
-} from "@/components/pdf-constructor/shared/types/block.types";
-import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
+} from "@/components/pdf-constructor/features/core/types/block.types";
+
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { combine } from "@atlaskit/pragmatic-drag-and-drop/combine";
 
 import { DragPayload, DropPayload } from "../../../dnd/types/payload.types";
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 
 const ConstructorContext = createContext<ConstructorContextType | null>(null);
 
 const root = generateBlocks("root", null)[0] as RootBlock;
 const header = generateBlocks("header", root.id)[0];
-// const footer = generateBlocks("footer", root.id)[0];
+const page = generateBlocks("page-orientation", root.id)[0];
+const footer = generateBlocks("footer", root.id)[0];
 
 root.children.push(header.id);
-// root.children.push(footer.id);
+root.children.push(page.id);
+root.children.push(footer.id);
 
 export const ConstructorProvider = ({
   children,
@@ -44,11 +47,11 @@ export const ConstructorProvider = ({
     map: {
       [root.id]: root,
       [header.id]: header,
-      // [footer.id]: footer,
+      [page.id]: page,
+      [footer.id]: footer,
     },
     rootId: root.id,
     showPreview: false,
-    scale: 1,
   });
 
   const update = useCallback(
@@ -76,16 +79,6 @@ export const ConstructorProvider = ({
       dispatch({
         type: ActionTypes.UPDATE_CHILDREN_WIDTHS,
         payload: { blockId, widths },
-      });
-    },
-    [dispatch]
-  );
-
-  const setScale = useCallback(
-    (value: number) => {
-      dispatch({
-        type: ActionTypes.SET_SCALE,
-        payload: { scale: value },
       });
     },
     [dispatch]
@@ -131,7 +124,6 @@ export const ConstructorProvider = ({
         updateChildrenWidths,
         togglePreview,
         containerRef,
-        setScale,
       }}
     >
       {children}

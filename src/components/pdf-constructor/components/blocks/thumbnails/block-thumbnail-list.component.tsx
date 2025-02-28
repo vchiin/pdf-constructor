@@ -3,7 +3,7 @@ import {
   BaseBlockThumbnailProps,
   BlockThumbnailMap,
 } from "./shared/types/block-thumbnail.types";
-import { GenericBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { GenericBlockType } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 
 type BlockThumbnailList = {
   blocks: BlockThumbnailMap;

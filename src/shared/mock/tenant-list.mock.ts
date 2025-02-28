@@ -1,16 +1,4 @@
 export const tenantListMock = {
-  "0": {
-    id: 0,
-    marginLeft: 0,
-    marginRight: 0,
-    marginTop: 0,
-    marginBottom: 0,
-    width: 100,
-    parentId: null,
-    type: "page-orientation",
-    orientation: "landscape",
-    children: [1],
-  },
   "1": {
     id: 1,
     marginLeft: 0,
@@ -18,7 +6,7 @@ export const tenantListMock = {
     marginTop: 0,
     marginBottom: 0,
     width: 100,
-    parentId: 0,
+    parentId: null,
     type: "table",
     children: [
       2, 31, 60, 89, 118, 147, 176, 205, 234, 263, 292, 321, 350, 379, 408, 437,

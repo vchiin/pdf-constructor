@@ -3,18 +3,13 @@ import {
   BlockMap,
   HeaderBlock,
   RootBlock,
-} from "@/components/pdf-constructor/shared/types/block.types";
-import {
-  findBlock,
-  findChildrenBlocks,
-  isContainerBlock,
-} from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
+} from "@/components/pdf-constructor/features/core/types/block.types";
+
 import {
   BlockType,
   BlockTypeDefinitions,
-} from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+} from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 
-import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import {
   Column,
   Content,
@@ -27,6 +22,12 @@ import {
 } from "pdfmake/interfaces";
 import { ACTUAL_PAGE_WIDTH_PT, ACTUAL_PAGE_WIDTH_PT_ROTATED } from "./pdfmake";
 import { convertPxToPt } from "@/shared/utils/units.utils";
+import {
+  findBlock,
+  findChildrenBlocks,
+  isContainerBlock,
+} from "@/components/pdf-constructor/features/core/utils/operation.utils";
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 
 export const parseBlock = (
   block: Block,
@@ -93,12 +94,6 @@ export const parseBlock = (
         stack: children.map((child) => parseBlock(child, map, width)),
       } as Column;
     }
-    case BlockTypeDefinitions.Break: {
-      return {
-        stack: [],
-        pageBreak: "before",
-      } as ContentStack;
-    }
     case BlockTypeDefinitions.PageOrientation: {
       const children = findChildrenBlocks(block.id, map);
 
@@ -114,13 +109,8 @@ export const parseBlock = (
                   : ACTUAL_PAGE_WIDTH_PT_ROTATED
               )
             ),
-            pageBreak: "before",
+            pageBreak: block.pageBreak ? "before" : undefined,
             pageOrientation: block.orientation,
-          },
-          {
-            stack: [],
-            pageBreak: "before",
-            pageOrientation: "portrait",
           },
         ],
         margin: [
@@ -228,6 +218,7 @@ export const parseConfigToPdf = (rootId: BlockId, map: BlockMap) => {
       const child = findBlock(childId, map);
       return parseBlock(child, map, ACTUAL_PAGE_WIDTH_PT);
     }),
+    pageOrientation: root.orientation,
     header: () => processLayout(BlockTypeDefinitions.Header, root, map),
     footer: () => processLayout(BlockTypeDefinitions.Footer, root, map),
     pageMargins,

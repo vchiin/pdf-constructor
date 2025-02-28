@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 
 import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
-import { findBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
+
 import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
+import { findBlock } from "../../features/core/utils/operation.utils";
 
 export const HelperBar = () => {
   const { map } = useConstructor();

@@ -1,4 +1,4 @@
-import { Block } from "@/components/pdf-constructor/shared/types/block.types";
+import { Block } from "@/components/pdf-constructor/features/core/types/block.types";
 import {
   Edge,
   Interaction,
@@ -6,7 +6,7 @@ import {
 import {
   BlockType,
   GenericBlockType,
-} from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+} from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import { CSSProperties, ElementType } from "react";
 import { interactions } from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.service";
 

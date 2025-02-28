@@ -1,5 +1,6 @@
-import { Block } from "@/components/pdf-constructor/shared/types/block.types";
+import { Block } from "@/components/pdf-constructor/features/core/types/block.types";
 import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
+
 import { imageMock } from "@/shared/mock/image.mock";
 import { loanTableMock } from "@/shared/mock/loan-table.mock";
 import { tenantListMock } from "@/shared/mock/tenant-list.mock";
@@ -396,16 +397,6 @@ export const fetchTemplates = async (
         underline: false,
         fontSize: 16,
         fontFamily: "Roboto",
-      },
-      ["13" as BlockId]: {
-        id: "13" as BlockId,
-        marginLeft: 0,
-        marginRight: 0,
-        marginTop: 0,
-        marginBottom: 0,
-        width: 100,
-        parentId: null,
-        type: "break",
       },
       ["14" as BlockId]: {
         id: "14" as BlockId,

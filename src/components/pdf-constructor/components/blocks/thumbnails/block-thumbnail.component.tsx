@@ -1,7 +1,7 @@
 import { BaseBlockThumbnailProps } from "./shared/types/block-thumbnail.types";
 import { cn } from "@/shared/utils/cn.util";
 
-import { GenericBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { GenericBlockType } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import { CSSProperties } from "react";
 import { useDrag } from "@/components/pdf-constructor/features/dnd/hooks/use-drag.hook";
 

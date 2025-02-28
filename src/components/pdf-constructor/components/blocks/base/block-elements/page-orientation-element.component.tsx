@@ -1,25 +1,30 @@
-import { BlockList } from "../block-list.component";
+import { ElementList } from "../element-list.component";
 
-import { BlockDropzone } from "../../../components/block-dropzone.component";
-import { PageOrientationBlock } from "@/components/pdf-constructor/shared/types/block.types";
-import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
+import {
+  PageOrientationBlock,
+  RootBlock,
+} from "@/components/pdf-constructor/features/core/types/block.types";
+import {
+  useBlock,
+  useBlockChildren,
+} from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockElementProps } from "../shared/types/element.types";
-import { Block } from "../block.component";
+import { Element } from "../element.component";
 import { convertPtToPx } from "@/shared/utils/units.utils";
-import { PAGE_HEIGHT_PT } from "@/libs/pdfmake";
+import { PAGE_HEIGHT_PT, PAGE_WIDTH_PT } from "@/libs/pdfmake";
 import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 
-import { CSSProperties, memo } from "react";
+import { CSSProperties, memo, useEffect } from "react";
 import { PageOrientationBlockToolbar } from "../toolbars/page-orientation-toolbar.component";
 
-import { BreakElement } from "./break-element.component";
-import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { BlockTypeDefinitions } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import { ColumnGroupElement } from "./column-group-element.component";
 import { ImageElement } from "./image-element.component";
 import { LineElement } from "./line-element.component";
 import { TableElement } from "./table/table-element.component";
 
 import { TextElement } from "./text-element.component";
+import { findBlock } from "@/components/pdf-constructor/features/core/utils/operation.utils";
 
 const PageOrientationContent: React.FC<
   BlockElementProps<PageOrientationBlock>
@@ -29,10 +34,9 @@ const PageOrientationContent: React.FC<
 
   return (
     <>
-      <BlockList<typeof BlockTypeDefinitions.PageOrientation>
+      <ElementList<typeof BlockTypeDefinitions.PageOrientation>
         config={children}
         blocks={{
-          [BlockTypeDefinitions.Break]: BreakElement,
           [BlockTypeDefinitions.ColumnGroup]: ColumnGroupElement,
           [BlockTypeDefinitions.Image]: ImageElement,
           [BlockTypeDefinitions.Line]: LineElement,
@@ -41,9 +45,8 @@ const PageOrientationContent: React.FC<
         }}
         className="h-full w-full flex-1 flex-col"
         parent={block}
-        hideDropzone
+        hideDropzone={showPreview}
       />
-      {!showPreview && <BlockDropzone parentId={block.id} type={block.type} />}
     </>
   );
 });
@@ -51,23 +54,65 @@ const PageOrientationContent: React.FC<
 export const PageOrientationElement: React.FC<
   BlockElementProps<PageOrientationBlock>
 > = ({ block }) => {
-  const { scale } = useConstructor();
-  console.log(block.orientation);
+  const { rootId, map, update } = useConstructor();
+  const root = useBlock(rootId) as RootBlock;
+
+  useEffect(() => {
+    const index = root.children
+      .filter((childId) => {
+        const child = findBlock(childId, map);
+        if (!child) {
+          return false;
+        }
+
+        return child.type === block.type;
+      })
+      .findIndex((id) => id === block.id);
+
+    if (index === -1) {
+      return;
+    }
+
+    if (index === 0) {
+      update({
+        ...root,
+        orientation: block.orientation,
+      });
+      update({
+        ...block,
+        pageBreak: false,
+      });
+      return;
+    }
+
+    if (!block.pageBreak) {
+      update({
+        ...block,
+        pageBreak: true,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [root.children, block.orientation]);
+
   const styles: CSSProperties =
     block.orientation === "landscape"
       ? {
-          width: `${convertPtToPx(PAGE_HEIGHT_PT) * scale}px`,
+          width: `${convertPtToPx(PAGE_HEIGHT_PT) - root.marginLeft - root.marginRight}px`,
+          margin: "0 auto",
         }
-      : {};
+      : {
+          width: `${convertPtToPx(PAGE_WIDTH_PT) - root.marginLeft - root.marginRight}px`,
+          margin: "0 auto",
+        };
 
   return (
-    <Block
+    <Element
       block={block}
       className="overflow-x-auto"
       style={styles}
       toolbar={<PageOrientationBlockToolbar block={block} />}
     >
       <PageOrientationContent block={block} />
-    </Block>
+    </Element>
   );
 };

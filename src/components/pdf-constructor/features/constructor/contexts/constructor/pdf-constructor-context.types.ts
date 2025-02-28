@@ -1,17 +1,15 @@
-import { BlockId } from "../../../../shared/types/utils.types";
-
-import { Block, BlockMap } from "../../../../shared/types/block.types";
+import { Block, BlockMap } from "../../../core/types/block.types";
 import {
   DragTargetType,
   DropAreaType,
 } from "../../../../features/constructor/services/interactions/interactions.types";
 import { DragPayload, DropPayload } from "../../../dnd/types/payload.types";
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 
 export type ConstructorState = {
   map: BlockMap;
   rootId: BlockId;
   showPreview: boolean;
-  scale: number;
 };
 
 export type ConstructorContext = ConstructorState & {
@@ -20,7 +18,6 @@ export type ConstructorContext = ConstructorState & {
   updateChildrenWidths: (blockId: BlockId, widths: number[]) => void;
   togglePreview: () => void;
   containerRef: React.RefObject<HTMLDivElement>;
-  setScale: (value: number) => void;
 };
 
 export const InsertionPlace = {
@@ -37,7 +34,6 @@ export const ActionTypes = {
   UPDATE_CHILDREN_WIDTHS: "update-children-widths",
   TOGGLE_PREVIEW: "toggle-preview",
   FILL_TABLE_CELLS: "fill-table-cells",
-  SET_SCALE: "set-scale",
 } as const;
 
 export type Action<
@@ -102,8 +98,6 @@ type SwapBlockAction = Action<
   }
 >;
 
-type SetScaleAction = Action<typeof ActionTypes.SET_SCALE, { scale: number }>;
-
 export type ConstructorAction =
   | CreateBlockAction
   | UpdateBlockAction
@@ -112,8 +106,7 @@ export type ConstructorAction =
   | UpdateChildrenWidthsAction
   | TogglePreviewAction
   | FillTableCellsAction
-  | SwapBlockAction
-  | SetScaleAction;
+  | SwapBlockAction;
 
 export type DropAreaCallback<Type extends DropAreaType> = (
   active: DragPayload,

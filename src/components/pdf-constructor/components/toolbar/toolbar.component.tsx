@@ -6,17 +6,19 @@ import { prepareDocument } from "@/libs/conversion";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/shared/utils/cn.util";
 import { BlocksView } from "./components/blocks-view.component";
-import { Slider } from "@/components/ui/slider";
-import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 
-type SidebarProps = {
+import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
+import { useControls } from "react-zoom-pan-pinch";
+import { ZoomInIcon, ZoomOutIcon } from "lucide-react";
+
+type ToolbarProps = {
   className?: string;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ className }) => {
-  const { map, rootId, togglePreview, showPreview, scale, setScale } =
-    useConstructor();
+export const Toolbar: React.FC<ToolbarProps> = ({ className }) => {
+  const { map, rootId, togglePreview, showPreview } = useConstructor();
   const { selectedBlockId } = usePreview();
+  const props = useControls();
 
   return (
     <div
@@ -25,15 +27,20 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
         className
       )}
     >
-      <div className="flex flex-col items-center gap-2">
-        <label htmlFor="scale">{Math.floor(scale * 100) / 100}</label>
-        <Slider
-          value={[scale]}
-          max={3}
-          min={0.5}
-          step={0.01}
-          onValueChange={(value) => setScale(value[0])}
-        />
+      <div className="flex items-center justify-center gap-2">
+        <button
+          className="hover:bg-accent hover:text-accent-foreground flex size-10 cursor-pointer items-center justify-center rounded transition-colors"
+          onClick={() => props.zoomIn(0.3)}
+        >
+          <ZoomInIcon className="size-6" />
+        </button>
+
+        <button
+          className="hover:bg-accent hover:text-accent-foreground flex size-10 cursor-pointer items-center justify-center rounded transition-colors"
+          onClick={() => props.zoomOut(0.3)}
+        >
+          <ZoomOutIcon className="size-6" />
+        </button>
       </div>
 
       <div className="mt-4 flex items-center gap-2">
@@ -65,5 +72,3 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
     </div>
   );
 };
-
-export default Sidebar;

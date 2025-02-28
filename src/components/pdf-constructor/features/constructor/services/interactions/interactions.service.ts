@@ -1,8 +1,9 @@
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import {
   BlockType,
   GenericBlockType,
-} from "../../../../shared/constants/types-definition.constant";
-import { BlockId } from "../../../../shared/types/utils.types";
+} from "../../../core/constants/types-definition.constant";
+
 import {
   DragTargetType,
   DragThumbnailId,
@@ -20,8 +21,9 @@ import {
 
 export const interactions = {
   root: {
-    forbids: ["column", "table-row", "table-cell", "root"],
+    accepts: ["header", "footer", "page-orientation"],
   },
+
   "page-orientation": {
     forbids: [
       "column",

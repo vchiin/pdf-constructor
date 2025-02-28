@@ -1,8 +1,8 @@
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import {
   BlockTypeDefinitions,
   BlockType,
 } from "../constants/types-definition.constant";
-import { BlockId } from "./utils.types";
 
 type BlockBaseStyles = {
   marginLeft: number;
@@ -51,12 +51,11 @@ export type ColumnGroupBlock = ContainerBlock<
   gap: number;
 };
 
-export type BreakBlock = GenericBlock<typeof BlockTypeDefinitions.Break>;
-
 export type PageOrientationBlock = ContainerBlock<
   typeof BlockTypeDefinitions.PageOrientation
 > & {
   orientation: "portrait" | "landscape";
+  pageBreak: boolean;
 };
 
 export type TableBlock = ContainerBlock<typeof BlockTypeDefinitions.Table> & {
@@ -80,6 +79,7 @@ export type FooterBlock = ContainerBlock<typeof BlockTypeDefinitions.Footer>;
 
 export type RootBlock = ContainerBlock<typeof BlockTypeDefinitions.Root> & {
   parentId: null;
+  orientation: "portrait" | "landscape";
 };
 
 export type Block =
@@ -89,7 +89,6 @@ export type Block =
   | ColumnBlock
   | ColumnGroupBlock
   | RootBlock
-  | BreakBlock
   | PageOrientationBlock
   | TableBlock
   | TableRowBlock

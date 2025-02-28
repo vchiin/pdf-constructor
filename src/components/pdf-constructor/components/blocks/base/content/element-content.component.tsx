@@ -1,4 +1,4 @@
-import { Block as BlockType } from "@/components/pdf-constructor/shared/types/block.types";
+import { Block as BlockType } from "@/components/pdf-constructor/features/core/types/block.types";
 import { BaseBlockElementProps } from "../shared/types/element.types";
 import {
   CSSProperties,
@@ -14,7 +14,7 @@ import { useConstructor } from "@/components/pdf-constructor/features/constructo
 import { useScroller } from "@/components/pdf-constructor/features/constructor/contexts/scroller/scroller.context";
 import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 
-type BlockContentProps = Omit<
+type ElementContentProps = Omit<
   BaseBlockElementProps<BlockType>,
   "toolbar" | "positions"
 > & {
@@ -27,7 +27,7 @@ type BlockContentProps = Omit<
   isDragging?: boolean;
 };
 
-export const BlockContent = forwardRef<HTMLElement, BlockContentProps>(
+export const ElementContent = forwardRef<HTMLElement, ElementContentProps>(
   (
     {
       children,

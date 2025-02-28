@@ -1,14 +1,14 @@
 import { TrashIcon } from "lucide-react";
 
 import { GripIcon } from "lucide-react";
-import { Block } from "@/components/pdf-constructor/shared/types/block.types";
+import { Block } from "@/components/pdf-constructor/features/core/types/block.types";
 
 import { ElementType, RefCallback, RefObject } from "react";
 import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 import { createPortal } from "react-dom";
 
-type BlockToolsProps = {
+type ElementToolsProps = {
   block: Block;
   dragRef?: RefCallback<HTMLButtonElement> | RefObject<HTMLButtonElement>;
   isDragging: boolean;
@@ -19,7 +19,7 @@ type BlockToolsProps = {
   deletable?: boolean;
 };
 
-export const BlockTools = ({
+export const ElementTools = ({
   block,
   dragRef,
   isDragging,
@@ -28,7 +28,7 @@ export const BlockTools = ({
   hideSelectionIndicators,
   draggable = true,
   deletable = true,
-}: BlockToolsProps) => {
+}: ElementToolsProps) => {
   const { deleteBlock } = useConstructor();
   const { deselectBlock, selectedBlockId, containerRef } = usePreview();
 
@@ -42,27 +42,26 @@ export const BlockTools = ({
     <Component>
       {!hideSelectionIndicators && draggable && (
         <button
-          className="bg-primary text-primary-foreground absolute top-0 left-0 cursor-pointer rounded p-2"
+          className="bg-primary text-primary-foreground absolute top-0 left-0 flex size-6 cursor-pointer items-center justify-center rounded"
           ref={dragRef}
-
-          // onClick={(event) => {
-          //   event.stopPropagation();
-          // }}
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
         >
-          <GripIcon />
+          <GripIcon className="size-4" />
         </button>
       )}
 
       {!isDragging && !hideSelectionIndicators && deletable && (
         <button
-          className="bg-primary text-primary-foreground absolute top-0 right-0 cursor-pointer rounded p-2"
+          className="bg-primary text-primary-foreground absolute top-0 right-0 flex size-6 cursor-pointer items-center justify-center rounded"
           onClick={(event) => {
             deleteBlock(block.id);
             deselectBlock();
             event.stopPropagation();
           }}
         >
-          <TrashIcon />
+          <TrashIcon className="size-4" />
         </button>
       )}
 

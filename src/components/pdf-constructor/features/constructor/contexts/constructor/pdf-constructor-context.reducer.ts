@@ -4,14 +4,14 @@ import {
   ConstructorState,
 } from "./pdf-constructor-context.types";
 import {
-  createBlock,
-  deleteBlock,
-  insertBlock,
-  moveBlock,
-  moveBlockToPlaceholder,
-  swapBlock,
-  updateBlock,
-  updateChildrenWidths,
+  createBlockAction,
+  deleteBlockAction,
+  insertBlockAction,
+  moveBlockAction,
+  moveBlockToPlaceholderAction,
+  swapBlockAction,
+  updateBlockAction,
+  updateChildrenWidthsAction,
 } from "./pdf-constructor-context.utils";
 
 export const constructorReducer = (
@@ -21,8 +21,9 @@ export const constructorReducer = (
   switch (action.type) {
     case ActionTypes.CREATE_BLOCK: {
       action.payload.blocks.forEach((block) =>
-        createBlock(
-          block,
+        // payload blocks are immutable, so we copy the object
+        createBlockAction(
+          { ...block },
           action.payload.overId,
           action.payload.direction,
           state.map
@@ -31,15 +32,15 @@ export const constructorReducer = (
       break;
     }
     case ActionTypes.UPDATE_BLOCK: {
-      updateBlock(action.payload.block, state.map);
+      updateBlockAction(action.payload.block, state.map);
       break;
     }
     case ActionTypes.DELETE_BLOCK: {
-      deleteBlock(action.payload.blockId, state.map);
+      deleteBlockAction(action.payload.blockId, state.map);
       break;
     }
     case ActionTypes.UPDATE_CHILDREN_WIDTHS: {
-      updateChildrenWidths(
+      updateChildrenWidthsAction(
         action.payload.blockId,
         action.payload.widths,
         state.map
@@ -48,7 +49,7 @@ export const constructorReducer = (
     }
     case ActionTypes.MOVE_BLOCK: {
       if (action.payload.targetId) {
-        moveBlock(
+        moveBlockAction(
           action.payload.blockId,
           action.payload.targetId,
           action.payload.direction,
@@ -61,7 +62,7 @@ export const constructorReducer = (
         return;
       }
 
-      moveBlockToPlaceholder(
+      moveBlockToPlaceholderAction(
         action.payload.blockId,
         action.payload.targetParentId,
         state.map
@@ -74,7 +75,7 @@ export const constructorReducer = (
     }
     case ActionTypes.FILL_TABLE_CELLS: {
       action.payload.cells.forEach((cell) =>
-        insertBlock(
+        insertBlockAction(
           cell,
           action.payload.index,
           action.payload.direction,
@@ -84,11 +85,11 @@ export const constructorReducer = (
       break;
     }
     case ActionTypes.SWAP_BLOCK: {
-      swapBlock(action.payload.blockId, action.payload.targetId, state.map);
-      break;
-    }
-    case ActionTypes.SET_SCALE: {
-      state.scale = action.payload.scale;
+      swapBlockAction(
+        action.payload.blockId,
+        action.payload.targetId,
+        state.map
+      );
       break;
     }
   }

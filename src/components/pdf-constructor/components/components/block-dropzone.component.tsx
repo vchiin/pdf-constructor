@@ -3,8 +3,8 @@ import { cn } from "@/shared/utils/cn.util";
 import { LandPlotIcon } from "lucide-react";
 
 import { canBeChildOf } from "../../features/constructor/services/interactions/interactions.service";
-import { BlockType } from "../../shared/constants/types-definition.constant";
-import { BlockId } from "../../shared/types/utils.types";
+import { BlockType } from "../../features/core/constants/types-definition.constant";
+import { BlockId } from "../../features/core/types/utils.types";
 import { useDrop } from "../../features/dnd/hooks/use-drop.hook";
 import { useState } from "react";
 

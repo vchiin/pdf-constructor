@@ -1,9 +1,9 @@
-import { Block } from "../../block.component";
-import { TableBlock } from "@/components/pdf-constructor/shared/types/block.types";
+import { Element } from "../../element.component";
+import { TableBlock } from "@/components/pdf-constructor/features/core/types/block.types";
 
 import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 
-import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { BlockTypeDefinitions } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import { TableRowElement } from "./table-row-element.component";
 import { BlockElementProps } from "../../shared/types/element.types";
 import { TableBlockToolbar } from "../../toolbars/table-block-toolbar.component";
@@ -32,7 +32,7 @@ const TableContent: React.FC<BlockElementProps<TableBlock>> = memo(
 export const TableElement: React.FC<BlockElementProps<TableBlock>> = ({
   block,
 }) => (
-  <Block block={block} toolbar={<TableBlockToolbar block={block} />}>
+  <Element block={block} toolbar={<TableBlockToolbar block={block} />}>
     <TableContent block={block} />
-  </Block>
+  </Element>
 );

@@ -1,5 +1,5 @@
 import { Rows2Icon } from "lucide-react";
-import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { BlockTypeDefinitions } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import { BlockThumbnail } from "../../block-thumbnail.component";
 
 export const TableRowBlockThumbnail = () => (

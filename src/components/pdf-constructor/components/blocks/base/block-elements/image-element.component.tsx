@@ -2,11 +2,11 @@ import { ImageIcon } from "lucide-react";
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 import { useRef } from "react";
 
-import { ImageBlock } from "@/components/pdf-constructor/shared/types/block.types";
+import { ImageBlock } from "@/components/pdf-constructor/features/core/types/block.types";
 
 import { WidthResizable } from "../../../components/resizable/width-resizable.component";
 import { BlockElementProps } from "../shared/types/element.types";
-import { Block } from "../block.component";
+import { Element } from "../element.component";
 import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 
 export const ImageElement: React.FC<BlockElementProps<ImageBlock>> = ({
@@ -19,7 +19,7 @@ export const ImageElement: React.FC<BlockElementProps<ImageBlock>> = ({
 
   if (value.content) {
     return (
-      <Block block={block}>
+      <Element block={block}>
         <WidthResizable
           id={0}
           width={value.width}
@@ -35,12 +35,12 @@ export const ImageElement: React.FC<BlockElementProps<ImageBlock>> = ({
             className="h-full w-full object-cover select-none"
           />
         </WidthResizable>
-      </Block>
+      </Element>
     );
   }
 
   return (
-    <Block block={block}>
+    <Element block={block}>
       <input
         ref={inputRef}
         type="file"
@@ -69,6 +69,6 @@ export const ImageElement: React.FC<BlockElementProps<ImageBlock>> = ({
       >
         <ImageIcon />
       </button>
-    </Block>
+    </Element>
   );
 };

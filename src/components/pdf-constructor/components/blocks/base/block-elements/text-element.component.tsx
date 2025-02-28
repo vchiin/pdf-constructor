@@ -1,8 +1,8 @@
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 import { memo, useEffect, useRef } from "react";
-import { TextBlock } from "@/components/pdf-constructor/shared/types/block.types";
+import { TextBlock } from "@/components/pdf-constructor/features/core/types/block.types";
 import { BlockElementProps } from "../shared/types/element.types";
-import { Block } from "../block.component";
+import { Element } from "../element.component";
 import { TextBlockToolbar } from "../toolbars/text-block-toolbar.component";
 
 const TextContent: React.FC<BlockElementProps<TextBlock>> = memo(
@@ -42,8 +42,8 @@ export const TextElement: React.FC<BlockElementProps<TextBlock>> = ({
   block,
 }) => {
   return (
-    <Block block={block} toolbar={<TextBlockToolbar block={block} />}>
+    <Element block={block} toolbar={<TextBlockToolbar block={block} />}>
       <TextContent block={block} />
-    </Block>
+    </Element>
   );
 };

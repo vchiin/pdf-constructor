@@ -102,12 +102,12 @@ export const WidthResizable: React.FC<WidthResizableProps> = memo(
         {children}
         <div
           className={cn(
-            "bg-primary text-primary-foreground absolute right-0 bottom-0 z-10 cursor-ew-resize rounded p-2",
+            "bg-primary text-primary-foreground absolute right-0 bottom-0 z-10 flex size-6 cursor-ew-resize items-center justify-center rounded",
             hidden && "hidden"
           )}
           onMouseDown={onMouseDown}
         >
-          <ScalingIcon />
+          <ScalingIcon className="size-4" />
         </div>
       </Component>
     );

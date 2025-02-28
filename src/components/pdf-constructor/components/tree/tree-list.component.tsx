@@ -1,14 +1,15 @@
 import { cn } from "@/shared/utils/cn.util";
-import { Block } from "../../shared/types/block.types";
+import { Block } from "../../features/core/types/block.types";
 import {
   useBlockChildren,
   useHasChild,
 } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
-import { isContainerBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
+
 import { TreeBlock } from "./tree-block.component";
 import { useEffect, useState } from "react";
 
 import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
+import { isContainerBlock } from "../../features/core/utils/operation.utils";
 
 type TreeListProps = {
   block: Block;

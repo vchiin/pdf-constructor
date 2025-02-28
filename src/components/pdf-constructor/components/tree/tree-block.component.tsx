@@ -1,14 +1,14 @@
 import { cn } from "@/shared/utils/cn.util";
-import { Block } from "../../shared/types/block.types";
+import { Block } from "../../features/core/types/block.types";
 import { TreeBlockInformation } from "./tree-block-information.component";
 import { useEffect } from "react";
 import { ChevronDownIcon, ChevronUpIcon, GripIcon } from "lucide-react";
-import { isContainerBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
 import { Edges } from "../blocks/base/content/edges.component";
 import { useScroller } from "@/components/pdf-constructor/features/constructor/contexts/scroller/scroller.context";
 import { usePreview } from "@/components/pdf-constructor/features/constructor/contexts/preview/pdf-preview.context";
 import { useDragElement } from "../../features/dnd/hooks/use-drag-element.hook";
 import { createPortal } from "react-dom";
+import { isContainerBlock } from "../../features/core/utils/operation.utils";
 
 type TreeBlockProps = {
   block: Block;

@@ -4,7 +4,7 @@ import { useConstructor } from "@/components/pdf-constructor/features/constructo
 import { TreeList } from "./tree-list.component";
 import { useRef } from "react";
 import { ScrollerProvider } from "@/components/pdf-constructor/features/constructor/contexts/scroller/scroller.context";
-import { RootBlock } from "../../shared/types/block.types";
+import { RootBlock } from "../../features/core/types/block.types";
 
 type TreeProps = {
   className?: string;

@@ -5,10 +5,10 @@ import {
 import { BlockDropzone } from "../../components/block-dropzone.component";
 import { cn } from "@/shared/utils/cn.util";
 import { CSSProperties } from "react";
-import { Block } from "@/components/pdf-constructor/shared/types/block.types";
-import { BlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { Block } from "@/components/pdf-constructor/features/core/types/block.types";
+import { BlockType } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 
-type BlockListProps<T extends BlockType, O extends BlockType = never> = {
+type ElementListProps<T extends BlockType, O extends BlockType = never> = {
   parent: Block;
   config: Block[];
   blocks: Omit<GenericBlockElementMap<T>, O>;
@@ -20,7 +20,7 @@ type BlockListProps<T extends BlockType, O extends BlockType = never> = {
   smallDropzone?: boolean;
 };
 
-export const BlockList = <T extends BlockType, O extends BlockType = never>({
+export const ElementList = <T extends BlockType, O extends BlockType = never>({
   config,
   blocks,
   direction = "column",
@@ -29,7 +29,7 @@ export const BlockList = <T extends BlockType, O extends BlockType = never>({
   style,
   parent,
   smallDropzone,
-}: BlockListProps<T, O>) => (
+}: ElementListProps<T, O>) => (
   <div
     className={cn(
       "flex h-full items-stretch",

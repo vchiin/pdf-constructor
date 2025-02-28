@@ -1,10 +1,11 @@
-import { BlockMap } from "@/components/pdf-constructor/shared/types/block.types";
+import { BlockMap } from "@/components/pdf-constructor/features/core/types/block.types";
 import { DragPayload, DropPayload } from "../types/payload.types";
+
+import { canBeChildOf } from "../../constructor/services/interactions/interactions.service";
 import {
   findParentBlock,
   hasDescendant,
-} from "../../constructor/contexts/constructor/pdf-constructor-context.utils";
-import { canBeChildOf } from "../../constructor/services/interactions/interactions.service";
+} from "../../core/utils/operation.utils";
 
 export const isSameChild = (drag: DragPayload, drop: DropPayload) => {
   // thumbnails are not droppable, therefore they can never be attempted to be dropped inside themselves
@@ -61,7 +62,6 @@ export const canBeSiblingOf = (
 };
 
 export const isCompatible = (drag: DragPayload, drop: DropPayload) => {
-  console.log(drop, drag);
   // placeholder can't contain leafs
   if (drop.areaType === "placeholder" && drag.targetType === "leaf") {
     return false;

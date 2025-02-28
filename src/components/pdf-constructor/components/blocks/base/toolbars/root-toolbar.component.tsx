@@ -1,5 +1,5 @@
 import { Toolbar } from "./toolbar.component";
-import { RootBlock } from "@/components/pdf-constructor/shared/types/block.types";
+import { RootBlock } from "@/components/pdf-constructor/features/core/types/block.types";
 
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 

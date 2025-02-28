@@ -13,14 +13,13 @@ import { Edge } from "@/components/pdf-constructor/features/constructor/services
 import {
   BlockType,
   BlockTypeDefinitions,
-} from "@/components/pdf-constructor/shared/constants/types-definition.constant";
-import { GenericBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+} from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
+import { GenericBlockType } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 
-import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 import {
   Block,
   BlockMap,
-} from "@/components/pdf-constructor/shared/types/block.types";
+} from "@/components/pdf-constructor/features/core/types/block.types";
 import {
   InsertionPlace,
   ActionTypes,
@@ -30,118 +29,59 @@ import {
   DropAreaCallback,
   DragTargetHandlers,
 } from "./pdf-constructor-context.types";
-
-export const findBlock = (id: BlockId, blocks: BlockMap) => {
-  return blocks[id];
-};
-
-export const findParentBlock = (id: BlockId, blocks: BlockMap) => {
-  const block = findBlock(id, blocks);
-
-  if (!block.parentId) {
-    return null;
-  }
-
-  return findBlock(block.parentId, blocks);
-};
-
-export const isContainerBlock = (
-  block: Block
-): block is Block & { children: BlockId[] } => {
-  return "children" in block;
-};
-
-export const findChildrenBlocks = (id: BlockId, blocks: BlockMap) => {
-  const block = findBlock(id, blocks);
-
-  if (!isContainerBlock(block)) {
-    return [];
-  }
-
-  return block.children.map((childId) => findBlock(childId, blocks));
-};
-
-export const hasChild = (
-  blockId: BlockId,
-  childId: BlockId,
-  blocks: BlockMap
-): boolean => {
-  const block = findBlock(blockId, blocks);
-
-  if (!isContainerBlock(block)) {
-    return false;
-  }
-
-  if (block.children.includes(childId)) {
-    return true;
-  }
-
-  return block.children.some((blockChildId) =>
-    hasChild(blockChildId, childId, blocks)
-  );
-};
-
-export const hasDescendant = (
-  descendantId: BlockId,
-  parentId: BlockId,
-  blocks: BlockMap
-): boolean => {
-  const parent = findBlock(parentId, blocks);
-
-  if (!parent || !isContainerBlock(parent)) {
-    return false;
-  }
-
-  const containsDescendant = parent.children.includes(descendantId);
-  if (containsDescendant) {
-    return true;
-  }
-
-  return parent.children.some((child) =>
-    hasDescendant(descendantId, child, blocks)
-  );
-};
+import {
+  findBlock,
+  findChildrenBlocks,
+  findParentBlock,
+  isContainerBlock,
+  createBlock,
+  insertBlock,
+} from "../../../core/utils/operation.utils";
+import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
 
 // Actions
 
-export const createBlock = (
+export const createBlockAction = (
   block: Block,
   overId: Block["id"] | null,
   direction: (typeof InsertionPlace)[keyof typeof InsertionPlace] | null,
   blocks: BlockMap
 ) => {
-  blocks[block.id] = block;
+  if (block.parentId === null) {
+    return;
+  }
 
-  const parentBlock = findParentBlock(block.id, blocks);
+  const parentBlock = findBlock(block.parentId, blocks);
 
   if (!parentBlock || !isContainerBlock(parentBlock)) {
     return;
   }
 
-  if (parentBlock.children.includes(block.id)) {
+  if (overId === null) {
+    createBlock({
+      block,
+      parent: parentBlock,
+      blocks,
+    });
     return;
   }
 
-  if (overId) {
-    const index = parentBlock.children.indexOf(overId);
+  const index = parentBlock.children.indexOf(overId);
 
-    if (index === -1) {
-      return;
-    }
-
-    const finalIndex = index + (direction === InsertionPlace.BEFORE ? 0 : 1);
-
-    parentBlock.children = [
-      ...parentBlock.children.slice(0, finalIndex),
-      block.id,
-      ...parentBlock.children.slice(finalIndex),
-    ];
-  } else {
-    parentBlock.children = [...parentBlock.children, block.id];
+  if (index === -1) {
+    return;
   }
+
+  const finalIndex = index + (direction === InsertionPlace.BEFORE ? 0 : 1);
+  insertBlock({
+    block,
+    parent: parentBlock,
+    blocks,
+    position: finalIndex,
+  });
 };
 
-export const insertBlock = (
+export const insertBlockAction = (
   block: Block,
   index: number,
   direction: (typeof InsertionPlace)[keyof typeof InsertionPlace],
@@ -157,25 +97,20 @@ export const insertBlock = (
     return;
   }
 
-  if (parent.children.includes(block.id)) {
-    return;
-  }
-
-  blocks[block.id] = block;
-
   const finalIndex =
     direction === InsertionPlace.BEFORE
       ? index
       : index + (direction === InsertionPlace.AFTER ? 1 : 0);
 
-  parent.children = [
-    ...parent.children.slice(0, finalIndex),
-    block.id,
-    ...parent.children.slice(finalIndex),
-  ];
+  insertBlock({
+    block,
+    parent,
+    blocks,
+    position: finalIndex,
+  });
 };
 
-export const updateBlock = (block: Block, blocks: BlockMap) => {
+export const updateBlockAction = (block: Block, blocks: BlockMap) => {
   blocks[block.id] = block;
 };
 
@@ -197,13 +132,13 @@ export const deleteChildBlock = (
   }
 
   if (isContainerBlock(block)) {
-    block.children.forEach((childId) => deleteBlock(childId, blocks));
+    block.children.forEach((childId) => deleteBlockAction(childId, blocks));
   }
 
   delete blocks[childId];
 };
 
-export const deleteBlock = (id: BlockId, blocks: BlockMap) => {
+export const deleteBlockAction = (id: BlockId, blocks: BlockMap) => {
   const block = findBlock(id, blocks);
 
   // only root has no parent
@@ -297,19 +232,26 @@ const moveToDifferentContainer = (
   if (targetIndex === -1) {
     return;
   }
+  const block = findBlock(blockId, blocks);
+
+  if (!block) {
+    return;
+  }
 
   parent.children.splice(targetIndex, 1);
 
   const insertIndex =
     direction === InsertionPlace.BEFORE ? overIndex : overIndex + 1;
 
-  targetParent.children.splice(insertIndex, 0, blockId);
-
-  const block = findBlock(blockId, blocks);
-  block.parentId = targetParent.id;
+  insertBlock({
+    block,
+    parent: targetParent,
+    position: insertIndex,
+    blocks,
+  });
 };
 
-export const moveBlock = (
+export const moveBlockAction = (
   blockId: BlockId,
   targetId: BlockId,
   direction: (typeof InsertionPlace)[keyof typeof InsertionPlace],
@@ -329,7 +271,7 @@ export const moveBlock = (
   }
 };
 
-export const moveBlockToPlaceholder = (
+export const moveBlockToPlaceholderAction = (
   blockId: BlockId,
   targetParentId: BlockId,
   blocks: BlockMap
@@ -346,16 +288,22 @@ export const moveBlockToPlaceholder = (
     return;
   }
 
+  const block = findBlock(blockId, blocks);
+  if (!block) {
+    return;
+  }
+
   const blockIndex = parent.children.indexOf(blockId);
   parent.children.splice(blockIndex, 1);
 
-  targetParent.children.push(blockId);
-
-  const block = findBlock(blockId, blocks);
-  block.parentId = targetParentId;
+  createBlock({
+    block,
+    parent: targetParent,
+    blocks,
+  });
 };
 
-export const updateChildrenWidths = (
+export const updateChildrenWidthsAction = (
   blockId: BlockId,
   widths: number[],
   blocks: BlockMap
@@ -377,7 +325,7 @@ export const updateChildrenWidths = (
   });
 };
 
-export const swapBlock = (
+export const swapBlockAction = (
   blockId: BlockId,
   targetId: BlockId,
   blocks: BlockMap
@@ -686,7 +634,6 @@ const DropAreaCallbacks: DropAreaHandlers = {
 
     const dragAction = getDragTargetAction(active.targetType);
 
-    console.log(active, over);
     if (!dragAction) {
       return [];
     }

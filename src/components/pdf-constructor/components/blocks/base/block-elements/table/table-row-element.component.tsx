@@ -1,8 +1,8 @@
 import {
   TableRowBlock,
   TableCellBlock,
-} from "@/components/pdf-constructor/shared/types/block.types";
-import { Block } from "../../block.component";
+} from "@/components/pdf-constructor/features/core/types/block.types";
+import { Element } from "../../element.component";
 import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockDropzone } from "@/components/pdf-constructor/components/components/block-dropzone.component";
 import { Columns2Icon } from "lucide-react";
@@ -73,7 +73,7 @@ const TableRowContent: React.FC<BlockElementProps<TableRowBlock>> = memo(
 export const TableRowElement: React.FC<BlockElementProps<TableRowBlock>> = ({
   block,
 }) => (
-  <Block as="tr" block={block}>
+  <Element as="tr" block={block}>
     <TableRowContent block={block} />
-  </Block>
+  </Element>
 );

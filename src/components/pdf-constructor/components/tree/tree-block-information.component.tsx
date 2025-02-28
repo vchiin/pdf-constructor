@@ -1,4 +1,4 @@
-import { Block } from "../../shared/types/block.types";
+import { Block } from "../../features/core/types/block.types";
 
 type TreeBlockInformationProps = {
   block: Block;

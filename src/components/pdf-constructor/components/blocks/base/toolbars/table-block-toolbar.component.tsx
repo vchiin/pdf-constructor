@@ -1,5 +1,5 @@
 import { BlockElementProps } from "../shared/types/element.types";
-import { TableBlock as TableBlockType } from "@/components/pdf-constructor/shared/types/block.types";
+import { TableBlock as TableBlockType } from "@/components/pdf-constructor/features/core/types/block.types";
 import { Toolbar } from "./toolbar.component";
 import { useBlockUpdate } from "@/components/pdf-constructor/hooks/use-block-update.hook";
 

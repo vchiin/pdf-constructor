@@ -1,12 +1,12 @@
 import {
   BlockType,
   BlockTypeDefinitions,
-} from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+} from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 
 import { TextBlockThumbnail } from "./blocks/text-block-thumbnail.component";
 import { LineBlockThumbnail } from "./blocks/line-block-thumbnail.component";
 import { ImageBlockThumbnail } from "./blocks/image-block-thumbnail.component";
-import { BreakBlockThumbnail } from "./blocks/break-block-thumbnail.component";
+
 import { TableBlockThumbnail } from "./blocks/table/table-block-thumbnail.component";
 import { TableRowBlockThumbnail } from "./blocks/table/table-row-block-thumbnail.component";
 import { TableCellBlockThumbnail } from "./blocks/table/table-cell-block-thumbnail.component";
@@ -22,7 +22,7 @@ const ThumbnailList: Record<AllowedBlockTypes, React.FC> = {
   [BlockTypeDefinitions.Line]: LineBlockThumbnail,
   [BlockTypeDefinitions.Image]: ImageBlockThumbnail,
   [BlockTypeDefinitions.ColumnGroup]: BlockColumnGroupThumbnail,
-  [BlockTypeDefinitions.Break]: BreakBlockThumbnail,
+
   [BlockTypeDefinitions.Table]: TableBlockThumbnail,
   [BlockTypeDefinitions.Column]: BlockColumnThumbnail,
   [BlockTypeDefinitions.TableRow]: TableRowBlockThumbnail,

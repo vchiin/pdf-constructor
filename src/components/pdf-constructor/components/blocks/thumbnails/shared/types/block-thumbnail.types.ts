@@ -1,4 +1,4 @@
-import { GenericBlockType } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { GenericBlockType } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 
 export type BaseBlockThumbnailProps<T extends GenericBlockType> = {
   type: T;

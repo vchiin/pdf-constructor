@@ -1,11 +1,11 @@
 import {
   FooterBlock,
   RootBlock,
-} from "@/components/pdf-constructor/shared/types/block.types";
+} from "@/components/pdf-constructor/features/core/types/block.types";
 import { BlockElementProps } from "../../shared/types/element.types";
-import { Block } from "../../block.component";
-import { BlockList } from "../../block-list.component";
-import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { Element } from "../../element.component";
+import { ElementList } from "../../element-list.component";
+import { BlockTypeDefinitions } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import {
   useBlock,
   useBlockChildren,
@@ -16,26 +16,30 @@ import { ImageElement } from "../image-element.component";
 import { LineElement } from "../line-element.component";
 import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 import { ColumnGroupElement } from "../column-group-element.component";
+import { convertPtToPx } from "@/shared/utils/units.utils";
+import { PAGE_WIDTH_PT } from "@/libs/pdfmake";
 
 export const FooterElement: React.FC<BlockElementProps<FooterBlock>> = ({
   block,
 }) => {
-  const { rootId, showPreview, scale } = useConstructor();
+  const { rootId, showPreview } = useConstructor();
   const root = useBlock(rootId) as RootBlock;
 
   const children = useBlockChildren(block.id);
 
   return (
-    <Block
+    <Element
       block={block}
       positions={["top"]}
       style={{
+        width: `${convertPtToPx(PAGE_WIDTH_PT)}px`,
+        margin: "0 auto",
         // pdfmake footer height === page margin top
-        maxHeight: showPreview ? `${root.marginTop * scale}px` : undefined,
+        maxHeight: showPreview ? `${root.marginTop}px` : undefined,
       }}
       className="overflow-hidden"
     >
-      <BlockList<typeof BlockTypeDefinitions.Footer>
+      <ElementList<typeof BlockTypeDefinitions.Footer>
         parent={block}
         config={children}
         blocks={{
@@ -47,6 +51,6 @@ export const FooterElement: React.FC<BlockElementProps<FooterBlock>> = ({
         smallDropzone
         hideDropzone={showPreview}
       />
-    </Block>
+    </Element>
   );
 };

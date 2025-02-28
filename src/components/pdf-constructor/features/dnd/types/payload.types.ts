@@ -2,14 +2,14 @@ import {
   BlockType,
   CustomBlockTypeDefinitions,
   GenericBlockType,
-} from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+} from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import {
   DragTargetType,
   DropAreaType,
   Edge,
   SortableTargetType,
 } from "../../constructor/services/interactions/interactions.types";
-import { BlockId } from "@/components/pdf-constructor/shared/types/utils.types";
+import { BlockId } from "@/components/pdf-constructor/features/core/types/utils.types";
 
 type DragBasePayload<Type extends DragTargetType> = {
   targetType: Extract<DragTargetType, Type>;

@@ -1,12 +1,12 @@
-import { LineBlock } from "@/components/pdf-constructor/shared/types/block.types";
+import { LineBlock } from "@/components/pdf-constructor/features/core/types/block.types";
 import { BlockElementProps } from "../shared/types/element.types";
-import { Block } from "../block.component";
+import { Element } from "../element.component";
 
 export const LineElement: React.FC<BlockElementProps<LineBlock>> = ({
   block,
 }) => {
   return (
-    <Block block={block}>
+    <Element block={block}>
       <div
         className="w-full"
         style={{
@@ -14,6 +14,6 @@ export const LineElement: React.FC<BlockElementProps<LineBlock>> = ({
           backgroundColor: block.color,
         }}
       />
-    </Block>
+    </Element>
   );
 };

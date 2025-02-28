@@ -1,12 +1,12 @@
-import { BlockList } from "../block-list.component";
+import { ElementList } from "../element-list.component";
 
 import { BlockDropzone } from "../../../components/block-dropzone.component";
 import { Columns2Icon } from "lucide-react";
-import { ColumnBlock } from "@/components/pdf-constructor/shared/types/block.types";
+import { ColumnBlock } from "@/components/pdf-constructor/features/core/types/block.types";
 import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockElementProps } from "../shared/types/element.types";
-import { Block } from "../block.component";
-import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { Element } from "../element.component";
+import { BlockTypeDefinitions } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import { ImageElement } from "./image-element.component";
 import { TextElement } from "./text-element.component";
 import { LineElement } from "./line-element.component";
@@ -19,7 +19,7 @@ export const ColumnElement: React.FC<BlockElementProps<ColumnBlock>> = ({
   const children = useBlockChildren(block.id);
 
   return (
-    <Block block={block} positions={["left", "right"]}>
+    <Element block={block} positions={["left", "right"]}>
       {children.length === 0 && !showPreview ? (
         <BlockDropzone
           parentId={block.id}
@@ -27,7 +27,7 @@ export const ColumnElement: React.FC<BlockElementProps<ColumnBlock>> = ({
           icon={<Columns2Icon className="h-4 w-4" />}
         />
       ) : (
-        <BlockList<typeof BlockTypeDefinitions.Column>
+        <ElementList<typeof BlockTypeDefinitions.Column>
           config={children}
           blocks={{
             [BlockTypeDefinitions.Image]: ImageElement,
@@ -39,6 +39,6 @@ export const ColumnElement: React.FC<BlockElementProps<ColumnBlock>> = ({
           hideDropzone
         />
       )}
-    </Block>
+    </Element>
   );
 };

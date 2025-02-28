@@ -1,17 +1,17 @@
-import { TableCellBlock } from "@/components/pdf-constructor/shared/types/block.types";
-import { Block } from "../../block.component";
-import { BlockList } from "../../block-list.component";
+import { TableCellBlock } from "@/components/pdf-constructor/features/core/types/block.types";
+import { Element } from "../../element.component";
+import { ElementList } from "../../element-list.component";
 import { useBlockChildren } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.hooks";
 import { BlockElementProps } from "../../shared/types/element.types";
-import { BlockTypeDefinitions } from "@/components/pdf-constructor/shared/constants/types-definition.constant";
+import { BlockTypeDefinitions } from "@/components/pdf-constructor/features/core/constants/types-definition.constant";
 import { useConstructor } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor.context";
 import { memo, useMemo } from "react";
-import { findParentBlock } from "@/components/pdf-constructor/features/constructor/contexts/constructor/pdf-constructor-context.utils";
 
 import { ImageElement } from "../image-element.component";
 import { LineElement } from "../line-element.component";
 import { TextElement } from "../text-element.component";
 import { Edge } from "@/components/pdf-constructor/features/constructor/services/interactions/interactions.types";
+import { findParentBlock } from "@/components/pdf-constructor/features/core/utils/operation.utils";
 
 const TableCellContent: React.FC<BlockElementProps<TableCellBlock>> = memo(
   ({ block }) => {
@@ -46,7 +46,7 @@ const TableCellContent: React.FC<BlockElementProps<TableCellBlock>> = memo(
           paddingBottom: tableParent.paddingBottom,
         }}
       >
-        <BlockList<typeof BlockTypeDefinitions.TableCell>
+        <ElementList<typeof BlockTypeDefinitions.TableCell>
           config={children}
           blocks={{
             image: ImageElement,
@@ -66,7 +66,7 @@ const positions: Edge[] = ["left", "right"];
 export const TableCellElement: React.FC<BlockElementProps<TableCellBlock>> = ({
   block,
 }) => (
-  <Block block={block} positions={positions}>
+  <Element block={block} positions={positions}>
     <TableCellContent block={block} />
-  </Block>
+  </Element>
 );
